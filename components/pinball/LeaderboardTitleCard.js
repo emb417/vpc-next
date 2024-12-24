@@ -9,6 +9,8 @@ export default function LeaderboardTitleCard({
   periodStart,
   periodEnd,
   highlighted = false,
+  priority = false,
+  loading,
 }) {
   return (
     <div className={`relative mb-2 ${!highlighted || "text-orange-300"} text-center`}>
@@ -20,6 +22,8 @@ export default function LeaderboardTitleCard({
         width={imageUrl ? width : 292}
         height={imageUrl ? height : 220}
         alt={table}
+        priority={priority}
+        loading={loading}
         className="border-2 border-orange-950 rounded-xl opacity-50"
       />
       <div className="absolute bottom-0 rounded-xl m-1 w-[284px]">

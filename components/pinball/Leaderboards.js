@@ -12,7 +12,7 @@ async function getData() {
 
     const { rankedPlayers, positionWeeksData } = LeaderboardStats(data);
 
-    const vpsResponse = await fetch(`${process.env.VPC_BASE_URL}${process.env.VPS_API_PATH}/${positionWeeksData[0].vpsId}`, {
+    const vpsResponse = await fetch(`${process.env.VPC_BASE_URL}${process.env.VPS_API_TABLES_PATH}/${positionWeeksData[0].vpsId}`, {
       next: { revalidate: 1800 },
     });
     const vpsData = await vpsResponse.json();

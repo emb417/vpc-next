@@ -31,6 +31,7 @@ export default function WeeklyLeaderboard({ weekData, vpsData }) {
         weekNumber={weekData.weekNumber}
         periodStart={weekData.periodStart}
         periodEnd={weekData.periodEnd}
+        priority
       />
       {weekData.scores.map((score, index) => (
         <Link

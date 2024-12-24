@@ -1,5 +1,5 @@
 import LeaderboardStats from "@/lib/LeaderboardStats";
-import HistoryLeaderboards from "@/components/pinball/HistoryLeaderboards";
+import HighScoresLeaderboards from "@/components/pinball/HighScoresLeaderboards";
 
 async function getData() {
   try {
@@ -12,7 +12,7 @@ async function getData() {
 
     const weeksData = await Promise.all(
       positionWeeksData.map(async (weekData) => {
-        const vpsResponse = await fetch(`${process.env.VPC_BASE_URL}${process.env.VPS_API_PATH}/${weekData.vpsId}`, {
+        const vpsResponse = await fetch(`${process.env.VPC_BASE_URL}${process.env.VPS_API_GAMES_PATH}`, {
           next: { revalidate: 1800 },
         });
         let vpsData;
@@ -41,5 +41,5 @@ async function getData() {
 export default async function HistoryDashboard() {
   const { props } = await getData();
   const { weeksData } = props;
-  return <HistoryLeaderboards weeksData={weeksData} />;
+  return <HighScoresLeaderboards weeksData={weeksData} />;
 }

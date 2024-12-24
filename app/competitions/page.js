@@ -1,15 +1,15 @@
 import { Suspense } from "react";
-import HistoryDashboard from "@/components/pinball/HistoryDashboard";
+import CompetitionDashboard from "@/components/pinball/CompetitionDashboard";
 
 export const metadata = {
-  title: "Weekly History",
-  description: "VPC Weekly History",
+  title: "Competition Corner",
+  description: "VPC Competition Corner",
   alternates: {
-    canonical: "/history",
+    canonical: "/competitions",
   },
 };
 
-export default function HistoryPage() {
+export default function CompetitionCornerPage() {
   return (
     <div className="flex flex-col flex-grow w-full px-4 max-h-screen">
       <Suspense
@@ -19,7 +19,7 @@ export default function HistoryPage() {
           </div>
         }
       >
-        <HistoryDashboard />
+        <CompetitionDashboard />
       </Suspense>
     </div>
   );
