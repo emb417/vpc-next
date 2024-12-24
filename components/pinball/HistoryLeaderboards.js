@@ -4,6 +4,7 @@ import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import PlayerImage from "@/components/pinball/player/PlayerImage";
+import LeaderboardTitleCard from "@/components/pinball/LeaderboardTitleCard";
 
 export default function HistoryLeaderboards({ weeksData }) {
   const searchParams = useSearchParams();
@@ -29,33 +30,16 @@ export default function HistoryLeaderboards({ weeksData }) {
         <div
           key={weekData.weekNumber}
           id={weekData.weekNumber}
-          className="flex flex-col gap-1 items-center min-w-[320px] max-w-[320px]"
+          className={`flex flex-col gap-1 items-center min-w-[320px] max-w-[320px]`}
         >
-          <div
-            className={`flex flex-col p-2 w-full h-[120px] justify-center rounded-3xl ${
-              highlightedId == weekData.weekNumber ? "text-orange-300" : ""
-            }`}
-          >
-            <div className="text-center">Week #{weekData.weekNumber}</div>
-            {weekData.periodStart !== "0NaN-aN-aN" && (
-              <div className="text-sm text-center">
-                {new Date(weekData.periodStart).toLocaleDateString(undefined, {
-                  year: "numeric",
-                  month: "short",
-                  day: "numeric",
-                })}
-                {" to "}
-                {new Date(weekData.periodEnd).toLocaleDateString(undefined, {
-                  year: "numeric",
-                  month: "short",
-                  day: "numeric",
-                })}
-              </div>
-            )}
-            <div className="text-xl text-center leading-6">
-              {weekData.table}
-            </div>
-          </div>
+            <LeaderboardTitleCard
+              imageUrl={weekData.imageUrl}
+              table={weekData.table}
+              weekNumber={weekData.weekNumber}
+              periodStart={weekData.periodStart}
+              periodEnd={weekData.periodEnd}
+              highlighted={highlightedId == weekData.weekNumber}
+            />
           <div className="flex flex-col gap-1 overflow-auto rounded-xl">
             {weekData.scores.map((score, scoreIndex) => (
               <Link

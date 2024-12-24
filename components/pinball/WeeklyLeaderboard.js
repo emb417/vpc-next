@@ -29,6 +29,8 @@ export default function WeeklyLeaderboard({ weekData, vpsData }) {
         imageUrl={vpsData.b2sFiles[0].imgUrl}
         table={weekData.table}
         weekNumber={weekData.weekNumber}
+        periodStart={weekData.periodStart}
+        periodEnd={weekData.periodEnd}
       />
       {weekData.scores.map((score, index) => (
         <Link
