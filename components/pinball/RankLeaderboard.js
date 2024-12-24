@@ -6,16 +6,25 @@ import { Tooltip } from "antd";
 export default function RankLeaderboard({ rankedPlayers }) {
   return (
     <div className="flex flex-wrap items-center justify-center">
-      <div className="flex mb-2 text-xl text-stone-50">
-        Annual Rankings{" "}
-        <Tooltip
-          title="To be ranked you need to play more than 50% of the weeks over the past year.
+      <div className="flex flex-col mb-2 items-center">
+        <Image
+          src="/icon.png"
+          width={168}
+          height={168}
+          alt="VPC"
+          className="mb-2"
+        />
+        <div className="flex text-xl text-stone-50">
+          Annual Rankings{" "}
+          <Tooltip
+            title="To be ranked you need to play more than 50% of the weeks over the past year.
           The ranking is based on win percentage over the past year.
           The P value is your rolling average final weekly position from the last 13 weeks."
-          color="rgba(41, 37, 36, 0.8)"
-        >
-          <CgInfo className="text-sm text-orange-300" />
-        </Tooltip>
+            color="rgba(41, 37, 36, 0.8)"
+          >
+            <CgInfo className="text-sm text-orange-300" />
+          </Tooltip>
+        </div>
       </div>
       {rankedPlayers.map((user, index) => (
         <Link

@@ -2,8 +2,9 @@ import { useMemo } from "react";
 import Link from "next/link";
 import { Tooltip } from "antd";
 import colors from "@/lib/Colors";
+import LeaderboardTitleCard from "@/components/pinball/LeaderboardTitleCard";
 
-export default function WeeklyLeaderboard({ weekData }) {
+export default function WeeklyLeaderboard({ weekData, vpsData }) {
   const usernames = useMemo(() => {
     const usernamesSet = new Set(
       weekData.scores.flatMap((score) => score.username)
@@ -24,8 +25,11 @@ export default function WeeklyLeaderboard({ weekData }) {
 
   return (
     <div className="flex flex-col items-center text-gray-50">
-      <div>Week #{weekData.weekNumber}</div>
-      <div className="text-xl text-center mb-2 px-4">{weekData.table}</div>
+      <LeaderboardTitleCard
+        imageUrl={vpsData.b2sFiles[0].imgUrl}
+        table={weekData.table}
+        weekNumber={weekData.weekNumber}
+      />
       {weekData.scores.map((score, index) => (
         <Link
           href={`/player/${score.username}`}
