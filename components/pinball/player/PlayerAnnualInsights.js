@@ -12,7 +12,7 @@ export default function PlayerSummary({ user }) {
         <PlayerSummaryItem title="Best Game to Average">
           {user.annualBestPerformance.week !== 0 && (
             <Link
-              href={`/history?week=${user.annualBestPerformance.week}`}
+              href={`/competitions?week=${user.annualBestPerformance.week}`}
             >
               <span className="text-sm">
                 P{user.annualBestPerformance.position} of{" "}
@@ -34,7 +34,7 @@ export default function PlayerSummary({ user }) {
         <PlayerSummaryItem title="Worst Game to Average">
           {user.annualWorstPerformance.week !== 0 && (
             <Link
-              href={`/history?week=${user.annualWorstPerformance.week}`}
+              href={`/competitions?week=${user.annualWorstPerformance.week}`}
             >
               <span className="text-sm">
                 P{user.annualWorstPerformance.position} of{" "}

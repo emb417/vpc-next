@@ -12,7 +12,7 @@ export default function PlayerHistory({ weeksData }) {
     <div className="flex flex-col w-full text-gray-50 items-start gap-1 border-2 border-orange-950 rounded-xl px-2 py-1">
       <div className="flex w-full">
         <div className="flex items-center text-sm pl-1">
-          <Link href="/history">Weekly History</Link>
+          <Link href="/competitions">Competition Corner</Link>
         </div>
         {!weeksData[0].score && (
           <div className="flex items-center ml-auto text-xs">
@@ -82,7 +82,7 @@ export default function PlayerHistory({ weeksData }) {
               index % 2 === 0 ? "bg-stone-900" : "bg-stone-800"
             }`}
           >
-            <Link href={`/history?week=${weekData.weekNumber}`}>
+            <Link href={`/competitions?week=${weekData.weekNumber}`}>
               <div className="flex gap-2">
                 <div className="truncate text-sm">
                   {weekData.weekNumber}. {weekData.table}
