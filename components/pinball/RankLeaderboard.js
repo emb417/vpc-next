@@ -32,22 +32,22 @@ export default function RankLeaderboard({ rankedPlayers }) {
           key={user.username}
           className={`flex flex-col items-center mb-1 pr-2 justify-left rounded-full w-full text-stone-50 text-md ${
             index % 2 === 0 ? "bg-stone-900" : "bg-stone-800"
-          } hover:text-orange-300 hover:bg-stone-950 duration-300`}
+          } hover:bg-stone-700 duration-300`}
         >
           <div className="flex flex-row gap-2 justify-left w-full items-center">
-            <div className="flex gap-2 items-center">
-              <span className="w-6 h-6 rounded-full">
-                <Image
-                  src={user.userAvatarUrl}
-                  width={32}
-                  height={32}
-                  alt={user.username}
-                  className="rounded-full"
-                />
-              </span>
-              {user.rank}.
+            <div className="flex w-6 h-6 rounded-full items-center">
+              <Image
+                src={user.userAvatarUrl}
+                width={32}
+                height={32}
+                alt={user.username}
+                className="rounded-full"
+              />
             </div>
-            <div className="truncate">{user.username}</div>
+            <div className="truncate">
+              <span className="text-orange-300 pr-1">{user.rank}.</span>
+              <span className="text-gray-50">{user.username}</span>
+            </div>
             <div className="flex flex-row gap-3 items-center ml-auto">
               <div className="flex text-sm text-orange-300">
                 P{user.rollingAveragePosition}

@@ -17,7 +17,7 @@ export default function PlayerRivals({ playerRivals }) {
             <Link
               key={index}
               href={`/player/${rival.username}`}
-              className="flex flex-row gap-1 text-gray-50 text-sm rounded-full bg-stone-900 hover:text-orange-300 hover:bg-stone-950 duration-300"
+              className="flex flex-row gap-1 text-gray-50 text-sm rounded-full bg-stone-900 hover:bg-stone-700 duration-300"
             >
               <div className="flex items-center gap-2 pr-2 col-span-2">
                 <Image
@@ -48,17 +48,26 @@ export default function PlayerRivals({ playerRivals }) {
                 </Tooltip>
                 <span className="w-8 h-8">
                   {index === 0 && (
-                    <Tooltip title="Ranked 2 Places Higher" color="rgba(41, 37, 36, 0.8)">
+                    <Tooltip
+                      title="Ranked 2 Places Higher"
+                      color="rgba(41, 37, 36, 0.8)"
+                    >
                       <CgChevronDoubleUpO className="text-green-500 w-8 h-8" />
                     </Tooltip>
                   )}
                   {index === 1 && (
-                    <Tooltip title="Ranked 1 Place Higher" color="rgba(41, 37, 36, 0.8)">
+                    <Tooltip
+                      title="Ranked 1 Place Higher"
+                      color="rgba(41, 37, 36, 0.8)"
+                    >
                       <CgChevronUpO className="text-green-500 w-8 h-8" />
                     </Tooltip>
                   )}
                   {index === 2 && (
-                    <Tooltip title="Ranked 1 Place Lower" color="rgba(41, 37, 36, 0.8)">
+                    <Tooltip
+                      title="Ranked 1 Place Lower"
+                      color="rgba(41, 37, 36, 0.8)"
+                    >
                       <CgChevronDownO className="text-red-500 w-8 h-8" />
                     </Tooltip>
                   )}

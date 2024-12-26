@@ -3,9 +3,12 @@ import CompetitionLeaderboards from "@/components/pinball/CompetitionLeaderboard
 
 async function getData() {
   try {
-    const response = await fetch(`${process.env.VPC_BASE_URL}${process.env.VPC_API_PATH}`, {
-      next: { revalidate: 300 },
-    });
+    const response = await fetch(
+      `${process.env.VPC_BASE_URL}${process.env.VPC_API_PATH}`,
+      {
+        next: { revalidate: 300 },
+      }
+    );
     const data = await response.json();
 
     const { positionWeeksData } = LeaderboardStats(data);
@@ -20,5 +23,10 @@ async function getData() {
 export default async function CompetitionDashboard() {
   const { props } = await getData();
   const { weeksData } = props;
-  return <CompetitionLeaderboards weeksData={weeksData} tablesAPI={`${process.env.VPC_BASE_URL}${process.env.VPS_API_TABLES_PATH}`} />;
+  return (
+    <CompetitionLeaderboards
+      weeksData={weeksData}
+      tablesAPI={`${process.env.VPC_BASE_URL}${process.env.VPS_API_TABLES_PATH}`}
+    />
+  );
 }

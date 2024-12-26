@@ -33,23 +33,26 @@ export default function WeeklyLeaderboard({ weekData, vpsData }) {
         periodEnd={weekData.periodEnd}
         priority
       >
-                    <div className="text-sm">Week #{weekData.weekNumber}</div>
-            {weekData.periodStart && weekData.periodEnd && weekData.periodStart !== "0NaN-aN-aN" && (
-              <div className="text-sm">
-                {new Date(weekData.periodStart).toLocaleDateString(undefined, {
-                  year: "numeric",
-                  month: "short",
-                  day: "numeric",
-                })}
-                {" to "}
-                {new Date(weekData.periodEnd).toLocaleDateString(undefined, {
-                  year: "numeric",
-                  month: "short",
-                  day: "numeric",
-                })}
-              </div>
-            )}
-            <div className="text-xl">{weekData.table}</div>
+        <div className="text-sm">Week #{weekData.weekNumber}</div>
+        {weekData.periodStart &&
+          weekData.periodEnd &&
+          weekData.periodStart !== "0NaN-aN-aN" && (
+            <div className="text-sm">
+              {new Date(weekData.periodStart).toLocaleDateString(undefined, {
+                year: "numeric",
+                month: "short",
+                day: "numeric",
+              })}
+              {" to "}
+              {new Date(weekData.periodEnd).toLocaleDateString(undefined, {
+                year: "numeric",
+                month: "short",
+                day: "numeric",
+              })}
+            </div>
+          )}
+        <div className="text-xl">{weekData.table}</div>
+        <div className="text-xs">VPS ID {weekData.vpsId}</div>
       </LeaderboardTitleCard>
       {weekData.scores.map((score, index) => (
         <Link
@@ -57,21 +60,21 @@ export default function WeeklyLeaderboard({ weekData, vpsData }) {
           key={score.username}
           className={`flex flex-col items-center mb-1 justify-left rounded-xl px-2 w-full ${
             index % 2 === 0 ? "bg-stone-900" : "bg-stone-800"
-          } hover:text-orange-300 hover:bg-stone-950 duration-300`}
+          } hover:bg-stone-700 duration-300`}
         >
           <div className="flex flex-row gap-2 justify-left w-full items-center">
-            <div className="flex gap-2 items-center">
-              <span
-                className="w-4 h-4 rounded-full"
-                style={{
-                  backgroundColor: userColors.find(
-                    (user) => user.value === score.username
-                  ).color,
-                }}
-              ></span>
-              {score.position}.
+            <div
+              className="w-4 h-4 rounded-full"
+              style={{
+                backgroundColor: userColors.find(
+                  (user) => user.value === score.username
+                ).color,
+              }}
+            ></div>
+            <div className="truncate">
+              <span className="text-orange-300 pr-1">{score.position}.</span>
+              <span className="text-gray-50">{score.username}</span>
             </div>
-            <div className="truncate">{score.username}</div>
             <div className="flex flex-row gap-3 items-center ml-auto">
               <div className="text-orange-300 text-sm">
                 {score.score.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}

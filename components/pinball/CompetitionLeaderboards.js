@@ -3,7 +3,11 @@
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { GiPreviousButton, GiNextButton, GiPinballFlipper } from "react-icons/gi";
+import {
+  GiPreviousButton,
+  GiNextButton,
+  GiPinballFlipper,
+} from "react-icons/gi";
 import PlayerImage from "@/components/pinball/player/PlayerImage";
 import LeaderboardTitleCard from "@/components/pinball/LeaderboardTitleCard";
 
@@ -65,7 +69,9 @@ export default function CompetitionLeaderboards({ weeksData, tablesAPI }) {
   return (
     <div className="flex flex-col flex-grow w-full max-h-screen">
       <div className="flex flex-row w-full items-center justify-start gap-2 pb-2 text-stone-50">
-        <h1 className="flex flex-row items-center gap-1 text-xl"><GiPinballFlipper /> Competition Corner</h1>
+        <h1 className="flex flex-row items-center gap-1 text-xl">
+          <GiPinballFlipper /> Competition Corner
+        </h1>
         <div className="ml-auto flex flex-row items-center gap-1">
           <button
             className="p-1 rounded-lg bg-orange-950 text-xs hover:bg-orange-800 duration-300"
@@ -127,6 +133,7 @@ export default function CompetitionLeaderboards({ weeksData, tablesAPI }) {
                   </div>
                 )}
               <div className="text-xl">{weekData.table}</div>
+              <div className="text-xs">VPS ID {weekData.vpsId}</div>
             </LeaderboardTitleCard>
             <div className="flex flex-col gap-1 overflow-auto rounded-xl">
               {weekData.scores.map((score, scoreIndex) => (
@@ -135,7 +142,7 @@ export default function CompetitionLeaderboards({ weeksData, tablesAPI }) {
                   key={score.username}
                   className={`flex items-center gap-1 justify-left rounded-full pr-1 w-full ${
                     scoreIndex % 2 === 0 ? "bg-stone-900" : "bg-stone-800"
-                  } hover:text-orange-300 hover:bg-stone-950 duration-300`}
+                  } hover:bg-stone-700 duration-300`}
                 >
                   <div className="flex items-center">
                     <PlayerImage
