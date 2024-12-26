@@ -1,16 +1,35 @@
 import HighScoresLeaderboards from "@/components/pinball/HighScoresLeaderboards";
+import { console } from "inspector";
 
 async function getData() {
   try {
-    const response = await fetch(
+    const vpsResponse = await fetch(
       `${process.env.VPC_BASE_URL}${process.env.VPS_API_SCORES_PATH}`,
       {
         cache: "no-store",
       }
     );
-    const data = await response.json();
+    const data = await vpsResponse.json();
 
-    return { props: { data } };
+    const vpcResponse = await fetch(
+      `${process.env.VPC_BASE_URL}${process.env.VPC_API_PATH}`,
+      {
+        next: { revalidate: 300 },
+      }
+    );
+    const vpcData = await vpcResponse.json();
+
+    const vpsIdsByRecency = Array.from(
+      new Set(
+        vpcData
+          .find((obj) => obj.channelName === "competition-corner")
+          .weeks.filter((week) => !isNaN(parseInt(week.weekNumber)))
+      )
+    )
+      .sort((a, b) => b.weekNumber - a.weekNumber)
+      .map((item) => item.vpsId);
+
+    return { props: { data, vpsIdsByRecency } };
   } catch (error) {
     console.error(error);
     return { props: { message: "Server Error" } };
@@ -19,10 +38,12 @@ async function getData() {
 
 export default async function HistoryDashboard() {
   const { props } = await getData();
-  const { data } = props;
+  const { data, vpsIdsByRecency } = props;
+
   return (
     <HighScoresLeaderboards
       scoresData={data}
+      vpsIdsByRecency={vpsIdsByRecency}
       tablesAPI={`${process.env.VPC_BASE_URL}${process.env.VPS_API_TABLES_PATH}`}
     />
   );
