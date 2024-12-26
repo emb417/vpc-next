@@ -51,13 +51,18 @@ export default function CompetitionLeaderboards({ weeksData, tablesAPI }) {
 
   useEffect(() => {
     if (week) {
-      const element = document.getElementById(week);
-      if (element) {
+      const pageWithData = weeksData.findIndex(
+        (weekData) => weekData.weekNumber === parseInt(week)
+      );
+      if (pageWithData !== -1) {
+        const pageWithDataNormalized = Math.floor(
+          pageWithData / tablesPerPage
+        ) + 1;
+        setPage(pageWithDataNormalized);
         setHighlightedId(week);
-        element.scrollIntoView({ behavior: "smooth", inline: "center" });
       }
     }
-  }, [week]);
+  }, [week, weeksData, tablesPerPage]);
 
   useEffect(() => {
     const scrollableDiv = document.getElementById("scrollableDiv");
@@ -173,3 +178,4 @@ export default function CompetitionLeaderboards({ weeksData, tablesAPI }) {
     </div>
   );
 }
+
