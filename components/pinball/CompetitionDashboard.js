@@ -10,28 +10,7 @@ async function getData() {
 
     const { positionWeeksData } = LeaderboardStats(data);
 
-    const weeksData = await Promise.all(
-      positionWeeksData.map(async (weekData) => {
-        const vpsResponse = await fetch(`${process.env.VPC_BASE_URL}${process.env.VPS_API_TABLES_PATH}/${weekData.vpsId}`, {
-          next: { revalidate: 1800 },
-        });
-        let vpsData;
-        try {
-          vpsData = await vpsResponse.json();
-        } catch (error) {
-          console.error(error);
-          vpsData = null;
-        }
-        const imageUrl = vpsData?.b2sFiles?.[0]?.imgUrl ?? null;
-    
-        return {
-          ...weekData,
-          imageUrl,
-        };
-      })
-    );
-
-    return { props: { weeksData } };
+    return { props: { weeksData: positionWeeksData } };
   } catch (error) {
     console.error(error);
     return { props: { message: "Server Error" } };
@@ -41,5 +20,5 @@ async function getData() {
 export default async function CompetitionDashboard() {
   const { props } = await getData();
   const { weeksData } = props;
-  return <CompetitionLeaderboards weeksData={weeksData} />;
+  return <CompetitionLeaderboards weeksData={weeksData} tablesAPI={`${process.env.VPC_BASE_URL}${process.env.VPS_API_TABLES_PATH}`} />;
 }

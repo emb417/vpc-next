@@ -14,6 +14,8 @@ This project uses a .env file for a few use cases:
     * VPS_API_TABLES_PATH=[API PATH]
 1. Virtual Pinball Spreadsheet Games API Path
     * VPS_API_GAMES_PATH=[API PATH]
+1. Virtaul Pinball Spreadsheet Scores API Path
+    * VPS_API_SCORES_PATH=[API PATH]
 
 Install and run the development server:
 

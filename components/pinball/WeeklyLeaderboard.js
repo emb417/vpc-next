@@ -32,7 +32,25 @@ export default function WeeklyLeaderboard({ weekData, vpsData }) {
         periodStart={weekData.periodStart}
         periodEnd={weekData.periodEnd}
         priority
-      />
+      >
+                    <div className="text-sm">Week #{weekData.weekNumber}</div>
+            {weekData.periodStart && weekData.periodEnd && weekData.periodStart !== "0NaN-aN-aN" && (
+              <div className="text-sm">
+                {new Date(weekData.periodStart).toLocaleDateString(undefined, {
+                  year: "numeric",
+                  month: "short",
+                  day: "numeric",
+                })}
+                {" to "}
+                {new Date(weekData.periodEnd).toLocaleDateString(undefined, {
+                  year: "numeric",
+                  month: "short",
+                  day: "numeric",
+                })}
+              </div>
+            )}
+            <div className="text-xl">{weekData.table}</div>
+      </LeaderboardTitleCard>
       {weekData.scores.map((score, index) => (
         <Link
           href={`/player/${score.username}`}

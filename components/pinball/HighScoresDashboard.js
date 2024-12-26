@@ -1,37 +1,13 @@
-import LeaderboardStats from "@/lib/LeaderboardStats";
 import HighScoresLeaderboards from "@/components/pinball/HighScoresLeaderboards";
 
 async function getData() {
   try {
-    const response = await fetch(`${process.env.VPC_BASE_URL}${process.env.VPC_API_PATH}`, {
-      next: { revalidate: 300 },
+    const response = await fetch(`${process.env.VPC_BASE_URL}${process.env.VPS_API_SCORES_PATH}`, {
+      cache: "no-store",
     });
     const data = await response.json();
 
-    const { positionWeeksData } = LeaderboardStats(data);
-
-    const weeksData = await Promise.all(
-      positionWeeksData.map(async (weekData) => {
-        const vpsResponse = await fetch(`${process.env.VPC_BASE_URL}${process.env.VPS_API_GAMES_PATH}`, {
-          next: { revalidate: 1800 },
-        });
-        let vpsData;
-        try {
-          vpsData = await vpsResponse.json();
-        } catch (error) {
-          console.error(error);
-          vpsData = null;
-        }
-        const imageUrl = vpsData?.b2sFiles?.[0]?.imgUrl ?? null;
-    
-        return {
-          ...weekData,
-          imageUrl,
-        };
-      })
-    );
-
-    return { props: { weeksData } };
+    return { props: { data } };
   } catch (error) {
     console.error(error);
     return { props: { message: "Server Error" } };
@@ -40,6 +16,6 @@ async function getData() {
 
 export default async function HistoryDashboard() {
   const { props } = await getData();
-  const { weeksData } = props;
-  return <HighScoresLeaderboards weeksData={weeksData} />;
+  const { data } = props;
+  return <HighScoresLeaderboards scoresData={data} tablesAPI={`${process.env.VPC_BASE_URL}${process.env.VPS_API_TABLES_PATH}`} />;
 }
