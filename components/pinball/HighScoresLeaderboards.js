@@ -68,10 +68,13 @@ export default function HistoryLeaderboards({
         </h1>
         <div className="ml-auto flex flex-row items-center gap-8">
           <div className="hidden lg:flex flex-row items-center gap-1">
+            Filter <Input placeholder="Search" />
+          </div>
+          <div className="hidden lg:flex flex-row items-center gap-1">
             Sort by
             <button
-              className={`p-1 rounded-lg bg-orange-950 hover:bg-orange-800 duration-300 ${
-                sortMethod === "recency" ? "bg-orange-800" : ""
+              className={`p-1 rounded-lg hover:bg-orange-800 duration-300 ${
+                sortMethod === "recency" ? "bg-orange-800" : "bg-orange-950"
               }`}
               onClick={() => setSortMethod("recency")}
             >
@@ -79,8 +82,8 @@ export default function HistoryLeaderboards({
             </button>
             or
             <button
-              className={`p-1 rounded-lg bg-orange-950 hover:bg-orange-800 duration-300 ${
-                sortMethod === "title" ? "bg-orange-800" : ""
+              className={`p-1 rounded-lg hover:bg-orange-800 duration-300 ${
+                sortMethod === "title" ? "bg-orange-800" : "bg-orange-950"
               }`}
               onClick={() => setSortMethod("title")}
             >
@@ -109,6 +112,10 @@ export default function HistoryLeaderboards({
         </div>
       </div>
       <div className="lg:hidden flex flex-row w-full items-center justify-start gap-4 pb-2 text-stone-50">
+        <div className="flex flex-row items-center gap-1">
+          <span className="text-xs">Filter</span>
+          <Input className="w-[120px] h-6" placeholder="Search" />
+        </div>
         <div className="ml-auto flex flex-row items-center gap-1">
           <span className="text-xs">Sort by</span>
           <button
