@@ -17,59 +17,52 @@ export default function CompetitionLeaderboards({ weeksData, tablesAPI }) {
   const [highlightedId, setHighlightedId] = useState(null);
   const [page, setPage] = useState(1);
   const [tablesPerPage] = useState(4);
-  const [images, setImages] = useState({});
+  const [totalPages, setTotalPages] = useState(1);
   const [tablesToShow, setTablesToShow] = useState([]);
-
-  const fetchImageForVpsId = async (vpsId) => {
-    const vpsResponse = await fetch(`${tablesAPI}/${vpsId}`);
-    let vpsData;
-    try {
-      vpsData = await vpsResponse.json();
-    } catch (error) {
-      console.error(error);
-      vpsData = null;
-    }
-    return vpsData?.b2sFiles?.[0]?.imgUrl ?? null;
-  };
-
-  useEffect(() => {
-    const start = (page - 1) * tablesPerPage;
-    const end = start + tablesPerPage;
-    setTablesToShow(weeksData.slice(start, end));
-  }, [page, weeksData, tablesPerPage]);
+  const [imagesUrls, setImagesUrls] = useState({});
 
   useEffect(() => {
     const fetchImages = async () =>
       Promise.all(
-        tablesToShow.map(async (table) => [
-          table.vpsId,
-          await fetchImageForVpsId(table.vpsId),
-        ])
-      ).then((imagesData) => setImages(Object.fromEntries(imagesData)));
+        tablesToShow.map(async (table) => {
+          const vpsResponse = await fetch(`${tablesAPI}/${table.vpsId}`);
+          let vpsData;
+          try {
+            vpsData = await vpsResponse.json();
+          } catch (error) {
+            console.error(error);
+            vpsData = null;
+          }
+          return [
+            table.vpsId,
+            vpsData?.b2sFiles?.[0]?.imgUrl ?? null,
+          ];
+        })
+      ).then((imagesData) => setImagesUrls(Object.fromEntries(imagesData)));
     fetchImages();
-  }, [tablesToShow]);
+  }, [tablesToShow, tablesAPI]);
 
   useEffect(() => {
+    const start = (page - 1) * tablesPerPage;
+    const end = start + tablesPerPage;
+    const newTablesToShow = weeksData.slice(start, end);
+    setTablesToShow(newTablesToShow);
+    setTotalPages(Math.ceil(weeksData.length / tablesPerPage));
+
     if (week) {
-      const pageWithData = weeksData.findIndex(
+      const pageWithData = newTablesToShow.findIndex(
         (weekData) => weekData.weekNumber === parseInt(week)
       );
       if (pageWithData !== -1) {
-        const pageWithDataNormalized = Math.floor(
-          pageWithData / tablesPerPage
-        ) + 1;
-        setPage(pageWithDataNormalized);
         setHighlightedId(week);
       }
     }
-  }, [week, weeksData, tablesPerPage]);
 
-  useEffect(() => {
     const scrollableDiv = document.getElementById("scrollableDiv");
     if (scrollableDiv) {
       scrollableDiv.scrollTo({ left: 0, behavior: "smooth" });
     }
-  }, [page]);
+  }, [page, week, weeksData, tablesPerPage]);
 
   return (
     <div className="flex flex-col flex-grow w-full max-h-screen">
@@ -86,7 +79,7 @@ export default function CompetitionLeaderboards({ weeksData, tablesAPI }) {
             <GiPreviousButton className="text-xl" />
           </button>
           <span className="text-xs text-center">
-            Page {page} of {Math.ceil(weeksData.length / tablesPerPage)}
+            Page {page} of {totalPages}
           </span>
           <button
             className="p-1 rounded-lg bg-orange-950 text-xs hover:bg-orange-800 duration-300"
@@ -108,7 +101,7 @@ export default function CompetitionLeaderboards({ weeksData, tablesAPI }) {
             className={`flex flex-col gap-1 items-center min-w-[320px] max-w-[320px]`}
           >
             <LeaderboardTitleCard
-              imageUrl={images[weekData.vpsId]}
+              imageUrl={imagesUrls[weekData.vpsId]}
               table={weekData.table}
               highlighted={highlightedId == weekData.weekNumber}
               loading="lazy"
