@@ -83,13 +83,7 @@ export default function HistoryLeaderboards({
     if (scrollableDiv) {
       scrollableDiv.scrollTo({ left: 0, behavior: "smooth" });
     }
-  }, [
-    page,
-    filteredScoresData,
-    sortMethod,
-    tablesPerPage,
-    vpsIdsByRecency,
-  ]);
+  }, [page, filteredScoresData, sortMethod, tablesPerPage, vpsIdsByRecency]);
 
   useEffect(() => {
     let filteredScoresData = scoresData;
@@ -99,7 +93,12 @@ export default function HistoryLeaderboards({
       );
     }
     setFilteredScoresData(filteredScoresData);
+    setPage(1);
   }, [scoresData, filterValue]);
+
+  useEffect(() => {
+    setPage(1);
+  }, [sortMethod]);
 
   return (
     <div className="flex flex-col flex-grow w-full max-h-screen">
@@ -196,8 +195,8 @@ export default function HistoryLeaderboards({
             }
             id={
               table.scores.length > 0
-              ? `${table.vpsId}-${table.tableName}-${table.scores[0].tableId}--${table.scores[0].versionId}`
-              : `${table.vpsId}-${table.tableName}`
+                ? `${table.vpsId}-${table.tableName}-${table.scores[0].tableId}--${table.scores[0].versionId}`
+                : `${table.vpsId}-${table.tableName}`
             }
           >
             <LeaderboardTitleCard
@@ -224,4 +223,3 @@ export default function HistoryLeaderboards({
     </div>
   );
 }
-
