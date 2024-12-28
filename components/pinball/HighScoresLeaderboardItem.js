@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Tooltip } from "antd";
 
 export default function HighScoresLeaderboardItem({ score, scoreIndex }) {
   return (
@@ -17,16 +18,35 @@ export default function HighScoresLeaderboardItem({ score, scoreIndex }) {
         <div className="flex items-center truncate">{score.user.username}</div>
       </Link>
       <div className="ml-auto mr-1 flex gap-2 flex-row items-center">
-        <div className="text-orange-300 text-sm">
-          <Link
-            className="flex justify-left"
-            href={score.postUrl}
-            target="_blank"
-          >
-            {score.score.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-          </Link>
-        </div>
-        <div className="text-sm text-stone-400">v{score.versionNumber}</div>
+        <Tooltip
+          title={`Posted at ${new Intl.DateTimeFormat(
+            "en-US",
+            {
+              year: "numeric",
+              month: "short",
+              day: "numeric",
+              hour: "numeric",
+              minute: "numeric",
+            }
+          ).format(new Date(score.posted))} for version ${score.versionNumber}`}
+          color="rgba(41, 37, 36, 0.8)"
+        >
+          <div className="text-orange-300 text-sm">
+            {score.postUrl ? (
+              <Link
+                className="flex justify-left"
+                href={score.postUrl}
+                target="_blank"
+              >
+                {score.score.toLocaleString("en-US")}
+              </Link>
+            ) : (
+              <span className="flex justify-left">
+                {score.score.toLocaleString("en-US")}
+              </span>
+            )}
+          </div>
+        </Tooltip>
       </div>
     </div>
   );
