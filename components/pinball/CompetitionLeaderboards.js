@@ -65,6 +65,7 @@ export default function CompetitionLeaderboards({ weeksData, tablesAPI }) {
     if (scrollableDivRef.current) {
       scrollableDivRef.current.scrollTo({ left: 0, behavior: "smooth" });
     }
+    window.scrollTo({ top: 50, behavior: "smooth" });
   }, [page, weeksData, tablesPerPage]);
 
   return (
