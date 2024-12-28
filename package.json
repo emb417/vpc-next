@@ -11,9 +11,9 @@
   "license": "ISC",
   "author": "",
   "scripts": {
-    "dev": "next dev",
+    "dev": "PORT=80 next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "PORT=80 next start",
     "lint": "next lint"
   },
   "dependencies": {
