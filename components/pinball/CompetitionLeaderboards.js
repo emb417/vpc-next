@@ -23,7 +23,6 @@ export default function CompetitionLeaderboards({ weeksData, tablesAPI }) {
   const [tablesToShow, setTablesToShow] = useState([]);
   const [imagesUrls, setImagesUrls] = useState({});
   const scrollableDivRef = useRef(null);
-  const weekRefs = useRef({});
 
   useEffect(() => {
     const fetchImagesForTables = async () => {
@@ -64,7 +63,7 @@ export default function CompetitionLeaderboards({ weeksData, tablesAPI }) {
     setTotalPages(Math.ceil(weeksData.length / tablesPerPage));
 
     if (scrollableDivRef.current) {
-      scrollableDivRef.current.scrollTo({ left: 0, behavior: "smooth"})
+      scrollableDivRef.current.scrollTo({ left: 0, behavior: "smooth" });
     }
   }, [page, weeksData, tablesPerPage]);
 
@@ -113,7 +112,6 @@ export default function CompetitionLeaderboards({ weeksData, tablesAPI }) {
           <div
             key={weekData.weekNumber}
             id={weekData.weekNumber}
-            ref={(element) => (weekRefs.current[weekData.weekNumber] = element)}
             className={`flex flex-col gap-1 items-center min-w-[320px] max-w-[320px]`}
           >
             <LeaderboardTitleCard
