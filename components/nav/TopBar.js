@@ -58,7 +58,7 @@ export default function Navbar() {
         {navItems.map((item) => (
           <li key={item.id}>
             <Link href={item.href}>
-              <div className="flex items-center cursor-pointer duration-300 hover:text-orange-300 min-w-[max-content] p-2 gap-1">
+              <div className="flex flex-row items-center cursor-pointer duration-300 hover:text-orange-300 p-2 gap-1">
                 {item.icon}
                 {item.text}
               </div>
