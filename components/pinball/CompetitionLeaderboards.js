@@ -8,6 +8,8 @@ import {
   GiNextButton,
   GiPinballFlipper,
 } from "react-icons/gi";
+import { CgSoftwareUpload } from "react-icons/cg";
+import { Tooltip } from "antd";
 import PlayerImage from "@/components/pinball/player/PlayerImage";
 import LeaderboardTitleCard from "@/components/pinball/LeaderboardTitleCard";
 
@@ -69,6 +71,11 @@ export default function CompetitionLeaderboards({ weeksData, tablesAPI }) {
       <div className="flex flex-row w-full items-center justify-start gap-2 pb-2 text-stone-50">
         <h1 className="flex flex-row items-center gap-1 text-xl">
           <GiPinballFlipper /> Competition Corner
+          <Tooltip title="Click to see instructions on how to post a competition score." color="rgba(41, 37, 36, 0.8)">
+            <Link href="https://discord.com/channels/652274650524418078/720381436842213397/720392464690577539" target="_blank">
+              <CgSoftwareUpload className="text-red-500 animate-pulse" />
+            </Link>
+          </Tooltip>
         </h1>
         <div className="ml-auto flex flex-row items-center gap-1">
           <button
