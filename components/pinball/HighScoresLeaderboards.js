@@ -106,7 +106,7 @@ export default function HistoryLeaderboards({
   }, [sortMethod]);
 
   return (
-    <div className="flex flex-col flex-grow w-full max-h-screen">
+    <div className="flex flex-col flex-grow w-full max-h-dvh">
       <div className="flex flex-row w-full items-center justify-start gap-4 py-2 text-stone-50">
         <h1 className="flex flex-row items-center gap-1 text-lg">
           <GiHighFive />
