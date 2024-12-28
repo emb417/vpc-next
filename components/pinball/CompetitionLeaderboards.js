@@ -35,10 +35,7 @@ export default function CompetitionLeaderboards({ weeksData, tablesAPI }) {
             console.error(error);
             vpsData = null;
           }
-          return [
-            table.vpsId,
-            vpsData?.b2sFiles?.[0]?.imgUrl ?? null,
-          ];
+          return [table.vpsId, vpsData?.b2sFiles?.[0]?.imgUrl ?? null];
         })
       ).then((imagesData) => setImagesUrls(Object.fromEntries(imagesData)));
     fetchImages();
@@ -71,8 +68,14 @@ export default function CompetitionLeaderboards({ weeksData, tablesAPI }) {
       <div className="flex flex-row w-full items-center justify-start gap-2 pb-2 text-stone-50">
         <h1 className="flex flex-row items-center gap-1 text-xl">
           <GiPinballFlipper /> Competition Corner
-          <Tooltip title="Click to see instructions on how to post a competition score." color="rgba(41, 37, 36, 0.8)">
-            <Link href="https://discord.com/channels/652274650524418078/720381436842213397/720392464690577539" target="_blank">
+          <Tooltip
+            title="Click to see instructions on how to post a competition score."
+            color="rgba(41, 37, 36, 0.8)"
+          >
+            <Link
+              href="https://discord.com/channels/652274650524418078/720381436842213397/720392464690577539"
+              target="_blank"
+            >
               <CgSoftwareUpload className="text-red-500 animate-pulse" />
             </Link>
           </Tooltip>
@@ -137,8 +140,13 @@ export default function CompetitionLeaderboards({ weeksData, tablesAPI }) {
                     )}
                   </div>
                 )}
-              <div className="text-xl">{weekData.table}</div>
-              <div className="text-xs">VPS ID {weekData.vpsId}</div>
+              <Link
+                href={`https://virtual-pinball-spreadsheet.web.app/game/${weekData.vpsId}/`}
+                target="_blank"
+              >
+                <div className="text-xl">{weekData.table}</div>
+                <div className="text-xs">VPS ID {weekData.vpsId}</div>
+              </Link>
             </LeaderboardTitleCard>
             <div className="flex flex-col gap-1 overflow-auto rounded-xl">
               {weekData.scores.map((score, scoreIndex) => (
@@ -178,4 +186,3 @@ export default function CompetitionLeaderboards({ weeksData, tablesAPI }) {
     </div>
   );
 }
-

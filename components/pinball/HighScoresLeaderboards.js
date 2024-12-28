@@ -1,12 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { GiPreviousButton, GiNextButton, GiHighFive } from "react-icons/gi";
 import { CgSoftwareUpload } from "react-icons/cg";
 import LeaderboardTitleCard from "@/components/pinball/LeaderboardTitleCard";
 import HighScoresLeaderboardItem from "@/components/pinball/HighScoresLeaderboardItem";
 import { Input, Tooltip } from "antd";
-import Link from "next/link";
 
 const SortMethodButton = ({ sortMethod, setSortMethod, children, value }) => (
   <button
@@ -108,8 +108,14 @@ export default function HistoryLeaderboards({
         <h1 className="flex flex-row items-center gap-1 text-xl">
           <GiHighFive className="text-xl" />
           High Score Corner
-          <Tooltip title="Click to see instructions on how to post a high score." color="rgba(41, 37, 36, 0.8)">
-            <Link href="https://discord.com/channels/652274650524418078/919336296281960468/919338053208776794" target="_blank">
+          <Tooltip
+            title="Click to see instructions on how to post a high score."
+            color="rgba(41, 37, 36, 0.8)"
+          >
+            <Link
+              href="https://discord.com/channels/652274650524418078/919336296281960468/919338053208776794"
+              target="_blank"
+            >
               <CgSoftwareUpload className="text-red-500 animate-pulse" />
             </Link>
           </Tooltip>
@@ -211,8 +217,13 @@ export default function HistoryLeaderboards({
               imageUrl={imagesUrls?.[table.vpsId]}
               priority={true}
             >
-              <div className="text-xl">{table.tableName}</div>
-              <div className="text-xs">VPS ID {table.vpsId}</div>
+              <Link
+                href={`https://virtual-pinball-spreadsheet.web.app/game/${table.vpsId}/`}
+                target="_blank"
+              >
+                <div className="text-xl">{table.tableName}</div>
+                <div className="text-xs">VPS ID {table.vpsId}</div>
+              </Link>
             </LeaderboardTitleCard>
             <div className="flex flex-col gap-1 overflow-auto rounded-xl min-w-[320px] max-w-[320px]">
               {table.scores.length > 0 &&
