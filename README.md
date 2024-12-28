@@ -10,12 +10,12 @@ This project uses a .env file for a few use cases:
     * VPC_BASE_URL=[BASE URL]
 1. Virtual Pinball Chat API Path
     * VPC_API_PATH=[API PATH]
+1. Virtual Pinball Chat Scores API Path
+    * VPC_API_SCORES_PATH=[API PATH]
 1. Virtual Pinball Spreadsheet Tables API Path
     * VPS_API_TABLES_PATH=[API PATH]
 1. Virtual Pinball Spreadsheet Games API Path
     * VPS_API_GAMES_PATH=[API PATH]
-1. Virtaul Pinball Spreadsheet Scores API Path
-    * VPS_API_SCORES_PATH=[API PATH]
 
 Install and run the development server:
 

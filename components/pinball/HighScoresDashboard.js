@@ -4,7 +4,7 @@ import { console } from "inspector";
 async function getData() {
   try {
     const vpsResponse = await fetch(
-      `${process.env.VPC_BASE_URL}${process.env.VPS_API_SCORES_PATH}`,
+      `${process.env.VPC_BASE_URL}${process.env.VPC_API_SCORES_PATH}`,
       {
         cache: "no-store",
       }
