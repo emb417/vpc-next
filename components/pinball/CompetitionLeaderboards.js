@@ -1,7 +1,7 @@
 "use client";
 
+import { useRef, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
 import Link from "next/link";
 import {
   GiPreviousButton,
@@ -22,10 +22,12 @@ export default function CompetitionLeaderboards({ weeksData, tablesAPI }) {
   const [totalPages, setTotalPages] = useState(1);
   const [tablesToShow, setTablesToShow] = useState([]);
   const [imagesUrls, setImagesUrls] = useState({});
+  const scrollableDivRef = useRef(null);
+  const weekRefs = useRef({});
 
   useEffect(() => {
-    const fetchImages = async () =>
-      Promise.all(
+    const fetchImagesForTables = async () => {
+      const imagesData = await Promise.all(
         tablesToShow.map(async (table) => {
           const vpsResponse = await fetch(`${tablesAPI}/${table.vpsId}`);
           let vpsData;
@@ -37,9 +39,22 @@ export default function CompetitionLeaderboards({ weeksData, tablesAPI }) {
           }
           return [table.vpsId, vpsData?.b2sFiles?.[0]?.imgUrl ?? null];
         })
-      ).then((imagesData) => setImagesUrls(Object.fromEntries(imagesData)));
-    fetchImages();
+      );
+      setImagesUrls(Object.fromEntries(imagesData));
+    };
+    fetchImagesForTables();
   }, [tablesToShow, tablesAPI]);
+
+  useEffect(() => {
+    if (week) {
+      const weekIndex = weeksData.findIndex(
+        (weekData) => weekData.weekNumber === parseInt(week)
+      );
+      const pageWithData = Math.ceil(weekIndex / tablesPerPage);
+      setPage(pageWithData);
+      setHighlightedId(week);
+    }
+  }, [week, weeksData, tablesPerPage]);
 
   useEffect(() => {
     const start = (page - 1) * tablesPerPage;
@@ -48,25 +63,15 @@ export default function CompetitionLeaderboards({ weeksData, tablesAPI }) {
     setTablesToShow(newTablesToShow);
     setTotalPages(Math.ceil(weeksData.length / tablesPerPage));
 
-    if (week) {
-      const pageWithData = newTablesToShow.findIndex(
-        (weekData) => weekData.weekNumber === parseInt(week)
-      );
-      if (pageWithData !== -1) {
-        setHighlightedId(week);
-      }
+    if (scrollableDivRef.current) {
+      scrollableDivRef.current.scrollTo({ left: 0, behavior: "smooth"})
     }
-
-    const scrollableDiv = document.getElementById("scrollableDiv");
-    if (scrollableDiv) {
-      scrollableDiv.scrollTo({ left: 0, behavior: "smooth" });
-    }
-  }, [page, week, weeksData, tablesPerPage]);
+  }, [page, weeksData, tablesPerPage]);
 
   return (
     <div className="flex flex-col flex-grow w-full max-h-screen">
       <div className="flex flex-row w-full items-center justify-start gap-2 pb-2 text-stone-50">
-        <h1 className="flex flex-row items-center gap-1 text-xl">
+        <h1 className="flex flex-row items-center gap-1 text-lg">
           <GiPinballFlipper /> Competition Corner
           <Tooltip
             title="Click to see instructions on how to post a competition score."
@@ -101,20 +106,20 @@ export default function CompetitionLeaderboards({ weeksData, tablesAPI }) {
         </div>
       </div>
       <div
-        id="scrollableDiv"
+        ref={scrollableDivRef}
         className="flex flex-row w-full xl:justify-center gap-4 text-stone-50 pb-2 mb-2 border-b-2 border-orange-950 overflow-auto"
       >
         {tablesToShow.map((weekData) => (
           <div
             key={weekData.weekNumber}
             id={weekData.weekNumber}
+            ref={(element) => (weekRefs.current[weekData.weekNumber] = element)}
             className={`flex flex-col gap-1 items-center min-w-[320px] max-w-[320px]`}
           >
             <LeaderboardTitleCard
               imageUrl={imagesUrls[weekData.vpsId]}
               table={weekData.table}
               highlighted={highlightedId == weekData.weekNumber}
-              loading="lazy"
             >
               <div className="text-sm">Week #{weekData.weekNumber}</div>
               {weekData.periodStart &&
