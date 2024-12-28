@@ -49,7 +49,7 @@ export default function CompetitionLeaderboards({ weeksData, tablesAPI }) {
       const weekIndex = weeksData.findIndex(
         (weekData) => weekData.weekNumber === parseInt(week)
       );
-      const pageWithData = Math.ceil(weekIndex / tablesPerPage);
+      const pageWithData = Math.ceil(weekIndex / tablesPerPage) || 1;
       setPage(pageWithData);
       setHighlightedId(week);
     }
