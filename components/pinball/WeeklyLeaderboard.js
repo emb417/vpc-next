@@ -51,8 +51,13 @@ export default function WeeklyLeaderboard({ weekData, vpsData }) {
               })}
             </div>
           )}
-        <div className="text-xl">{weekData.table}</div>
-        <div className="text-xs">VPS ID {weekData.vpsId}</div>
+        <Link
+          href={`https://virtual-pinball-spreadsheet.web.app/game/${weekData.vpsId}/`}
+          target="_blank"
+        >
+          <div className="text-xl">{weekData.table}</div>
+          <div className="text-xs">VPS ID {weekData.vpsId}</div>
+        </Link>
       </LeaderboardTitleCard>
       {weekData.scores.map((score, index) => (
         <Link
