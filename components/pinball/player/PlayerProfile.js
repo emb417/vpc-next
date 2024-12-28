@@ -9,7 +9,7 @@ import PlayerCharts from "@/components/pinball/player/PlayerCharts";
 async function getPlayerSummaryData(username) {
   try {
     const response = await fetch(`${process.env.VPC_BASE_URL}${process.env.VPC_API_PATH}`, {
-      next: { revalidate: 0 },
+      next: { revalidate: 300 },
     });
     const data = await response.json();
 
