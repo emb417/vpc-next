@@ -84,7 +84,7 @@ export default function HistoryLeaderboards({
 
     if (scrollableDivRef.current) {
       scrollableDivRef.current.scrollTo({ left: 0, behavior: "smooth" });
-      window.scrollTo({ top: 50, behavior: "smooth" });
+      window.scrollTo({ top: 100, behavior: "smooth" });
     }
   }, [page, filteredScoresData, sortMethod, tablesPerPage, vpsIdsByRecency]);
 
@@ -97,12 +97,12 @@ export default function HistoryLeaderboards({
     }
     setFilteredScoresData(filteredScoresData);
     setPage(1);
-    window.scrollTo({ top: 50, behavior: "smooth" });
+    window.scrollTo({ top: 100, behavior: "smooth" });
   }, [scoresData, filterValue]);
 
   useEffect(() => {
     setPage(1);
-    window.scrollTo({ top: 50, behavior: "smooth" });
+    window.scrollTo({ top: 100, behavior: "smooth" });
   }, [sortMethod]);
 
   return (
