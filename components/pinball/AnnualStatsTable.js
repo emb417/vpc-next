@@ -251,7 +251,7 @@ function StatsTable({ playerStats }) {
   ];
 
   return (
-    <div className="w-full pb-2">
+    <div className="w-full py-2">
       <Table
         className="lg:pb-2"
         bordered={true}

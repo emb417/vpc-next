@@ -10,8 +10,8 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className="bg-stone-950">
         <TopBar />
-        {children}
+        <div className="flex flex-wrap w-full px-2">{children}</div>
       </body>
     </html>
   );
-};
+}

@@ -44,7 +44,7 @@ export default function Navbar() {
   ];
 
   return (
-    <div className="bg-stone-950 border-b-2 border-b-orange-950 flex justify-start items-start max-w-full mx-auto mb-2 text-stone-50 sans">
+    <div className="bg-stone-950 border-b-2 border-b-orange-950 flex justify-start items-start max-w-full mx-auto text-stone-50 sans">
       {/* Logo */}
       <h1 className="text-3xl pl-4 p-1">
         <Link href="/" className="flex items-center gap-1">

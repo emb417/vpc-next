@@ -69,7 +69,7 @@ export default function CompetitionLeaderboards({ weeksData, tablesAPI }) {
 
   return (
     <div className="flex flex-col flex-grow w-full max-h-screen">
-      <div className="flex flex-row w-full items-center justify-start gap-2 pb-2 text-stone-50">
+      <div className="flex flex-row w-full items-center justify-start gap-2 py-2 text-stone-50">
         <h1 className="flex flex-row items-center gap-1 text-lg">
           <GiPinballFlipper /> Competition Corner
           <Tooltip

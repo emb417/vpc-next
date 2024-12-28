@@ -84,6 +84,7 @@ export default function HistoryLeaderboards({
 
     if (scrollableDivRef.current) {
       scrollableDivRef.current.scrollTo({ left: 0, behavior: "smooth" });
+      window.scrollTo({ top: 50, behavior: "smooth" });
     }
   }, [page, filteredScoresData, sortMethod, tablesPerPage, vpsIdsByRecency]);
 
@@ -96,15 +97,17 @@ export default function HistoryLeaderboards({
     }
     setFilteredScoresData(filteredScoresData);
     setPage(1);
+    window.scrollTo({ top: 50, behavior: "smooth" });
   }, [scoresData, filterValue]);
 
   useEffect(() => {
     setPage(1);
+    window.scrollTo({ top: 50, behavior: "smooth" });
   }, [sortMethod]);
 
   return (
     <div className="flex flex-col flex-grow w-full max-h-screen">
-      <div className="flex flex-row w-full items-center justify-start gap-4 pb-2 text-stone-50">
+      <div className="flex flex-row w-full items-center justify-start gap-4 py-2 text-stone-50">
         <h1 className="flex flex-row items-center gap-1 text-lg">
           <GiHighFive />
           High Score Corner
