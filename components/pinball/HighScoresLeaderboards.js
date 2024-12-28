@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { GiPreviousButton, GiNextButton, GiHighFive } from "react-icons/gi";
 import { CgSoftwareUpload } from "react-icons/cg";
@@ -43,6 +43,7 @@ export default function HistoryLeaderboards({
   const [totalPages, setTotalPages] = useState(1);
   const [tablesToShow, setTablesToShow] = useState([]);
   const [imagesUrls, setImagesUrls] = useState({});
+  const scrollableDivRef = useRef(null);
 
   useEffect(() => {
     const fetchImagesForTables = async () => {
@@ -81,9 +82,8 @@ export default function HistoryLeaderboards({
     setTablesToShow(sortedScoresData.slice(start, end));
     setTotalPages(Math.ceil(sortedScoresData.length / tablesPerPage));
 
-    const scrollableDiv = document.getElementById("scrollableDiv");
-    if (scrollableDiv) {
-      scrollableDiv.scrollTo({ left: 0, behavior: "smooth" });
+    if (scrollableDivRef.current) {
+      scrollableDivRef.current.scrollTo({ left: 0, behavior: "smooth" });
     }
   }, [page, filteredScoresData, sortMethod, tablesPerPage, vpsIdsByRecency]);
 
@@ -105,8 +105,8 @@ export default function HistoryLeaderboards({
   return (
     <div className="flex flex-col flex-grow w-full max-h-screen">
       <div className="flex flex-row w-full items-center justify-start gap-4 pb-2 text-stone-50">
-        <h1 className="flex flex-row items-center gap-1 text-xl">
-          <GiHighFive className="text-xl" />
+        <h1 className="flex flex-row items-center gap-1 text-lg">
+          <GiHighFive />
           High Score Corner
           <Tooltip
             title="Click to see instructions on how to post a high score."
@@ -196,6 +196,7 @@ export default function HistoryLeaderboards({
       </div>
       <div
         id="scrollableDiv"
+        ref={scrollableDivRef}
         className="flex flex-row w-full xl:justify-center gap-2 text-stone-50 pb-2 mb-2 border-b-2 border-orange-950 overflow-auto"
       >
         {tablesToShow.map((table) => (
@@ -215,7 +216,6 @@ export default function HistoryLeaderboards({
             <LeaderboardTitleCard
               table={table.tableName}
               imageUrl={imagesUrls?.[table.vpsId]}
-              priority={true}
             >
               <Link
                 href={`https://virtual-pinball-spreadsheet.web.app/game/${table.vpsId}/`}
