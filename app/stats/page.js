@@ -3,8 +3,8 @@ import LoadingMessage from "@/components/nav/LoadingMessage";
 import StatsDashboard from "@/components/pinball/AnnualStatsDashboard";
 
 export const metadata = {
-  title: "Annual Stats",
-  description: "VPC Annual Stats",
+  title: "Annual Statistics",
+  description: "VPC Annual Statistics",
   alternates: {
     canonical: "/stats",
   },
