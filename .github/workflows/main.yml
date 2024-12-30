@@ -21,14 +21,14 @@ jobs:
 
       - name: Build Docker Image
         run: |
-          docker build -t vpc-next/prod:latest .
+          docker build -t emb417/vpc-next:latest .
 
       - name: Push Docker Image to Docker Hub
         uses: docker/build-push-action@v3
         with:
           context: .
           push: true
-          tags: vpc-next/prod:latest
+          tags: emb417/vpc-next:latest
 
       - name: Logout from Docker Hub
         run: docker logout
