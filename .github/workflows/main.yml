@@ -1,66 +1,34 @@
-name: Build and Publish Docker Image
+name: CI/CD Pipeline
 
-# Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    branches: [ main ]
- 
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
+    branches:
+      - main
 
 jobs:
-  push_to_registry:
-    name: Push Docker image to Docker Hub
+  build:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Check out the repo
+      - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Install NPM Dependencies
-        run: npm install
-
-      # - name: Run Unit Tests 
-      #  run: npm test
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
-
-      - name: Log in to Docker Hub
-        uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_ACCESS_TOKEN }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
-        with:
-          images: emb417/vpc-next:latest
+      - name: Build Docker Image
+        run: |
+          docker build -t vpc-next/prod:latest .
 
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v2
+      - name: Push Docker Image to Docker Hub
+        uses: docker/build-push-action@v3
         with:
           context: .
           push: true
-          tags: emb417/vpc-next:latest
-          build-args: |
-            # APPLICATION_ID=${{ secrets.APPLICATION_ID }}
-            # BOT_TOKEN=${{ secrets.BOT_TOKEN }}
-            # COMMANDS_DIR=${{ secrets.COMMANDS_DIR }}
-            # FEATURES_DIR=${{ secrets.FEATURES_DIR }}
-            # COMPETITION_CHANNEL_ID=${{ secrets.COMPETITION_CHANNEL_ID }}
-            # COMPETITION_CHANNEL_NAME=${{ secrets.COMPETITION_CHANNEL_NAME }}
-            # COMPETITION_WEEKLY_POST_ID=${{ secrets.COMPETITION_WEEKLY_POST_ID }}
-            # COMPETITION_SEASON_POST_ID=${{ secrets.COMPETITION_SEASON_POST_ID }}
-            # DATA_BACKUPS_CHANNEL_ID=${{ secrets.DATA_BACKUPS_CHANNEL_ID }}
-            # DISCORD_BASE_API=${{ secrets.DISCORD_BASE_API }}
-            # GUILD_ID=${{ secrets.GUILD_ID }}
-            # SECONDS_TO_DELETE_MESSAGE=${{ secrets.SECONDS_TO_DELETE_MESSAGE }}
-            # DB_NAME=${{ secrets.DB_NAME }}
-            # DB_USER=${{ secrets.DB_USER }}
-            # DB_PASSWORD=${{ secrets.DB_PASSWORD }}
-            # BOT_OWNER=${{ secrets.BOT_OWNER }}
-            # HIGH_SCORES_CHANNEL_NAME=${{ secrets.HIGH_SCORES_CHANNEL_NAME }}
-            # HIGH_SCORES_CHANNEL_ID=${{ secrets.HIGH_SCORES_CHANNEL_ID }}
-            # RANDOMORG_API_KEY=${{ secrets.RANDOMORG_API_KEY }}
+          tags: vpc-next/prod:latest
+
+      - name: Logout from Docker Hub
+        run: docker logout
