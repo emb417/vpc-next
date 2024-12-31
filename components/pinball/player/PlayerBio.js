@@ -4,9 +4,9 @@ import { Tooltip } from "antd";
 
 export default function PlayerBio({ user }) {
   return (
-    <div className="flex flex-col gap-2">
-      <div className="flex flex-row w-full text-gray-50 text-xl gap-4 sm:gap-8 rounded-full bg-stone-900">
-        <div className="flex items-center gap-2 min-w-[max-content]">
+    <div className="flex flex-col gap-1">
+      <div className="flex flex-row w-full text-gray-50 gap-1 rounded-full bg-stone-900">
+        <div className="flex flex-row w-1/2 items-center gap-2">
           <Image
             src={user.userAvatarUrl}
             width={58}
@@ -14,42 +14,68 @@ export default function PlayerBio({ user }) {
             alt={user.username}
             className="rounded-full"
           />
-          <div className="flex flex-col">
-            <div className="flex text-sm">{user.username}</div>
-            <div className="flex text-orange-300 gap-1 justify-center">
+          <div className="flex flex-col truncate">
+            <div className="text-sm truncate">{user.username}</div>
+            <div className="text-xl text-orange-300">
               <Tooltip
-                title="Rolling Average Position"
+                title="Average position over the past 13 weeks."
                 className="flex"
                 color="rgba(41, 37, 36, 0.8)"
               >
-                {user.rollingAveragePosition &&
-                  `P${user.rollingAveragePosition}`}
-                <CgInfo className="text-sm text-gray-50" />
+                {user.averagePosition && `P${user.averagePosition}`}
               </Tooltip>
             </div>
           </div>
         </div>
-        <div className="flex flex-col w-full items-center pr-2 xs:pr-4 md:pr-6 py-1">
-          <div className="text-orange-300">
-            {user.annualGamesPlayedPercentage <= 0.5 ? (
-              <div className="inline-flex items-center gap-1 text-lg">
-                No Rank{" "}
-                <Tooltip
-                  title={`To be ranked you need to play more than 50% of the weeks over the past year; play ${Math.floor(
-                    27 - user.annualGamesPlayedPercentage * 52
-                  )} more weeks.`}
-                  color="rgba(41, 37, 36, 0.8)"
-                >
-                  <CgInfo className="text-gray-50" />
-                </Tooltip>
+        <div className="flex w-1/4 flex-col justify-center">
+          <Tooltip
+            title="Win and loss record over the past 13 weeks.
+          Wins are accumulated over the weeks based on how many players finished lower than you each week.
+          Losses are accumulated over the weeks based on how many players finished higher than you each week."
+            color="rgba(41, 37, 36, 0.8)"
+          >
+            <div className="flex flex-col items-center justify-center text-xs">
+              <div className="flex flex-row items-center text-orange-300 truncate">
+                Recent Record
               </div>
-            ) : (
-              <div>Rank {user.annualRank}</div>
-            )}
-          </div>
+              <div className="flex flex-row items-center text-gray-50">
+                {user.wins} Wins
+              </div>
+              <div className="flex flex-row items-center text-gray-50">
+                {user.losses} Losses
+              </div>
+            </div>
+          </Tooltip>
+        </div>
+        <div className="flex w-1/4 flex-col items-center justify-center">
+          {user.weeksPlayed <= 6 ? (
+            <div className="flex flex-row items-center text-orange-300 text-xs">
+              No Rank
+              <Tooltip
+                title={`Play ${Math.floor(
+                  7 - user.weeksPlayed
+                )} more weeks to be ranked;
+                you need to play 7 weeks out of the past 13 weeks to be ranked,
+                i.e., more than 50% of the weeks.`}
+                color="rgba(41, 37, 36, 0.8)"
+              >
+                <CgInfo className="text-gray-50 text-sm" />
+              </Tooltip>
+            </div>
+          ) : (
+            <Tooltip
+              title="Power ranking based on win percentage over the past 13 weeks."
+              color="rgba(41, 37, 36, 0.8)"
+            >
+              <div className="text-xl text-orange-300">R{user.rank}</div>
+            </Tooltip>
+          )}
           <div className="text-gray-50 text-sm">
-            <Tooltip title="Annual Win Percentage">
-              {user.annualWinPercentage}%
+            <Tooltip
+              title="Win percentage over the past 13 weeks based on recent record."
+              color="rgba(41, 37, 36, 0.8)"
+            >
+              {user.winPercentage}%
             </Tooltip>
           </div>
         </div>

@@ -1,6 +1,5 @@
 import Image from "next/image";
 import {
-  CgInfo,
   CgChevronDoubleUpO,
   CgChevronUpO,
   CgChevronDownO,
@@ -27,23 +26,28 @@ export default function PlayerRivals({ playerRivals }) {
                   alt={rival.username}
                   className="rounded-full"
                 />
-                <span className="text-lg">{rival.rank}.</span>
+                <Tooltip
+                  title="Power ranking based on win percentage over the past 13 weeks."
+                  color="rgba(41, 37, 36, 0.8)"
+                >
+                  <span className="text-lg">R{rival.rank}.</span>
+                </Tooltip>
                 <span className="truncate">{rival.username}</span>
               </div>
-              <div className="flex justify-end items-center ml-auto">
+              <div className="flex gap-3 justify-end items-center ml-auto">
                 <Tooltip
-                  title="Rolling Average Position"
+                  title="Average position over the past 13 weeks."
                   className="flex"
                   color="rgba(41, 37, 36, 0.8)"
                 >
                   <span className="text-lg text-orange-300">
-                    P{rival.rollingAveragePosition}
+                    P{rival.averagePosition}
                   </span>
-                  <CgInfo className="text-gray-50 text-xs" />
                 </Tooltip>
-              </div>
-              <div className="flex gap-2 items-center justify-end">
-                <Tooltip title="Win Percentage" color="rgba(41, 37, 36, 0.8)">
+                <Tooltip
+                  title="Win percentage over the past 13 weeks based on recent record."
+                  color="rgba(41, 37, 36, 0.8)"
+                >
                   <span className="text-lg">{rival.winPercentage}%</span>
                 </Tooltip>
                 <span className="w-8 h-8">

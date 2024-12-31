@@ -11,9 +11,9 @@ async function getData() {
     );
     const data = await response.json();
 
-    const { positionWeeksData } = LeaderboardStats(data);
+    const weeksData = LeaderboardStats(data);
 
-    return { props: { weeksData: positionWeeksData } };
+    return { props: { weeksData } };
   } catch (error) {
     console.error(error);
     return { props: { message: "Server Error" } };

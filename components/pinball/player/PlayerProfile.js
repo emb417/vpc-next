@@ -8,9 +8,12 @@ import PlayerCharts from "@/components/pinball/player/PlayerCharts";
 
 async function getPlayerSummaryData(username) {
   try {
-    const response = await fetch(`${process.env.VPC_BASE_URL}${process.env.VPC_API_PATH}`, {
-      next: { revalidate: 300 },
-    });
+    const response = await fetch(
+      `${process.env.VPC_BASE_URL}${process.env.VPC_API_PATH}`,
+      {
+        next: { revalidate: 300 },
+      }
+    );
     const data = await response.json();
 
     return PlayerSummaryData(data, username);
@@ -21,14 +24,10 @@ async function getPlayerSummaryData(username) {
 }
 
 export default async function PlayerProfile({ username }) {
-  const {
-    playerRivals,
-    user,
-    userPositionData,
-    userSeasonSummary,
-  } = await getPlayerSummaryData(username);
+  const { playerStats, playerRivals, user, userPositionData } =
+    await getPlayerSummaryData(username);
 
-  if (!user) {
+  if (!user || !playerStats) {
     redirect("/");
   }
 
@@ -36,7 +35,7 @@ export default async function PlayerProfile({ username }) {
     <div className="grid grid-cols-1 lg:grid-cols-6 xl:grid-cols-12 2xl:grid-cols-12 w-full gap-4 py-2">
       <div className="flex flex-col lg:col-span-5 xl:col-span-7 2xl:col-span-6 gap-4">
         <div className="flex grid grid-cols-1 sm:grid-cols-2 items-center gap-2">
-          <PlayerBio user={user} userSeasonSummary={userSeasonSummary} />
+          <PlayerBio user={playerStats} />
           {playerRivals.some((rival) => rival !== undefined) && (
             <PlayerRivals playerRivals={playerRivals} />
           )}
