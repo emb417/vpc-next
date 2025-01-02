@@ -9,13 +9,13 @@ import { Tooltip } from "antd";
 
 export default function PlayerHistory({ weeksData }) {
   return (
-    <div className="flex flex-col w-full text-gray-50 items-start gap-1 border-2 border-orange-950 rounded-xl px-2 py-1">
+    <div className="flex flex-col w-full items-start gap-1 border-2 border-orange-950 rounded-xl px-2 py-1">
       <div className="flex w-full">
-        <div className="flex items-center text-sm pl-1">
+        <div className="flex items-center text-sm text-stone-200 pl-1">
           <Link href="/competitions">Competition Corner</Link>
         </div>
         {!weeksData[0].score && (
-          <div className="flex items-center ml-auto text-xs">
+          <div className="flex items-center ml-auto text-xs text-stone-200">
             <Link
               href="https://discord.com/channels/652274650524418078/720381436842213397"
               target="_blank"
@@ -30,7 +30,7 @@ export default function PlayerHistory({ weeksData }) {
               href={`/player/${weeksData[0].nextPlayer}`}
               className="flex flex-col items-center"
             >
-              <div className="flex items-center">
+              <div className="flex items-center text-stone-200">
                 P{weeksData[0].nextPosition}. {weeksData[0].nextPlayer}
               </div>
               <div className="text-orange-300">
@@ -41,7 +41,7 @@ export default function PlayerHistory({ weeksData }) {
         )}
         {weeksData[0].score && !weeksData[0].nextScore && (
           <div className="flex flex-row items-center ml-auto text-xs">
-            <div className="flex items-center">{weeksData[0].nextPlayer}</div>
+            <div className="flex items-center text-stone-200">{weeksData[0].nextPlayer}</div>
             <div className="flex items-center pl-1 text-xl">
               <GiRibbonMedal className="text-blue-500" />
             </div>
@@ -84,7 +84,7 @@ export default function PlayerHistory({ weeksData }) {
           >
             <Link href={`/competitions?week=${weekData.weekNumber}`}>
               <div className="flex gap-2">
-                <div className="truncate text-sm">
+                <div className="truncate text-sm text-stone-200">
                   {weekData.weekNumber}. {weekData.table}
                 </div>
                 <div className="ml-auto min-w-[max-content] text-sm">
@@ -95,7 +95,7 @@ export default function PlayerHistory({ weeksData }) {
                         .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                     </span>
                   ) : (
-                    <span className="text-stone-500">No Score</span>
+                    <span className="text-stone-400">No Score</span>
                   )}
                 </div>
               </div>
@@ -134,10 +134,10 @@ export default function PlayerHistory({ weeksData }) {
                       P{weekData.position} of {weekData.numberOfParticipants}
                     </span>
                   ) : (
-                    <span className="text-stone-500">No Position</span>
+                    <span className="text-stone-400">No Position</span>
                   )}
                 </div>
-                <div className="flex ml-auto">
+                <div className="flex ml-auto text-stone-200">
                   {weekData.points
                     ? `${weekData.points} ${
                         weekData.points > 1 ? "Points" : "Point"

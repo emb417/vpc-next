@@ -13,7 +13,7 @@ export default function Error({ error, reset }) {
         ZZzzzZZZzzZzzZZZ!
       </h2>
       <button
-        className="border-2 border-orange-600 rounded-full px-4 py-2 mt-4 text-orange-600 hover:bg-orange-600 hover:text-stone-50"
+        className="border-2 border-orange-600 rounded-full px-4 py-2 mt-4 text-orange-600 hover:bg-orange-600 hover:text-stone-100"
         onClick={() => reset()}
       >
         Reload

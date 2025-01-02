@@ -203,7 +203,7 @@ export default function PlayerCharts({ weeksData, username }) {
   }, [selectedUsernames, weeksData, selectOptions, selectedDatasets]);
 
   return (
-    <div className="flex flex-col w-full text-gray-50 items-start gap-1 border-2 border-orange-950 rounded-xl px-2 pt-1 pb-2">
+    <div className="flex flex-col w-full text-stone-200 items-start gap-1 border-2 border-orange-950 rounded-xl px-2 pt-1 pb-2">
       <div className="flex flex-col sm:flex-row w-full gap-2 py-1">
         <div className="flex min-w-[max-content] text-sm items-center">
           Annual Charts

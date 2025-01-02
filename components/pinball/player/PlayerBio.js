@@ -5,7 +5,7 @@ import { Tooltip } from "antd";
 export default function PlayerBio({ user }) {
   return (
     <div className="flex flex-col gap-1">
-      <div className="flex flex-row w-full text-gray-50 gap-1 rounded-full bg-stone-900">
+      <div className="flex flex-row w-full gap-1 rounded-full bg-stone-900">
         <div className="flex flex-row w-1/2 items-center gap-2">
           <Image
             src={user.userAvatarUrl}
@@ -14,7 +14,7 @@ export default function PlayerBio({ user }) {
             alt={user.username}
             className="rounded-full"
           />
-          <div className="flex flex-col truncate">
+          <div className="flex flex-col truncate text-stone-200">
             <div className="text-sm truncate">{user.username}</div>
             <div className="text-xl text-orange-300">
               <Tooltip
@@ -38,10 +38,10 @@ export default function PlayerBio({ user }) {
               <div className="flex flex-row items-center text-orange-300 truncate">
                 Recent Record
               </div>
-              <div className="flex flex-row items-center text-gray-50">
+              <div className="flex flex-row items-center text-stone-200">
                 {user.wins} Wins
               </div>
-              <div className="flex flex-row items-center text-gray-50">
+              <div className="flex flex-row items-center text-stone-200">
                 {user.losses} Losses
               </div>
             </div>
@@ -59,7 +59,7 @@ export default function PlayerBio({ user }) {
                 i.e., more than 50% of the weeks.`}
                 color="rgba(41, 37, 36, 0.8)"
               >
-                <CgInfo className="text-gray-50 text-sm" />
+                <CgInfo className="text-stone-100 text-sm" />
               </Tooltip>
             </div>
           ) : (
@@ -70,7 +70,7 @@ export default function PlayerBio({ user }) {
               <div className="text-xl text-orange-300">R{user.rank}</div>
             </Tooltip>
           )}
-          <div className="text-gray-50 text-sm">
+          <div className="text-stone-200 text-sm">
             <Tooltip
               title="Win percentage over the past 13 weeks based on recent record."
               color="rgba(41, 37, 36, 0.8)"

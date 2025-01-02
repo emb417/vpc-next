@@ -107,7 +107,7 @@ export default function HistoryLeaderboards({
 
   return (
     <div className="flex flex-col flex-grow w-full max-h-dvh">
-      <div className="flex flex-row w-full items-center justify-start gap-4 py-2 text-stone-50">
+      <div className="flex flex-row w-full items-center justify-start gap-4 py-2 text-stone-200">
         <h1 className="flex flex-row items-center gap-1 text-lg">
           <GiHighFive />
           High Score Corner
@@ -170,7 +170,7 @@ export default function HistoryLeaderboards({
           </div>
         </div>
       </div>
-      <div className="lg:hidden flex flex-row w-full items-center justify-start gap-4 pb-2 text-stone-50">
+      <div className="lg:hidden flex flex-row w-full items-center justify-start gap-4 pb-2 text-stone-200">
         <div className="flex flex-row items-center gap-1">
           <span className="text-xs">Filter</span>
           <FilterInput
@@ -200,7 +200,7 @@ export default function HistoryLeaderboards({
       <div
         id="scrollableDiv"
         ref={scrollableDivRef}
-        className="flex flex-row w-full xl:justify-center gap-2 text-stone-50 pb-2 mb-2 border-b-2 border-orange-950 overflow-auto"
+        className="flex flex-row w-full xl:justify-center gap-2 text-stone-200 pb-2 mb-2 border-b-2 border-orange-950 overflow-auto"
       >
         {tablesToShow.map((table) => (
           <div

@@ -14,7 +14,7 @@ export default function RankLeaderboard({ recentPlayerStats }) {
           alt="VPC"
           className="mb-2"
         />
-        <div className="flex text-xl text-stone-50">
+        <div className="flex text-xl text-stone-200">
           Power Rankings
           <Tooltip
             title="To be ranked you need to play at least 7 weeks out of the past 13 weeks,
@@ -33,12 +33,13 @@ export default function RankLeaderboard({ recentPlayerStats }) {
           <Link
             href={`/player/${user.username}`}
             key={user.username}
-            className={`flex flex-col items-center mb-1 pr-2 justify-left rounded-full w-full text-stone-50 text-md ${
+            className={`flex flex-col items-center mb-1 px-2 justify-left rounded-full w-full text-md ${
               index % 2 === 0 ? "bg-stone-900" : "bg-stone-800"
             } hover:bg-stone-700 duration-300`}
           >
             <div className="flex flex-row gap-2 justify-left w-full items-center">
-              <div className="flex w-6 h-6 rounded-full items-center">
+                <div className="text-lg text-orange-300">{user.rank}.</div>
+              <div className="flex rounded-full items-center">
                 <Image
                   src={user.userAvatarUrl}
                   width={32}
@@ -47,15 +48,12 @@ export default function RankLeaderboard({ recentPlayerStats }) {
                   className="rounded-full"
                 />
               </div>
-              <div className="truncate">
-                <span className="text-orange-300 pr-1">{user.rank}.</span>
-                <span className="text-gray-50">{user.username}</span>
-              </div>
+                <div className="text-lg text-stone-200 truncate">{user.username}</div>
               <div className="flex flex-row gap-3 items-center ml-auto">
-                <div className="flex text-sm text-orange-300">
+                <div className="flex text-md text-orange-300">
                   P{user.averagePosition}
                 </div>
-                <div className="text-lg">{user.winPercentage}%</div>
+                <div className="text-lg text-stone-100">{user.winPercentage}%</div>
               </div>
             </div>
           </Link>

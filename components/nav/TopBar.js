@@ -44,7 +44,7 @@ export default function Navbar() {
   ];
 
   return (
-    <div className="bg-stone-950 border-b-2 border-b-orange-950 flex justify-start items-start max-w-full mx-auto text-stone-50 sans">
+    <div className="bg-stone-950 border-b-2 border-b-orange-950 flex justify-start items-start max-w-full mx-auto text-stone-200 sans">
       {/* Logo */}
       <h1 className="text-3xl pl-4 p-1">
         <Link href="/" className="flex items-center gap-1">
@@ -82,7 +82,7 @@ export default function Navbar() {
       >
         {/* Mobile Logo */}
         <li key="Home">
-          <h1 className="w-full text-3xl text-stone-50 pl-4 pt-1 pb-2">
+          <h1 className="w-full text-3xl text-stone-200 pl-4 pt-1 pb-2">
             <Link
               href="/"
               onClick={handleNav}

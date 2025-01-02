@@ -38,8 +38,8 @@ export default function PlayerImage({ src, alt }) {
         <Image
           src={src}
           onError={() => setHasError(true)}
-          width={32}
-          height={32}
+          width={26}
+          height={26}
           alt={alt}
           className="rounded-full"
         />

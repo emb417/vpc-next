@@ -1,30 +1,12 @@
-import { useMemo } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Tooltip } from "antd";
-import colors from "@/lib/Colors";
 import LeaderboardTitleCard from "@/components/pinball/LeaderboardTitleCard";
 
 export default function WeeklyLeaderboard({ weekData, vpsData }) {
-  const usernames = useMemo(() => {
-    const usernamesSet = new Set(
-      weekData.scores.flatMap((score) => score.username)
-    );
-    return Array.from(usernamesSet);
-  }, [weekData]);
-
-  const userColors = useMemo(() => {
-    return usernames.reduce((acc, username, index) => {
-      const color = colors[index % 20];
-      return acc.concat({
-        value: username,
-        label: username,
-        color,
-      });
-    }, []);
-  }, [usernames]);
 
   return (
-    <div className="flex flex-col items-center text-gray-50">
+    <div className="flex flex-col items-center text-stone-200">
       <LeaderboardTitleCard
         imageUrl={vpsData.b2sFiles[0].imgUrl}
         table={weekData.table}
@@ -67,24 +49,23 @@ export default function WeeklyLeaderboard({ weekData, vpsData }) {
             index % 2 === 0 ? "bg-stone-900" : "bg-stone-800"
           } hover:bg-stone-700 duration-300`}
         >
-          <div className="flex flex-row gap-2 justify-left w-full items-center">
-            <div
-              className="w-4 h-4 rounded-full"
-              style={{
-                backgroundColor: userColors.find(
-                  (user) => user.value === score.username
-                ).color,
-              }}
-            ></div>
-            <div className="truncate">
-              <span className="text-orange-300 pr-1">{score.position}.</span>
-              <span className="text-gray-50">{score.username}</span>
-            </div>
+          <div className="flex flex-row gap-1 justify-left w-full items-center">
+              <div className="flex items-center justify-center text-orange-300">{score.position}.</div>
+              <div className="flex rounded-full items-center">
+                <Image
+                  src={score.userAvatarUrl}
+                  width={20}
+                  height={20}
+                  alt={score.username}
+                  className="rounded-full"
+                />
+              </div>
+              <span className="text-md text-stone-300 truncate">{score.username}</span>
             <div className="flex flex-row gap-3 items-center ml-auto">
               <div className="text-orange-300 text-sm">
                 {score.score.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
               </div>
-              <div className="text-xl mr-1">{score.points}</div>
+              <div className="text-xl text-stone-100 mr-1">{score.points}</div>
             </div>
           </div>
           <Tooltip

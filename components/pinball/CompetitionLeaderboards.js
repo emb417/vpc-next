@@ -70,8 +70,8 @@ export default function CompetitionLeaderboards({ weeksData, tablesAPI }) {
 
   return (
     <div className="flex flex-col flex-grow w-full max-h-dvh">
-      <div className="flex flex-row w-full items-center justify-start gap-2 py-2 text-stone-50">
-        <h1 className="flex flex-row items-center gap-1 text-lg">
+      <div className="flex flex-row w-full items-center justify-start gap-2 py-2">
+        <h1 className="flex flex-row items-center gap-1 text-lg text-stone-200">
           <GiPinballFlipper /> Competition Corner
           <Tooltip
             title="Click to see instructions on how to post a competition score."
@@ -91,9 +91,9 @@ export default function CompetitionLeaderboards({ weeksData, tablesAPI }) {
             onClick={() => setPage(page - 1)}
             disabled={page === 1}
           >
-            <GiPreviousButton className="text-xl" />
+            <GiPreviousButton className="text-xl text-stone-300" />
           </button>
-          <span className="text-xs text-center">
+          <span className="text-xs text-center text-stone-300">
             Page {page} of {totalPages}
           </span>
           <button
@@ -101,13 +101,13 @@ export default function CompetitionLeaderboards({ weeksData, tablesAPI }) {
             onClick={() => setPage(page + 1)}
             disabled={page * tablesPerPage >= weeksData.length}
           >
-            <GiNextButton className="text-xl" />
+            <GiNextButton className="text-xl text-stone-300" />
           </button>
         </div>
       </div>
       <div
         ref={scrollableDivRef}
-        className="flex flex-row w-full xl:justify-center gap-4 text-stone-50 pb-2 mb-2 border-b-2 border-orange-950 overflow-auto"
+        className="flex flex-row w-full xl:justify-center gap-4 text-stone-200 pb-2 mb-2 border-b-2 border-orange-950 overflow-auto"
       >
         {tablesToShow.map((weekData) => (
           <div
@@ -157,29 +157,27 @@ export default function CompetitionLeaderboards({ weeksData, tablesAPI }) {
                 <Link
                   href={`/player/${score.username}`}
                   key={score.username}
-                  className={`flex items-center gap-1 justify-left rounded-full pr-1 w-full ${
+                  className={`flex items-center gap-2 justify-left rounded-full pr-1 w-full ${
                     scoreIndex % 2 === 0 ? "bg-stone-900" : "bg-stone-800"
                   } hover:bg-stone-700 duration-300`}
                 >
+                  <span className="text-orange-300 pl-2">
+                    {score.position}.
+                  </span>
                   <div className="flex items-center">
                     <PlayerImage
                       src={score.userAvatarUrl}
                       alt={score.username}
                     />
                   </div>
-                  <div className="truncate">
-                    <span className="text-orange-300 pr-1">
-                      {score.position}.
-                    </span>
-                    <span className="text-gray-50">{score.username}</span>
-                  </div>
+                  <span className="text-stone-200 truncate">{score.username}</span>
                   <div className="ml-auto mr-1 flex gap-4 flex-row items-center">
                     <div className="text-orange-300 text-sm">
                       {score.score
                         .toString()
                         .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                     </div>
-                    <div className="text-xl">{score.points}</div>
+                    <div className="text-xl text-stone-100">{score.points}</div>
                   </div>
                 </Link>
               ))}

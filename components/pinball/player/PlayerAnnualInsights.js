@@ -4,7 +4,7 @@ import PlayerSummaryItem from "@/components/pinball/player/PlayerSummaryItem";
 
 export default function PlayerSummary({ user }) {
   return (
-    <div className="flex flex-col w-full text-gray-50 gap-4">
+    <div className="flex flex-col w-full text-stone-200 gap-4">
       <PlayerPane
         title="Annual Insights"
         className="flex flex-col md:flex-row items-center md:items-start"
@@ -17,7 +17,7 @@ export default function PlayerSummary({ user }) {
               <span className="text-sm">
                 P{user.annualBestPerformance.position} of{" "}
                 {user.annualBestPerformance.players}
-                <span className="text-gray-50"> | </span>
+                <span className="text-stone-200"> | </span>
                 {user.annualBestPerformance.table}
               </span>
             </Link>
@@ -26,7 +26,7 @@ export default function PlayerSummary({ user }) {
             <span className="text-sm">
               P{user.annualBestPerformance.position} of{" "}
               {user.annualBestPerformance.players}
-              <span className="text-gray-50"> | </span>
+              <span className="text-stone-200"> | </span>
               {user.annualBestPerformance.table}
             </span>
           )}
@@ -39,7 +39,7 @@ export default function PlayerSummary({ user }) {
               <span className="text-sm">
                 P{user.annualWorstPerformance.position} of{" "}
                 {user.annualWorstPerformance.players}
-                <span className="text-gray-50"> | </span>
+                <span className="text-stone-200"> | </span>
                 {user.annualWorstPerformance.table}
               </span>
             </Link>
@@ -48,7 +48,7 @@ export default function PlayerSummary({ user }) {
             <span className="text-sm">
               P{user.annualWorstPerformance.position} of{" "}
               {user.annualWorstPerformance.players}
-              <span className="text-gray-50"> | </span>
+              <span className="text-stone-200"> | </span>
               {user.annualWorstPerformance.table}
             </span>
           )}

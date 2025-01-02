@@ -6,7 +6,7 @@ export default function SeasonLeaderboard({ weeksData }) {
 
   return (
     <div className="flex flex-wrap items-center justify-center">
-      <div className="flex mb-2 text-xl text-stone-50">
+      <div className="flex mb-2 text-xl text-stone-200">
         Season {data.season} - Week {data.currentSeasonWeekNumber}
       </div>
       {players.map((username, index) => (
