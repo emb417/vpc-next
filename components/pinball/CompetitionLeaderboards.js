@@ -9,7 +9,7 @@ import {
   GiPinballFlipper,
 } from "react-icons/gi";
 import { CgSoftwareUpload } from "react-icons/cg";
-import { Tooltip } from "antd";
+import { Input, Tooltip } from "antd";
 import PlayerImage from "@/components/pinball/player/PlayerImage";
 import LeaderboardTitleCard from "@/components/pinball/LeaderboardTitleCard";
 
@@ -22,6 +22,8 @@ export default function CompetitionLeaderboards({ weeksData, tablesAPI }) {
   const [totalPages, setTotalPages] = useState(1);
   const [tablesToShow, setTablesToShow] = useState([]);
   const [imagesUrls, setImagesUrls] = useState({});
+  const [filterValue, setFilterValue] = useState(null);
+  const [filteredWeeksData, setFilteredWeeksData] = useState(weeksData);
   const scrollableDivRef = useRef(null);
 
   useEffect(() => {
@@ -58,19 +60,36 @@ export default function CompetitionLeaderboards({ weeksData, tablesAPI }) {
   useEffect(() => {
     const start = (page - 1) * tablesPerPage;
     const end = start + tablesPerPage;
-    const newTablesToShow = weeksData.slice(start, end);
+    const newTablesToShow = filteredWeeksData.slice(start, end);
     setTablesToShow(newTablesToShow);
-    setTotalPages(Math.ceil(weeksData.length / tablesPerPage));
+    setTotalPages(Math.ceil(filteredWeeksData.length / tablesPerPage));
 
     if (scrollableDivRef.current) {
       scrollableDivRef.current.scrollTo({ left: 0, behavior: "smooth" });
     }
     window.scrollTo({ top: 100, behavior: "smooth" });
-  }, [page, weeksData, tablesPerPage]);
+  }, [page, filteredWeeksData, tablesPerPage]);
+
+  const handleFilterChange = (value) => {
+    setFilterValue(value);
+    const filteredWeeks = weeksData.filter(
+      (weekData) =>
+        !value ||
+        weekData.table.toLowerCase().includes(value.toLowerCase()) ||
+        weekData.vpsId.toLowerCase().includes(value.toLowerCase())
+    );
+    setFilteredWeeksData(filteredWeeks);
+    setPage(1);
+
+    if (scrollableDivRef.current) {
+      scrollableDivRef.current.scrollTo({ left: 0, behavior: "smooth" });
+    }
+    window.scrollTo({ top: 100, behavior: "smooth" });
+  };
 
   return (
     <div className="flex flex-col flex-grow w-full max-h-dvh">
-      <div className="flex flex-row w-full items-center justify-start gap-2 py-2">
+      <div className="flex flex-row w-full items-center justify-start py-2">
         <h1 className="flex flex-row items-center gap-1 text-lg text-stone-200">
           <GiPinballFlipper /> Competition Corner
           <Tooltip
@@ -85,24 +104,46 @@ export default function CompetitionLeaderboards({ weeksData, tablesAPI }) {
             </Link>
           </Tooltip>
         </h1>
-        <div className="ml-auto flex flex-row items-center gap-1">
-          <button
-            className="p-1 rounded-lg bg-orange-950 text-xs hover:bg-orange-800 duration-300"
-            onClick={() => setPage(page - 1)}
-            disabled={page === 1}
-          >
-            <GiPreviousButton className="text-xl text-stone-300" />
-          </button>
-          <span className="text-xs text-center text-stone-300">
-            Page {page} of {totalPages}
-          </span>
-          <button
-            className="p-1 rounded-lg bg-orange-950 text-xs hover:bg-orange-800 duration-300"
-            onClick={() => setPage(page + 1)}
-            disabled={page * tablesPerPage >= weeksData.length}
-          >
-            <GiNextButton className="text-xl text-stone-300" />
-          </button>
+        <div className="flex flex-row items-center gap-8 ml-auto">
+          <div className="hidden md:flex w-[230px]">
+            <Input
+              value={filterValue}
+              onChange={(e) => handleFilterChange(e.target.value)}
+              placeholder="Filter by table name or VPS ID"
+              allowClear
+              size="small"
+            />
+          </div>
+          <div className="flex flex-row items-center gap-2">
+            <button
+              className="p-1 rounded-lg bg-orange-950 text-xs hover:bg-orange-800 duration-300"
+              onClick={() => setPage(page - 1)}
+              disabled={page === 1}
+            >
+              <GiPreviousButton className="text-xl text-stone-300" />
+            </button>
+            <span className="min-w-[max-content] text-xs text-center text-stone-300">
+              Page {page} of {totalPages}
+            </span>
+            <button
+              className="p-1 rounded-lg bg-orange-950 text-xs hover:bg-orange-800 duration-300"
+              onClick={() => setPage(page + 1)}
+              disabled={page * tablesPerPage >= filteredWeeksData.length}
+            >
+              <GiNextButton className="text-xl text-stone-300" />
+            </button>
+          </div>
+        </div>
+      </div>
+      <div className="md:hidden flex w-full justify-center items-center pb-3">
+        <div className="w-[230px]">
+          <Input
+            value={filterValue}
+            onChange={(e) => handleFilterChange(e.target.value)}
+            placeholder="Filter by table name or VPS ID"
+            allowClear
+            size="small"
+          />
         </div>
       </div>
       <div
@@ -113,7 +154,7 @@ export default function CompetitionLeaderboards({ weeksData, tablesAPI }) {
           <div
             key={weekData.weekNumber}
             id={weekData.weekNumber}
-            className={`flex flex-col gap-1 items-center min-w-[320px] max-w-[320px]`}
+            className={`flex flex-col gap-1 items-center`}
           >
             <LeaderboardTitleCard
               imageUrl={imagesUrls[weekData.vpsId]}
@@ -152,7 +193,7 @@ export default function CompetitionLeaderboards({ weeksData, tablesAPI }) {
                 <div className="text-xs">VPS ID {weekData.vpsId}</div>
               </Link>
             </LeaderboardTitleCard>
-            <div className="flex flex-col gap-1 overflow-auto rounded-xl">
+            <div className="flex flex-col gap-1 overflow-auto rounded-xl min-w-[320px] max-w-[320px]">
               {weekData.scores.map((score, scoreIndex) => (
                 <Link
                   href={`/player/${score.username}`}
@@ -170,7 +211,9 @@ export default function CompetitionLeaderboards({ weeksData, tablesAPI }) {
                       alt={score.username}
                     />
                   </div>
-                  <span className="text-stone-200 truncate">{score.username}</span>
+                  <span className="text-stone-200 truncate">
+                    {score.username}
+                  </span>
                   <div className="ml-auto mr-1 flex gap-4 flex-row items-center">
                     <div className="text-orange-300 text-sm">
                       {score.score

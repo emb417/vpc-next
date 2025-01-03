@@ -19,17 +19,6 @@ const SortMethodButton = ({ sortMethod, setSortMethod, children, value }) => (
   </button>
 );
 
-const FilterInput = ({ value, onChange }) => (
-  <Input
-    className="w-[130px]"
-    placeholder="by table name"
-    value={value}
-    onChange={onChange}
-    allowClear
-    size="small"
-  />
-);
-
 export default function HistoryLeaderboards({
   scoresData,
   vpsIdsByRecency,
@@ -92,7 +81,8 @@ export default function HistoryLeaderboards({
     let filteredScoresData = scoresData;
     if (filterValue) {
       filteredScoresData = filteredScoresData.filter((table) =>
-        table.tableName.toLowerCase().includes(filterValue.toLowerCase())
+        table.tableName.toLowerCase().includes(filterValue.toLowerCase()) ||
+        table.vpsId.toLowerCase().includes(filterValue.toLowerCase())
       );
     }
     setFilteredScoresData(filteredScoresData);
@@ -107,8 +97,8 @@ export default function HistoryLeaderboards({
 
   return (
     <div className="flex flex-col flex-grow w-full max-h-dvh">
-      <div className="flex flex-row w-full items-center justify-start gap-4 py-2 text-stone-200">
-        <h1 className="flex flex-row items-center gap-1 text-lg">
+      <div className="flex flex-row w-full items-center justify-start py-2">
+        <h1 className="flex flex-row items-center gap-1 text-lg text-stone-200">
           <GiHighFive />
           High Score Corner
           <Tooltip
@@ -123,15 +113,18 @@ export default function HistoryLeaderboards({
             </Link>
           </Tooltip>
         </h1>
-        <div className="ml-auto flex flex-row items-center gap-8">
+        <div className="flex flex-row items-center gap-8 ml-auto">
           <div className="hidden lg:flex flex-row items-center gap-1">
-            Filter
-            <FilterInput
+            <Input
+              className="w-[230px]"
+              placeholder="Filter by table name or VPS ID"
               value={filterValue}
               onChange={(e) => setFilterValue(e.target.value)}
+              allowClear
+              size="small"
             />
           </div>
-          <div className="hidden lg:flex flex-row items-center gap-1">
+          <div className="hidden lg:flex flex-row items-center gap-1 text-stone-200">
             Sort by
             <SortMethodButton
               sortMethod={sortMethod}
@@ -149,7 +142,7 @@ export default function HistoryLeaderboards({
               Title
             </SortMethodButton>
           </div>
-          <div className="ml-auto flex flex-row items-center gap-1">
+          <div className="ml-auto flex flex-row items-center gap-1 text-stone-200">
             <button
               className="p-1 rounded-lg bg-orange-950 text-xs hover:bg-orange-800 duration-300"
               onClick={() => setPage(page - 1)}
@@ -170,12 +163,15 @@ export default function HistoryLeaderboards({
           </div>
         </div>
       </div>
-      <div className="lg:hidden flex flex-row w-full items-center justify-start gap-4 pb-2 text-stone-200">
+      <div className="lg:hidden flex flex-row w-full items-center justify-start pl-2 pb-3 text-stone-200">
         <div className="flex flex-row items-center gap-1">
-          <span className="text-xs">Filter</span>
-          <FilterInput
+          <Input
+            className="w-[190px]"
+            placeholder="Filter by table or VPS ID"
             value={filterValue}
             onChange={(e) => setFilterValue(e.target.value)}
+            allowClear
+            size="small"
           />
         </div>
         <div className="ml-auto flex flex-row items-center gap-1">
