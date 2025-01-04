@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import Link from "next/link";
-import PlayerImage from "@/components/pinball/player/PlayerImage";
+import PlayerImage from "@/components/player/PlayerImage";
 import { Input, Button, Select, Table } from "antd";
 import { FilterOutlined } from "@ant-design/icons";
 

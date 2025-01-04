@@ -1,5 +1,5 @@
 import Link from "next/link";
-import PlayerImage from "@/components/pinball/player/PlayerImage";
+import PlayerImage from "@/components/player/PlayerImage";
 
 export default function CompetitionLeaderboardItem({ score, scoreIndex }) {
     return (

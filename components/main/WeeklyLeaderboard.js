@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Tooltip } from "antd";
-import LeaderboardTitleCard from "@/components/pinball/shared/LeaderboardTitleCard";
+import LeaderboardTitleCard from "@/components/shared/LeaderboardTitleCard";
 
 export default function WeeklyLeaderboard({ weekData, vpsData }) {
   return (

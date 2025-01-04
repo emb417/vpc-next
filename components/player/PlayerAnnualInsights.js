@@ -1,6 +1,6 @@
 import Link from "next/link";
-import PlayerPane from "@/components/pinball/player/PlayerPane";
-import PlayerSummaryItem from "@/components/pinball/player/PlayerSummaryItem";
+import PlayerPane from "@/components/player/PlayerPane";
+import PlayerSummaryItem from "@/components/player/PlayerSummaryItem";
 
 export default function PlayerSummary({ user }) {
   return (

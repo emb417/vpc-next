@@ -1,10 +1,10 @@
 import { redirect } from "next/navigation";
 import PlayerSummaryData from "@/lib/PlayerStats";
-import PlayerBio from "@/components/pinball/player/PlayerBio";
-import PlayerRivals from "@/components/pinball/player/PlayerRivals";
-import PlayerHistory from "@/components/pinball/player/PlayerHistory";
-import PlayerAnnualInsights from "@/components/pinball/player/PlayerAnnualInsights";
-import PlayerCharts from "@/components/pinball/player/PlayerCharts";
+import PlayerBio from "@/components/player/PlayerBio";
+import PlayerRivals from "@/components/player/PlayerRivals";
+import PlayerHistory from "@/components/player/PlayerHistory";
+import PlayerAnnualInsights from "@/components/player/PlayerAnnualInsights";
+import PlayerCharts from "@/components/player/PlayerCharts";
 
 async function getPlayerSummaryData(username) {
   try {

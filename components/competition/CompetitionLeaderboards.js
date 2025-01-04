@@ -10,8 +10,8 @@ import {
 } from "react-icons/gi";
 import { CgSoftwareUpload } from "react-icons/cg";
 import { Input, Tooltip } from "antd";
-import LeaderboardTitleCard from "@/components/pinball/shared/LeaderboardTitleCard";
-import CompetitionLeaderboardItem from "@/components/pinball/competition/CompetitionLeaderboardItem";
+import LeaderboardTitleCard from "@/components/shared/LeaderboardTitleCard";
+import CompetitionLeaderboardItem from "@/components/competition/CompetitionLeaderboardItem";
 
 const SortMethodButton = ({ sortMethod, setSortMethod, children, value }) => (
   <button

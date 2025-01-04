@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import LoadingMessage from "@/components/nav/LoadingMessage";
-import MainDashboard from "@/components/pinball/main/MainDashboard";
+import MainDashboard from "@/components/main/MainDashboard";
 
 export const metadata = {
   title: "Virtual Pinball Chat",

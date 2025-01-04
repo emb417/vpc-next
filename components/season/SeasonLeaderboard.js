@@ -1,4 +1,4 @@
-import SeasonLeaderboardItem from "@/components/pinball/season/SeasonLeaderboardItem";
+import SeasonLeaderboardItem from "@/components/season/SeasonLeaderboardItem";
 
 export default function SeasonLeaderboard({ weeksData }) {
   const data = weeksData[0];

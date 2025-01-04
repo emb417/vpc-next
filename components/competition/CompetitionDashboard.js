@@ -1,5 +1,5 @@
 import LeaderboardStats from "@/lib/LeaderboardStats";
-import CompetitionLeaderboards from "@/components/pinball/competition/CompetitionLeaderboards";
+import CompetitionLeaderboards from "@/components/competition/CompetitionLeaderboards";
 
 async function getData() {
   try {

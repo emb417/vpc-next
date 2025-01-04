@@ -1,5 +1,5 @@
 import PlayerStats from "@/lib/AnnualStats";
-import StatsTable from "@/components/pinball/stats/AnnualStatsTable";
+import StatsTable from "@/components/stats/AnnualStatsTable";
 
 async function getData() {
   try {

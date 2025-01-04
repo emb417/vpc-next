@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import LoadingMessage from "@/components/nav/LoadingMessage";
-import PlayerProfile from "@/components/pinball/player/PlayerProfile";
+import PlayerProfile from "@/components/player/PlayerProfile";
 
 export async function generateMetadata({ params }) {
   const username = params.username;

@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import LoadingMessage from "@/components/nav/LoadingMessage";
-import StatsDashboard from "@/components/pinball/stats/AnnualStatsDashboard";
+import StatsDashboard from "@/components/stats/AnnualStatsDashboard";
 
 export const metadata = {
   title: "Annual Statistics",

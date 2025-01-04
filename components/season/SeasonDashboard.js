@@ -1,5 +1,5 @@
-import SeasonChart from "@/components/pinball/season/SeasonChart";
-import SeasonLeaderboard from "@/components/pinball/season/SeasonLeaderboard";
+import SeasonChart from "@/components/season/SeasonChart";
+import SeasonLeaderboard from "@/components/season/SeasonLeaderboard";
 import SeasonStats from "@/lib/SeasonStats";
 
 async function getData() {

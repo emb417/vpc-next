@@ -4,8 +4,8 @@ import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { GiPreviousButton, GiNextButton, GiHighFive } from "react-icons/gi";
 import { CgSoftwareUpload } from "react-icons/cg";
-import LeaderboardTitleCard from "@/components/pinball/shared/LeaderboardTitleCard";
-import HighScoresLeaderboardItem from "@/components/pinball/highscores/HighScoresLeaderboardItem";
+import LeaderboardTitleCard from "@/components/shared/LeaderboardTitleCard";
+import HighScoresLeaderboardItem from "@/components/highscores/HighScoresLeaderboardItem";
 import { Input, Tooltip } from "antd";
 
 const SortMethodButton = ({ sortMethod, setSortMethod, children, value }) => (

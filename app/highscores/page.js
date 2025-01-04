@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import LoadingMessage from "@/components/nav/LoadingMessage";
-import HighScoresDashboard from "@/components/pinball/highscores/HighScoresDashboard";
+import HighScoresDashboard from "@/components/highscores/HighScoresDashboard";
 
 export const metadata = {
   title: "High Score Corner",
