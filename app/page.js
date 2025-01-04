@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import LoadingMessage from "@/components/nav/LoadingMessage";
-import Leaderboards from "@/components/pinball/Leaderboards";
+import MainDashboard from "@/components/pinball/MainDashboard";
 
 export const metadata = {
   title: "Virtual Pinball Chat",
@@ -16,7 +16,7 @@ export default function PinballPage() {
       <Suspense
         fallback={<LoadingMessage message={`Loading ${metadata.title}...`} />}
       >
-        <Leaderboards />
+        <MainDashboard />
       </Suspense>
     </div>
   );
