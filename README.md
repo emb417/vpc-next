@@ -26,6 +26,12 @@ Virtual pinball chat league leaderboards and stats.
 
 Open [http://localhost:8080](http://localhost:8080) with your browser to see the result.
 
+### Project Structure
+
+- `/app`: layout, loading, error, and pages routing
+- `/components`: page components
+- `/lib`: data processing and utility functions
+
 ### Contributing
 
 1. Fork this repo
