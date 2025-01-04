@@ -80,9 +80,10 @@ export default function HistoryLeaderboards({
   useEffect(() => {
     let filteredScoresData = scoresData;
     if (filterValue) {
-      filteredScoresData = filteredScoresData.filter((table) =>
-        table.tableName.toLowerCase().includes(filterValue.toLowerCase()) ||
-        table.vpsId.toLowerCase().includes(filterValue.toLowerCase())
+      filteredScoresData = filteredScoresData.filter(
+        (table) =>
+          table.tableName.toLowerCase().includes(filterValue.toLowerCase()) ||
+          table.vpsId.toLowerCase().includes(filterValue.toLowerCase())
       );
     }
     setFilteredScoresData(filteredScoresData);
@@ -114,12 +115,11 @@ export default function HistoryLeaderboards({
           </Tooltip>
         </h1>
         <div className="flex flex-row items-center gap-8 ml-auto">
-          <div className="hidden lg:flex flex-row items-center gap-1">
+          <div className="hidden lg:flex w-[230px]">
             <Input
-              className="w-[230px]"
-              placeholder="Filter by table name or VPS ID"
               value={filterValue}
               onChange={(e) => setFilterValue(e.target.value)}
+              placeholder="Filter by table name or VPS ID"
               allowClear
               size="small"
             />
@@ -137,12 +137,12 @@ export default function HistoryLeaderboards({
             <SortMethodButton
               sortMethod={sortMethod}
               setSortMethod={setSortMethod}
-              value="title"
+              value="name"
             >
-              Title
+              Name
             </SortMethodButton>
           </div>
-          <div className="ml-auto flex flex-row items-center gap-1 text-stone-200">
+          <div className="flex flex-row items-center gap-2 text-stone-200 ml-auto">
             <button
               className="p-1 rounded-lg bg-orange-950 text-xs hover:bg-orange-800 duration-300"
               onClick={() => setPage(page - 1)}
@@ -150,7 +150,7 @@ export default function HistoryLeaderboards({
             >
               <GiPreviousButton className="text-xl" />
             </button>
-            <span className="text-xs text-center">
+            <span className="min-w-[max-content] text-xs text-center">
               Page {page} of {totalPages}
             </span>
             <button
@@ -163,18 +163,17 @@ export default function HistoryLeaderboards({
           </div>
         </div>
       </div>
-      <div className="lg:hidden flex flex-row w-full items-center justify-start pl-2 pb-3 text-stone-200">
-        <div className="flex flex-row items-center gap-1">
+      <div className="lg:hidden flex w-full justify-center items-center pl-2 pb-3 text-stone-200">
+        <div className="w-[190px]">
           <Input
-            className="w-[190px]"
-            placeholder="Filter by table or VPS ID"
             value={filterValue}
             onChange={(e) => setFilterValue(e.target.value)}
+            placeholder="Filter by table or VPS ID"
             allowClear
             size="small"
           />
         </div>
-        <div className="ml-auto flex flex-row items-center gap-1">
+        <div className="flex flex-row items-center gap-1 ml-auto">
           <span className="text-xs">Sort by</span>
           <SortMethodButton
             sortMethod={sortMethod}
@@ -187,14 +186,13 @@ export default function HistoryLeaderboards({
           <SortMethodButton
             sortMethod={sortMethod}
             setSortMethod={setSortMethod}
-            value="title"
+            value="name"
           >
-            Title
+            Name
           </SortMethodButton>
         </div>
       </div>
       <div
-        id="scrollableDiv"
         ref={scrollableDivRef}
         className="flex flex-row w-full xl:justify-center gap-2 text-stone-200 pb-2 mb-2 border-b-2 border-orange-950 overflow-auto"
       >
