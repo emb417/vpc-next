@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import LoadingMessage from "@/components/nav/LoadingMessage";
-import CompetitionDashboard from "@/components/pinball/CompetitionDashboard";
+import CompetitionDashboard from "@/components/pinball/competition/CompetitionDashboard";
 
 export const metadata = {
   title: "Competition Corner",

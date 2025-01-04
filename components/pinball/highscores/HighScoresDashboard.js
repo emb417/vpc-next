@@ -1,4 +1,4 @@
-import HighScoresLeaderboards from "@/components/pinball/HighScoresLeaderboards";
+import HighScoresLeaderboards from "@/components/pinball/highscores/HighScoresLeaderboards";
 import { console } from "inspector";
 
 async function getData() {

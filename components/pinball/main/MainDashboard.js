@@ -1,7 +1,7 @@
 import LeaderboardStats from "@/lib/LeaderboardStats";
 import RecentStats from "@/lib/RecentStats";
-import WeeklyLeaderboard from "@/components/pinball/WeeklyLeaderboard";
-import RankLeaderboard from "@/components/pinball/RankLeaderboard";
+import WeeklyLeaderboard from "@/components/pinball/main/WeeklyLeaderboard";
+import RankLeaderboard from "@/components/pinball/main/RankLeaderboard";
 
 async function getData() {
   try {

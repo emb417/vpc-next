@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import LoadingMessage from "@/components/nav/LoadingMessage";
-import SeasonDashboard from "@/components/pinball/SeasonDashboard";
+import SeasonDashboard from "@/components/pinball/season/SeasonDashboard";
 
 export const metadata = {
   title: "Season Leaderboard",

@@ -1,12 +1,17 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useRef, useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { GiPreviousButton, GiNextButton, GiHighFive } from "react-icons/gi";
+import {
+  GiPreviousButton,
+  GiNextButton,
+  GiPinballFlipper,
+} from "react-icons/gi";
 import { CgSoftwareUpload } from "react-icons/cg";
-import LeaderboardTitleCard from "@/components/pinball/LeaderboardTitleCard";
-import HighScoresLeaderboardItem from "@/components/pinball/HighScoresLeaderboardItem";
 import { Input, Tooltip } from "antd";
+import LeaderboardTitleCard from "@/components/pinball/shared/LeaderboardTitleCard";
+import CompetitionLeaderboardItem from "@/components/pinball/competition/CompetitionLeaderboardItem";
 
 const SortMethodButton = ({ sortMethod, setSortMethod, children, value }) => (
   <button
@@ -19,19 +24,18 @@ const SortMethodButton = ({ sortMethod, setSortMethod, children, value }) => (
   </button>
 );
 
-export default function HistoryLeaderboards({
-  scoresData,
-  vpsIdsByRecency,
-  tablesAPI,
-}) {
-  const [sortMethod, setSortMethod] = useState("recent");
-  const [filterValue, setFilterValue] = useState(null);
-  const [filteredScoresData, setFilteredScoresData] = useState(scoresData);
+export default function CompetitionLeaderboards({ weeksData, tablesAPI }) {
+  const searchParams = useSearchParams();
+  const week = searchParams.get("week");
+  const [highlightedId, setHighlightedId] = useState(null);
   const [page, setPage] = useState(1);
-  const [tablesPerPage, setTablesPerPage] = useState(4);
+  const [tablesPerPage] = useState(4);
   const [totalPages, setTotalPages] = useState(1);
   const [tablesToShow, setTablesToShow] = useState([]);
   const [imagesUrls, setImagesUrls] = useState({});
+  const [filterValue, setFilterValue] = useState(null);
+  const [filteredWeeksData, setFilteredWeeksData] = useState(weeksData);
+  const [sortMethod, setSortMethod] = useState("recent");
   const scrollableDivRef = useRef(null);
 
   useEffect(() => {
@@ -55,59 +59,69 @@ export default function HistoryLeaderboards({
   }, [tablesToShow, tablesAPI]);
 
   useEffect(() => {
-    let sortedScoresData = filteredScoresData;
-    if (sortMethod === "recent") {
-      const seenVpsIds = new Set();
-      sortedScoresData = vpsIdsByRecency
-        .map((vpsId) => {
-          if (seenVpsIds.has(vpsId)) return null;
-          seenVpsIds.add(vpsId);
-          return filteredScoresData.find((table) => table.vpsId === vpsId);
-        })
-        .filter(Boolean);
+    if (week) {
+      const weekIndex = weeksData.findIndex(
+        (weekData) => weekData.weekNumber === parseInt(week)
+      );
+      const pageWithData = Math.ceil(weekIndex / tablesPerPage) || 1;
+      setPage(pageWithData);
+      setHighlightedId(week);
     }
+  }, [week, weeksData, tablesPerPage]);
+
+  useEffect(() => {
+    let sortedFilteredWeeksData = filteredWeeksData;
+    if (sortMethod === "recent") {
+      sortedFilteredWeeksData = filteredWeeksData.sort(
+        (a, b) => b.weekNumber - a.weekNumber
+      );
+    } else if (sortMethod === "name") {
+      sortedFilteredWeeksData = filteredWeeksData.sort((a, b) =>
+        a.table.localeCompare(b.table)
+      );
+    }
+
     const start = (page - 1) * tablesPerPage;
-    const end = Math.min(start + tablesPerPage, sortedScoresData.length);
-    setTablesToShow(sortedScoresData.slice(start, end));
-    setTotalPages(Math.ceil(sortedScoresData.length / tablesPerPage));
+    const end = Math.min(start + tablesPerPage, sortedFilteredWeeksData.length);
+    setTablesToShow(sortedFilteredWeeksData.slice(start, end));
+    setTotalPages(Math.ceil(sortedFilteredWeeksData.length / tablesPerPage));
 
     if (scrollableDivRef.current) {
       scrollableDivRef.current.scrollTo({ left: 0, behavior: "smooth" });
-      window.scrollTo({ top: 100, behavior: "smooth" });
     }
-  }, [page, filteredScoresData, sortMethod, tablesPerPage, vpsIdsByRecency]);
-
+    window.scrollTo({ top: 100, behavior: "smooth" });
+  }, [page, filteredWeeksData, sortMethod, tablesPerPage]);
+  
   useEffect(() => {
-    let filteredScoresData = scoresData;
-    if (filterValue) {
-      filteredScoresData = filteredScoresData.filter(
-        (table) =>
-          table.tableName.toLowerCase().includes(filterValue.toLowerCase()) ||
-          table.vpsId.toLowerCase().includes(filterValue.toLowerCase())
+    let filteredWeeksData = weeksData;
+    if(filterValue){
+      filteredWeeksData = filteredWeeksData.filter(
+        (weekData) =>
+        weekData.table.toLowerCase().includes(filterValue.toLowerCase()) ||
+        weekData.vpsId.toLowerCase().includes(filterValue.toLowerCase())
       );
     }
-    setFilteredScoresData(filteredScoresData);
+    setFilteredWeeksData(filteredWeeksData);
     setPage(1);
     window.scrollTo({ top: 100, behavior: "smooth" });
-  }, [scoresData, filterValue]);
+  }, [weeksData, filterValue]);
 
   useEffect(() => {
     setPage(1);
     window.scrollTo({ top: 100, behavior: "smooth" });
   }, [sortMethod]);
-
+  
   return (
-    <div className="flex flex-col flex-grow w-full max-h-dvh">
+    <div className="flex flex-col w-full max-h-dvh">
       <div className="flex flex-row w-full items-center justify-start py-2">
         <h1 className="flex flex-row items-center gap-1 text-lg text-stone-200">
-          <GiHighFive />
-          High Score Corner
+          <GiPinballFlipper /> Competition Corner
           <Tooltip
-            title="Click to see instructions on how to post a high score."
+            title="Click to see instructions on how to post a competition score."
             color="rgba(41, 37, 36, 0.8)"
           >
             <Link
-              href="https://discord.com/channels/652274650524418078/919336296281960468/919338053208776794"
+              href="https://discord.com/channels/652274650524418078/720381436842213397/720392464690577539"
               target="_blank"
             >
               <CgSoftwareUpload className="text-red-500 animate-pulse" />
@@ -168,7 +182,7 @@ export default function HistoryLeaderboards({
           <Input
             value={filterValue}
             onChange={(e) => setFilterValue(e.target.value)}
-            placeholder="Filter by table or VPS ID"
+            placeholder="Filter by name or VPS ID"
             allowClear
             size="small"
           />
@@ -194,43 +208,55 @@ export default function HistoryLeaderboards({
       </div>
       <div
         ref={scrollableDivRef}
-        className="flex flex-row w-full xl:justify-center gap-2 text-stone-200 pb-2 mb-2 border-b-2 border-orange-950 overflow-auto"
+        className="flex flex-row w-full xl:justify-center gap-4 text-stone-200 pb-2 mb-2 border-b-2 border-orange-950 overflow-auto"
       >
-        {tablesToShow.map((table) => (
+        {tablesToShow.map((weekData) => (
           <div
-            className="flex flex-col gap-1 items-center"
-            key={
-              table.scores.length > 0
-                ? `${table.vpsId}-${table.tableName}-${table.scores[0].tableId}--${table.scores[0].versionId}`
-                : `${table.vpsId}-${table.tableName}`
-            }
-            id={
-              table.scores.length > 0
-                ? `${table.vpsId}-${table.tableName}-${table.scores[0].tableId}--${table.scores[0].versionId}`
-                : `${table.vpsId}-${table.tableName}`
-            }
+            className={`flex flex-col gap-1 items-center`}
+            key={weekData.weekNumber}
+            id={weekData.weekNumber}
           >
             <LeaderboardTitleCard
-              table={table.tableName}
-              imageUrl={imagesUrls?.[table.vpsId]}
+              table={weekData.table}
+              imageUrl={imagesUrls[weekData.vpsId]}
+              highlighted={highlightedId == weekData.weekNumber}
             >
+              <div className="text-sm">Week #{weekData.weekNumber}</div>
+              {weekData.periodStart &&
+                weekData.periodEnd &&
+                weekData.periodStart !== "0NaN-aN-aN" && (
+                  <div className="text-sm">
+                    {new Date(weekData.periodStart).toLocaleDateString(
+                      undefined,
+                      {
+                        year: "numeric",
+                        month: "short",
+                        day: "numeric",
+                      }
+                    )}
+                    {" to "}
+                    {new Date(weekData.periodEnd).toLocaleDateString(
+                      undefined,
+                      {
+                        year: "numeric",
+                        month: "short",
+                        day: "numeric",
+                      }
+                    )}
+                  </div>
+                )}
               <Link
-                href={`https://virtual-pinball-spreadsheet.web.app/game/${table.vpsId}/`}
+                href={`https://virtual-pinball-spreadsheet.web.app/game/${weekData.vpsId}/`}
                 target="_blank"
               >
-                <div className="text-xl">{table.tableName}</div>
-                <div className="text-xs">VPS ID {table.vpsId}</div>
+                <div className="text-xl">{weekData.table}</div>
+                <div className="text-xs">VPS ID {weekData.vpsId}</div>
               </Link>
             </LeaderboardTitleCard>
             <div className="flex flex-col gap-1 overflow-auto rounded-xl min-w-[320px] max-w-[320px]">
-              {table.scores.length > 0 &&
-                table.scores.map((score, scoreIndex) => (
-                  <HighScoresLeaderboardItem
-                    key={table.tableId + score.scoreId}
-                    score={score}
-                    scoreIndex={scoreIndex}
-                  />
-                ))}
+              {weekData.scores.map((score, scoreIndex) => (
+                <CompetitionLeaderboardItem score={score} scoreIndex={scoreIndex} key={score.username} />
+              ))}
             </div>
           </div>
         ))}
