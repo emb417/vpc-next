@@ -29,7 +29,7 @@ Open [http://localhost:8080](http://localhost:8080) with your browser to see the
 ### Project Structure
 
 - `/app`: layout, loading, error, and pages routing
-- `/components`: page components
+- `/components`: page components with directories for each page type and shared components
 - `/lib`: data processing and utility functions
 
 ### Contributing
