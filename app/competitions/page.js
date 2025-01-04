@@ -4,7 +4,7 @@ import CompetitionDashboard from "@/components/pinball/CompetitionDashboard";
 
 export const metadata = {
   title: "Competition Corner",
-  description: "VPC Competition Corner",
+  description: "Virtual Pinball Chat league's weekly competitions. Filter by table name, VPS ID, and sort by name or recently played in competition.",
   alternates: {
     canonical: "/competitions",
   },

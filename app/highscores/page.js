@@ -4,7 +4,7 @@ import HighScoresDashboard from "@/components/pinball/HighScoresDashboard";
 
 export const metadata = {
   title: "High Score Corner",
-  description: "VPC High Score Corner",
+  description: "Virtual Pinball Chat high score corner leaderboards. Filter by table name, VPS ID, and sort by name or recently played in competition.",
   alternates: {
     canonical: "/highscores",
   },

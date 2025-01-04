@@ -4,7 +4,7 @@ import MainDashboard from "@/components/pinball/MainDashboard";
 
 export const metadata = {
   title: "Virtual Pinball Chat",
-  description: "Virtual Pinball Chat Leaderboards, History, and Stats",
+  description: "Virtual Pinball Chat league's main dashboard for weekly competition and power ranking leaderboards, plus pages for high score leaderboards, player profiles, statistics, and more.",
   alternates: {
     canonical: "/",
   },

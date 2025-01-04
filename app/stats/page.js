@@ -4,7 +4,7 @@ import StatsDashboard from "@/components/pinball/AnnualStatsDashboard";
 
 export const metadata = {
   title: "Annual Statistics",
-  description: "VPC Annual Statistics",
+  description: "Virtual Pinball Chat league's statistics for the past year.",
   alternates: {
     canonical: "/stats",
   },

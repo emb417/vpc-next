@@ -4,7 +4,7 @@ import SeasonDashboard from "@/components/pinball/SeasonDashboard";
 
 export const metadata = {
   title: "Season Leaderboard",
-  description: "VPC Season Leaderboard",
+  description: "Virtaul Pinball Chat league's season leaderboard and chart, only for the current or most recent season.",
   alternates: {
     canonical: "/season",
   },

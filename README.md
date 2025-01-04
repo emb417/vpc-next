@@ -4,48 +4,64 @@ Virtual pinball chat league leaderboards and stats.
 
 ## Getting Started with Developing
 
-This project uses a .env file for a few use cases:
+1. This project uses a checked-in .env file to configure Virtual Pinball Chat Data APIs:
 
-1. Virtual Pinball Chat Base URL
-   - VPC_BASE_URL=[BASE URL]
-1. Virtual Pinball Chat API Path
-   - VPC_API_PATH=[API PATH]
-1. Virtual Pinball Chat Scores API Path
-   - VPC_API_SCORES_PATH=[API PATH]
-1. Virtual Pinball Spreadsheet Tables API Path
-   - VPS_API_TABLES_PATH=[API PATH]
-1. Virtual Pinball Spreadsheet Games API Path
-   - VPS_API_GAMES_PATH=[API PATH]
+   ```bash
+   VPC_BASE_URL=https://virtualpinballchat.com:8443
+   VPC_API_PATH=/vpc/api/v1/weeksByChannelName
+   VPC_API_SCORES_PATH=/vpc/api/v1/scoresByVpsId
+   VPS_API_TABLES_PATH=/vps/api/v1/games/tables
+   VPS_API_GAMES_PATH=/vps/api/v1/games
+   ```
 
-Install and run the development server:
+2. Install and run the development server:
 
-```bash
-npm install
-```
+   ```bash
+   npm install
+   ```
 
-```bash
-npm run dev
-```
+   ```bash
+   npm run dev
+   ```
 
-Open [http://localhost:3000](http://localhost:8080) with your browser to see the result.
+Open [http://localhost:8080](http://localhost:8080) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+### Contributing
+
+1. Fork this repo
+1. Create a feature branch: `git checkout -b my-new-feature`
+1. Commit your changes: `git commit -am 'Add some feature'`
+1. Test your changes with a local production build: `npm run build && npm start`
+1. Push to the branch: `git push origin my-new-feature`
+1. Create a pull request
 
 ## Getting Started with Production
 
-Install and run the development server:
+There are two options for running a production build, either directly in a terminal or using Docker.
 
-```bash
-npm install
-```
+1. Install and run a production build:
 
-```bash
-npm run build
-```
+   ```bash
+   npm install
+   ```
 
-```bash
-npm start
-```
+   ```bash
+   npm run build
+   ```
+
+   ```bash
+   npm start
+   ```
+
+2. Run a production build using Docker:
+
+   ```bash
+   docker build -t vpc-next .
+   ```
+
+   ```bash
+   docker run -p 80:80 vpc-next
+   ```
 
 Open [http://localhost](http://localhost) with your browser to see the result.
 
@@ -64,4 +80,4 @@ Open [http://localhost](http://localhost) with your browser to see the result.
 
 ### Docker
 
-- [Docker](https://www.docker.com/) - Docker is a platform for building and running applications using containers. Docker is a platform for building and running applications using containers.
+- [Docker](https://docs.docker.com/get-started/) - Docker is a platform for building and running applications using containers.

@@ -6,8 +6,8 @@ export async function generateMetadata({ params }) {
   const username = params.username;
 
   return {
-    title: "Player",
-    description: `VPC Player ${username}`,
+    title: `VPC Player ${username}`,
+    description: `Virtual Pinball Chat league's player ${username} ranking, rivals, stats, competition history, charts and more.`,
     alternates: {
       canonical: `/player/${username}`,
     },
