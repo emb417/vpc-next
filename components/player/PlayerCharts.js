@@ -64,13 +64,13 @@ function getScores(item, selectedUsernames) {
       position: score.position,
       score: score.score,
       rollingAveragePosition: score.rollingAveragePosition,
-      annualWinPercentage: score.annualWinPercentage,
+      rollingWinPercentage: score.rollingWinPercentage,
     }));
 }
 
 export default function PlayerCharts({ weeksData, username }) {
   const [selectedDatasets, setSelectedDatasets] = useState([
-    "winPercentageDatasets",
+    "rollingWinPercentageDatasets",
     "rollingAverageDatasets",
     "positionDatasets",
   ]);
@@ -80,7 +80,7 @@ export default function PlayerCharts({ weeksData, username }) {
   const selectedDatasetsOptions = useMemo(() => {
     return [
       {
-        value: "winPercentageDatasets",
+        value: "rollingWinPercentageDatasets",
         label: "Win %",
       },
       {
@@ -126,6 +126,7 @@ export default function PlayerCharts({ weeksData, username }) {
           week: item.weekNumber,
           periodStart: item.periodStart,
           periodEnd: item.periodEnd,
+          minWeekNumber: weeksData[0].weekNumber,
         };
       }),
       backgroundColor: selectOptions.find((option) => option.value === username)
@@ -161,20 +162,21 @@ export default function PlayerCharts({ weeksData, username }) {
       rotation: 0,
     }));
 
-    const winPercentageDatasets = selectedUsernames.map((username) => ({
+    const rollingWinPercentageDatasets = selectedUsernames.map((username) => ({
       type: "line",
       yAxisID: "y2",
       label: username,
       data: weeksData.map((item) => {
         return {
           x: item.weekNumber,
-          y: getScores(item, [username])[0]?.annualWinPercentage || null,
-          winPercentage:
-            getScores(item, [username])[0]?.annualWinPercentage || null,
+          y: getScores(item, [username])[0]?.rollingWinPercentage || null,
+          rollingWinPercentage:
+            getScores(item, [username])[0]?.rollingWinPercentage || null,
           table: item.table,
           week: item.weekNumber,
           periodStart: item.periodStart,
           periodEnd: item.periodEnd,
+          minWeekNumber: weeksData[0].weekNumber,
         };
       }),
       backgroundColor: selectOptions.find((option) => option.value === username)
@@ -189,8 +191,8 @@ export default function PlayerCharts({ weeksData, username }) {
       rotation: 45,
     }));
 
-    const datasets = selectedDatasets.includes("winPercentageDatasets")
-      ? winPercentageDatasets
+    const datasets = selectedDatasets.includes("rollingWinPercentageDatasets")
+      ? rollingWinPercentageDatasets
       : [];
     if (selectedDatasets.includes("rollingAverageDatasets")) {
       datasets.push(...rollingAverageDatasets);
