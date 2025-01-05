@@ -2,8 +2,8 @@ import { redirect } from "next/navigation";
 import PlayerSummaryData from "@/lib/PlayerStats";
 import PlayerBio from "@/components/player/PlayerBio";
 import PlayerRivals from "@/components/player/PlayerRivals";
-import PlayerHistory from "@/components/player/PlayerHistory";
-import PlayerAnnualInsights from "@/components/player/PlayerAnnualInsights";
+import PlayerCompetitions from "@/components/player/PlayerCompetitions";
+import PlayerInsights from "@/components/player/PlayerInsights";
 import PlayerCharts from "@/components/player/PlayerCharts";
 
 async function getPlayerSummaryData(username) {
@@ -40,10 +40,10 @@ export default async function PlayerProfile({ username }) {
             <PlayerRivals playerRivals={playerRivals} />
           )}
         </div>
-        <PlayerHistory weeksData={userPositionData} />
+        <PlayerCompetitions weeksData={userPositionData} />
       </div>
       <div className="flex flex-col lg:col-span-6 xl:col-span-5 2xl:col-span-6 items-center gap-4">
-        <PlayerAnnualInsights user={user} />
+        <PlayerInsights user={user} />
         <PlayerCharts weeksData={userPositionData} username={user.username} />
       </div>
     </div>

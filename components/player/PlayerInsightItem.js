@@ -1,4 +1,4 @@
-export default function PlayerSummaryItem({ children, title }) {
+export default function PlayerInsightItem({ children, title }) {
   return (
     <div className="flex flex-col items-center rounded-lg px-2 pb-1 w-full">
       <div className="text-sm text-stone-200 text-center pb-1">{title}</div>

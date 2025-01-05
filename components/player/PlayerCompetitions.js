@@ -7,7 +7,7 @@ import {
 import { GiRibbonMedal } from "react-icons/gi";
 import { Tooltip } from "antd";
 
-export default function PlayerHistory({ weeksData }) {
+export default function PlayerCompetitions({ weeksData }) {
   return (
     <div className="flex flex-col w-full items-start gap-1 border-2 border-orange-950 rounded-xl px-2 py-1">
       <div className="flex w-full">
