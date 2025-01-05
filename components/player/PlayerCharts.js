@@ -72,7 +72,6 @@ export default function PlayerCharts({ weeksData, username }) {
   const [selectedDatasets, setSelectedDatasets] = useState([
     "rollingWinPercentageDatasets",
     "rollingAverageDatasets",
-    "positionDatasets",
   ]);
   const [selectedUsernames, setSelectedUsernames] = useState([username]);
   const [data, setData] = useState({ datasets: [] });
@@ -85,11 +84,11 @@ export default function PlayerCharts({ weeksData, username }) {
       },
       {
         value: "rollingAverageDatasets",
-        label: "Rolling Avg.",
+        label: "Average Position",
       },
       {
         value: "positionDatasets",
-        label: "Position",
+        label: "Weekly Position",
       },
     ];
   }, []);
