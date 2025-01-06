@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import PlayerImage from "@/components/player/PlayerImage";
-import { Input, Button, Select, Table } from "antd";
+import { ConfigProvider, Input, Button, Select, Table, theme } from "antd";
 import { FilterOutlined } from "@ant-design/icons";
 
 function StatsTable({ playerStats }) {
@@ -74,7 +74,7 @@ function StatsTable({ playerStats }) {
             </div>
           ),
           render: (text, record) => (
-            <Link href={`/player/${text}`} className="hover:text-orange-700">
+            <Link href={`/player/${text}`} className="hover:text-orange-300">
               <div className="flex items-center">
                 <PlayerImage
                   src={record.userAvatarUrl}
@@ -90,13 +90,134 @@ function StatsTable({ playerStats }) {
       ],
     },
     {
-      title: "Points",
+      title: "13-Week Statistics",
       children: [
         {
-          title: "Points",
+          title: "Total Points",
+          dataIndex: "recentTotalPoints",
+          key: "recentTotalPoints",
+          defaultSortOrder: "descend",
+          sorter: (a, b) => a.recentTotalPoints - b.recentTotalPoints,
+          sortDirections: ["descend", "ascend", "descend"],
+          align: "center",
+          width: 100,
+        },
+        {
+          title: "Weeks Played",
+          dataIndex: "recentWeeksPlayed",
+          key: "recentWeeksPlayed",
+          sorter: (a, b) => a.recentWeeksPlayed - b.recentWeeksPlayed,
+          sortDirections: ["descend", "ascend", "descend"],
+          align: "center",
+          width: 100,
+          onFilter: (value, record) => {
+            const [operator, filterValue] = value.split(",");
+            const recentWeeksPlayed = record.recentWeeksPlayed;
+            switch (operator) {
+              case "gt":
+                return recentWeeksPlayed > Number(filterValue);
+              case "lt":
+                return recentWeeksPlayed < Number(filterValue);
+              case "eq":
+                return recentWeeksPlayed === Number(filterValue);
+              default:
+                return true;
+            }
+          },
+          filterDropdown: ({
+            setSelectedKeys,
+            selectedKeys,
+            confirm,
+            clearFilters,
+          }) => (
+            <div style={{ padding: 8 }}>
+              <Select
+                value={selectedKeys[0] ? selectedKeys[0].split(",")[0] : "gt"}
+                onChange={(value) => {
+                  setSelectedKeys([
+                    `${value},${
+                      selectedKeys[0] ? selectedKeys[0].split(",")[1] : ""
+                    }`,
+                  ]);
+                }}
+                style={{ width: 130, marginRight: 8 }}
+              >
+                <Select.Option value="gt">Greater than</Select.Option>
+                <Select.Option value="lt">Less than</Select.Option>
+                <Select.Option value="eq">Equals</Select.Option>
+              </Select>
+              <Input
+                type="number"
+                placeholder="# of weeks"
+                value={selectedKeys[0] ? selectedKeys[0].split(",")[1] : ""}
+                onChange={(e) => {
+                  setSelectedKeys([
+                    `${
+                      selectedKeys[0] ? selectedKeys[0].split(",")[0] : "gt"
+                    },${e.target.value}`,
+                  ]);
+                }}
+                onPressEnter={() => confirm()}
+                style={{ width: 110, marginRight: 8 }}
+              />
+              <Button
+                type="primary"
+                onClick={() => confirm()}
+                icon={<FilterOutlined />}
+                size="small"
+                style={{ width: 90, marginRight: 8 }}
+              >
+                Filter
+              </Button>
+              <Button
+                onClick={() => {
+                  clearFilters();
+                  confirm();
+                }}
+                size="small"
+                style={{ width: 90 }}
+              >
+                Reset
+              </Button>
+            </div>
+          ),
+        },
+        {
+          title: "Avg. Points",
+          dataIndex: "recentAveragePoints",
+          key: "recentAveragePoints",
+          sorter: (a, b) => a.recentAveragePoints - b.recentAveragePoints,
+          sortDirections: ["descend", "ascend", "descend"],
+          align: "center",
+          width: 100,
+        },
+        {
+          title: "Win %",
+          dataIndex: "recentWinPercentage",
+          key: "recentWinPercentage",
+          sorter: (a, b) => a.recentWinPercentage - b.recentWinPercentage,
+          sortDirections: ["descend", "ascend", "descend"],
+          align: "center",
+          width: 100,
+        },
+        {
+          title: "Avg. Position",
+          dataIndex: "recentAveragePosition",
+          key: "recentAveragePosition",
+          sorter: (a, b) => a.recentAveragePosition - b.recentAveragePosition,
+          sortDirections: ["ascend", "descend", "ascend"],
+          align: "center",
+          width: 100,
+        },
+      ],
+    },
+    {
+      title: "52-Week Statistics",
+      children: [
+        {
+          title: "Total Points",
           dataIndex: "totalPoints",
           key: "totalPoints",
-          defaultSortOrder: "descend",
           sorter: (a, b) => a.totalPoints - b.totalPoints,
           sortDirections: ["descend", "ascend", "descend"],
           align: "center",
@@ -191,29 +312,6 @@ function StatsTable({ playerStats }) {
           align: "center",
           width: 100,
         },
-      ],
-    },
-    {
-      title: "Wins / Losses",
-      children: [
-        {
-          title: "Wins",
-          dataIndex: "wins",
-          key: "wins",
-          sorter: (a, b) => a.wins - b.wins,
-          sortDirections: ["descend", "ascend", "descend"],
-          align: "center",
-          width: 100,
-        },
-        {
-          title: "Losses",
-          dataIndex: "losses",
-          key: "losses",
-          sorter: (a, b) => a.losses - b.losses,
-          sortDirections: ["ascend", "descend", "ascend"],
-          align: "center",
-          width: 100,
-        },
         {
           title: "Win %",
           dataIndex: "winPercentage",
@@ -223,11 +321,6 @@ function StatsTable({ playerStats }) {
           align: "center",
           width: 100,
         },
-      ],
-    },
-    {
-      title: "Positions",
-      children: [
         {
           title: "Avg. Position",
           dataIndex: "averagePosition",
@@ -237,38 +330,30 @@ function StatsTable({ playerStats }) {
           align: "center",
           width: 100,
         },
-        {
-          title: "Recent Avg. Pos.",
-          dataIndex: "recentAveragePosition",
-          key: "recentAveragePosition",
-          sorter: (a, b) => a.recentAveragePosition - b.recentAveragePosition,
-          sortDirections: ["ascend", "descend", "ascend"],
-          align: "center",
-          width: 100,
-        },
       ],
     },
   ];
 
   return (
-    <div className="w-full py-2">
-      <Table
-        className="lg:pb-2"
-        bordered={true}
-        size="small"
-        rowKey={"username"}
-        columns={columns}
-        filteredInfo={filteredInfo}
-        onFilterChange={handleChange}
-        dataSource={playerStats}
-        pagination={false}
-        scroll={{ x: "max-content" }}
-        sticky
-      />
-      <hr className="border-2 border-orange-950" />
+    <div className="flex flex-col h-dvh gap-2 w-full py-2">
+      <ConfigProvider theme={{ algorithm: theme.darkAlgorithm }}>
+        <Table
+          bordered={true}
+          colorBgContainer="#111111"
+          size="small"
+          rowKey={"username"}
+          columns={columns}
+          filteredInfo={filteredInfo}
+          onFilterChange={handleChange}
+          dataSource={playerStats}
+          pagination={false}
+          scroll={{ x: "max-content" }}
+          sticky
+        />
+      </ConfigProvider>
+      <hr className="border-1 border-orange-900" />
     </div>
   );
 }
 
 export default StatsTable;
-

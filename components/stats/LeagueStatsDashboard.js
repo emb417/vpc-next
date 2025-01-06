@@ -1,5 +1,5 @@
-import PlayerStats from "@/lib/AnnualStats";
-import StatsTable from "@/components/stats/AnnualStatsTable";
+import LeagueStats from "@/lib/LeagueStats";
+import LeagueStatsTable from "@/components/stats/LeagueStatsTable";
 
 async function getData() {
   try {
@@ -8,7 +8,7 @@ async function getData() {
     });
     const data = await response.json();
 
-    const playerStats = PlayerStats(data);
+    const playerStats = LeagueStats(data);
 
     return { props: { playerStats } };
   } catch (error) {
@@ -20,5 +20,5 @@ async function getData() {
 export default async function StatsDashboard() {
   const { props } = await getData();
   const { playerStats } = props;
-  return <StatsTable playerStats={playerStats} />;
+  return <LeagueStatsTable playerStats={playerStats} />;
 }

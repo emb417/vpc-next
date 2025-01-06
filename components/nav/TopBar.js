@@ -33,7 +33,7 @@ export default function Navbar() {
       id: 3,
       icon: <GiProgression className="text-xl" />,
       href: "/stats",
-      text: "Annual Statistics",
+      text: "League Statistics",
     },
     {
       id: 4,
