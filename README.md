@@ -7,7 +7,8 @@ Virtual pinball chat league leaderboards and stats.
 1. This project uses a checked-in .env file to configure Virtual Pinball Chat Data APIs:
 
    ```bash
-   VPC_BASE_URL=https://virtualpinballchat.com:8443
+   SSR_BASE_URL=http://nginx
+   CSR_BASE_URL=https://virtualpinballchat.com
    VPC_API_PATH=/vpc/api/v1/weeksByChannelName
    VPC_API_SCORES_PATH=/vpc/api/v1/scoresByVpsId
    VPS_API_TABLES_PATH=/vps/api/v1/games/tables

@@ -6,7 +6,7 @@ import RankLeaderboard from "@/components/main/RankLeaderboard";
 async function getData() {
   try {
     const response = await fetch(
-      `${process.env.VPC_BASE_URL}${process.env.VPC_API_PATH}`,
+      `${process.env.SSR_BASE_URL}${process.env.VPC_API_PATH}`,
       {
         next: { revalidate: 300 },
       }
@@ -19,7 +19,7 @@ async function getData() {
     const recentPlayerStats = RecentStats(data);
 
     const vpsResponse = await fetch(
-      `${process.env.VPC_BASE_URL}${process.env.VPS_API_TABLES_PATH}/${positionWeeksData[0].vpsId}`,
+      `${process.env.SSR_BASE_URL}${process.env.VPS_API_TABLES_PATH}/${positionWeeksData[0].vpsId}`,
       {
         next: { revalidate: 1800 },
       }

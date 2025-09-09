@@ -2,9 +2,11 @@ import { Suspense } from "react";
 import LoadingMessage from "@/components/nav/LoadingMessage";
 import MainDashboard from "@/components/main/MainDashboard";
 
+export const dynamic = "force-dynamic";
 export const metadata = {
   title: "Virtual Pinball Chat",
-  description: "Virtual Pinball Chat league's main dashboard for weekly competition and power ranking leaderboards, plus pages for high score leaderboards, player profiles, statistics, and more.",
+  description:
+    "Virtual Pinball Chat league's main dashboard for weekly competition and power ranking leaderboards, plus pages for high score leaderboards, player profiles, statistics, and more.",
   alternates: {
     canonical: "/",
   },

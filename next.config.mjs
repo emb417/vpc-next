@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: "standalone",
   images: {
     remotePatterns: [
       {
@@ -13,8 +14,12 @@ const nextConfig = {
         hostname: "virtualpinballspreadsheet.github.io",
         port: "",
         pathname: "/**",
-      }
+      },
     ],
+  },
+  // Expose the version number to the client-side bundle.
+  env: {
+    APP_VERSION: process.env.npm_package_version,
   },
 };
 

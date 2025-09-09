@@ -9,7 +9,7 @@ import PlayerCharts from "@/components/player/PlayerCharts";
 async function getPlayerSummaryData(username) {
   try {
     const response = await fetch(
-      `${process.env.VPC_BASE_URL}${process.env.VPC_API_PATH}`,
+      `${process.env.SSR_BASE_URL}${process.env.VPC_API_PATH}`,
       {
         next: { revalidate: 300 },
       }

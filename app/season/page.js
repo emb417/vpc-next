@@ -2,9 +2,11 @@ import { Suspense } from "react";
 import LoadingMessage from "@/components/nav/LoadingMessage";
 import SeasonDashboard from "@/components/season/SeasonDashboard";
 
+export const dynamic = "force-dynamic";
 export const metadata = {
   title: "Season Leaderboard",
-  description: "Virtaul Pinball Chat league's season leaderboard and chart, only for the current or most recent season.",
+  description:
+    "Virtaul Pinball Chat league's season leaderboard and chart, only for the current or most recent season.",
   alternates: {
     canonical: "/season",
   },

@@ -4,9 +4,12 @@ import SeasonStats from "@/lib/SeasonStats";
 
 async function getData() {
   try {
-    const response = await fetch(`${process.env.VPC_BASE_URL}${process.env.VPC_API_PATH}`, {
-      next: { revalidate: 3600 },
-    });
+    const response = await fetch(
+      `${process.env.SSR_BASE_URL}${process.env.VPC_API_PATH}`,
+      {
+        next: { revalidate: 3600 },
+      }
+    );
     const data = await response.json();
 
     const seasonWeeksData = SeasonStats(data);

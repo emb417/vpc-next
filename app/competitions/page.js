@@ -2,9 +2,11 @@ import { Suspense } from "react";
 import LoadingMessage from "@/components/nav/LoadingMessage";
 import CompetitionDashboard from "@/components/competition/CompetitionDashboard";
 
+export const dynamic = "force-dynamic";
 export const metadata = {
   title: "Competition Corner",
-  description: "Virtual Pinball Chat league's weekly competitions. Filter by table name, VPS ID, and sort by name or recently played in competition.",
+  description:
+    "Virtual Pinball Chat league's weekly competitions. Filter by table name, VPS ID, and sort by name or recently played in competition.",
   alternates: {
     canonical: "/competitions",
   },
