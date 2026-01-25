@@ -4,10 +4,10 @@ import CompetitionLeaderboards from "@/components/competition/CompetitionLeaderb
 async function getData() {
   try {
     const response = await fetch(
-      `${process.env.VPC_BASE_URL}${process.env.VPC_API_PATH}`,
+      `${process.env.SSR_BASE_URL}${process.env.VPC_API_RECENT_WEEKS}`,
       {
         next: { revalidate: 300 },
-      }
+      },
     );
     const data = await response.json();
 
@@ -26,7 +26,7 @@ export default async function CompetitionDashboard() {
   return (
     <CompetitionLeaderboards
       weeksData={weeksData}
-      tablesAPI={`${process.env.VPC_BASE_URL}${process.env.VPS_API_TABLES_PATH}`}
+      tablesAPI={`${process.env.CSR_BASE_URL}${process.env.VPS_API_TABLES_PATH}`}
     />
   );
 }

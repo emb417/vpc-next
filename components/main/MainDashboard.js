@@ -6,24 +6,32 @@ import RankLeaderboard from "@/components/main/RankLeaderboard";
 async function getData() {
   try {
     const response = await fetch(
-      `${process.env.VPC_BASE_URL}${process.env.VPC_API_PATH}`,
+      `${process.env.SSR_BASE_URL}${process.env.VPC_API_RECENT_WEEKS}`,
       {
         next: { revalidate: 300 },
-      }
+      },
     );
 
     const data = await response.json();
 
     const positionWeeksData = LeaderboardStats(data);
-
     const recentPlayerStats = RecentStats(data);
 
+    if (!positionWeeksData || positionWeeksData.length === 0) {
+      return {
+        props: {
+          recentPlayerStats,
+          positionWeeksData: [],
+          vpsData: null,
+        },
+      };
+    }
+
     const vpsResponse = await fetch(
-      `${process.env.VPC_BASE_URL}${process.env.VPS_API_TABLES_PATH}/${positionWeeksData[0].vpsId}`,
-      {
-        next: { revalidate: 1800 },
-      }
+      `${process.env.SSR_BASE_URL}${process.env.VPS_API_TABLES_PATH}/${positionWeeksData[0].vpsId}`,
+      { next: { revalidate: 1800 } },
     );
+
     const vpsData = await vpsResponse.json();
 
     return {

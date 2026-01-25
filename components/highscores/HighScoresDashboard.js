@@ -4,7 +4,7 @@ import { console } from "inspector";
 async function getData() {
   try {
     const vpsResponse = await fetch(
-      `${process.env.VPC_BASE_URL}${process.env.VPC_API_SCORES_PATH}`,
+      `${process.env.SSR_BASE_URL}${process.env.VPC_API_SCORES_PATH}`,
       {
         cache: "no-store",
       }
@@ -12,7 +12,7 @@ async function getData() {
     const data = await vpsResponse.json();
 
     const vpcResponse = await fetch(
-      `${process.env.VPC_BASE_URL}${process.env.VPC_API_PATH}`,
+      `${process.env.SSR_BASE_URL}${process.env.VPC_API_PATH}`,
       {
         next: { revalidate: 3600 },
       }
@@ -44,7 +44,7 @@ export default async function HistoryDashboard() {
     <HighScoresLeaderboards
       scoresData={data}
       vpsIdsByRecency={vpsIdsByRecency}
-      tablesAPI={`${process.env.VPC_BASE_URL}${process.env.VPS_API_TABLES_PATH}`}
+      tablesAPI={`${process.env.CSR_BASE_URL}${process.env.VPS_API_TABLES_PATH}`}
     />
   );
 }

@@ -60,6 +60,7 @@ export default function WeeklyLeaderboard({ weekData, vpsData }) {
                   height={20}
                   alt={score.username}
                   className="rounded-full"
+                  unoptimized
                 />
               </div>
               <span className="text-md text-stone-300 truncate">

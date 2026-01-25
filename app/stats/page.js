@@ -2,9 +2,11 @@ import { Suspense } from "react";
 import LoadingMessage from "@/components/nav/LoadingMessage";
 import LeagueStatsDashboard from "@/components/stats/LeagueStatsDashboard";
 
+export const dynamic = "force-dynamic";
 export const metadata = {
   title: "League Statistics",
-  description: "Virtual Pinball Chat league's statistics for the past 52 weeks and 13 weeks.",
+  description:
+    "Virtual Pinball Chat league's statistics for the past 52 weeks and 13 weeks.",
   alternates: {
     canonical: "/stats",
   },

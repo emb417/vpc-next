@@ -4,10 +4,10 @@ import LeagueStatsTable from "@/components/stats/LeagueStatsTable";
 async function getData() {
   try {
     const response = await fetch(
-      `${process.env.VPC_BASE_URL}${process.env.VPC_API_PATH}`,
+      `${process.env.SSR_BASE_URL}${process.env.VPC_API_RECENT_WEEKS}`,
       {
         next: { revalidate: 1800 },
-      }
+      },
     );
     const data = await response.json();
 

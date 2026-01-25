@@ -192,7 +192,7 @@ function StatsTable({ playerStats, rankKeyMap }) {
 
   const sortedPlayerStats = useMemo(
     () => getSortedPlayerStats(playerStats, sortedInfo),
-    [playerStats, sortedInfo]
+    [playerStats, sortedInfo, getSortedPlayerStats]
   );
 
   return (
