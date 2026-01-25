@@ -6,28 +6,20 @@ async function getData() {
     const vpsResponse = await fetch(
       `${process.env.SSR_BASE_URL}${process.env.VPC_API_SCORES_PATH}`,
       {
-        cache: "no-store",
-      }
+        next: { revalidate: 300 },
+      },
     );
     const data = await vpsResponse.json();
 
     const vpcResponse = await fetch(
-      `${process.env.SSR_BASE_URL}${process.env.VPC_API_PATH}`,
+      `${process.env.SSR_BASE_URL}${process.env.VPC_API_RECENT_WEEKS}`,
       {
         next: { revalidate: 3600 },
-      }
+      },
     );
     const vpcData = await vpcResponse.json();
 
-    const vpsIdsByRecency = Array.from(
-      new Set(
-        vpcData
-          .find((obj) => obj.channelName === "competition-corner")
-          .weeks.filter((week) => !isNaN(parseInt(week.weekNumber)))
-      )
-    )
-      .sort((a, b) => b.weekNumber - a.weekNumber)
-      .map((item) => item.vpsId);
+    const vpsIdsByRecency = vpcData.map((item) => item.vpsId);
 
     return { props: { data, vpsIdsByRecency } };
   } catch (error) {
