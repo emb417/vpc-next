@@ -242,10 +242,7 @@ export default function CompetitionLeaderboards({ weeksData, tablesAPI }) {
                     )}
                   </div>
                 )}
-              <Link
-                href={`https://virtual-pinball-spreadsheet.web.app/game/${weekData.vpsId}/`}
-                target="_blank"
-              >
+              <Link href={weekData.tableUrl || "#"} target="_blank">
                 <div className="text-xl">{weekData.table}</div>
                 <div className="text-xs">VPS ID {weekData.vpsId}</div>
               </Link>

@@ -167,10 +167,7 @@ export default function HighScoresLeaderboards({
                   table={table.tableName}
                   imageUrl={imagesUrls?.[id]}
                 >
-                  <Link
-                    href={`https://virtual-pinball-spreadsheet.web.app/game/${id}/`}
-                    target="_blank"
-                  >
+                  <Link href={table.tableUrl || "#"} target="_blank">
                     <div className="text-xl">{table.tableName}</div>
                     <div className="text-xs">VPS ID {id}</div>
                   </Link>
