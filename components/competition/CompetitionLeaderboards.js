@@ -51,7 +51,7 @@ export default function CompetitionLeaderboards({ weeksData, tablesAPI }) {
             vpsData = null;
           }
           return [table.vpsId, vpsData?.b2sFiles?.[0]?.imgUrl ?? null];
-        })
+        }),
       );
       setImagesUrls(Object.fromEntries(imagesData));
     };
@@ -61,7 +61,7 @@ export default function CompetitionLeaderboards({ weeksData, tablesAPI }) {
   useEffect(() => {
     if (week) {
       const weekIndex = weeksData.findIndex(
-        (weekData) => weekData.weekNumber === parseInt(week)
+        (weekData) => weekData.weekNumber === parseInt(week),
       );
       const pageWithData = Math.ceil(weekIndex / tablesPerPage) || 1;
       setPage(pageWithData);
@@ -73,11 +73,11 @@ export default function CompetitionLeaderboards({ weeksData, tablesAPI }) {
     let sortedFilteredWeeksData = filteredWeeksData;
     if (sortMethod === "recent") {
       sortedFilteredWeeksData = filteredWeeksData.sort(
-        (a, b) => b.weekNumber - a.weekNumber
+        (a, b) => b.weekNumber - a.weekNumber,
       );
     } else if (sortMethod === "name") {
       sortedFilteredWeeksData = filteredWeeksData.sort((a, b) =>
-        a.table.localeCompare(b.table)
+        a.table.localeCompare(b.table),
       );
     }
 
@@ -89,28 +89,25 @@ export default function CompetitionLeaderboards({ weeksData, tablesAPI }) {
     if (scrollableDivRef.current) {
       scrollableDivRef.current.scrollTo({ left: 0, behavior: "smooth" });
     }
-    window.scrollTo({ top: 100, behavior: "smooth" });
   }, [page, filteredWeeksData, sortMethod, tablesPerPage]);
-  
+
   useEffect(() => {
     let filteredWeeksData = weeksData;
-    if(filterValue){
+    if (filterValue) {
       filteredWeeksData = filteredWeeksData.filter(
         (weekData) =>
-        weekData.table.toLowerCase().includes(filterValue.toLowerCase()) ||
-        weekData.vpsId.toLowerCase().includes(filterValue.toLowerCase())
+          weekData.table.toLowerCase().includes(filterValue.toLowerCase()) ||
+          weekData.vpsId.toLowerCase().includes(filterValue.toLowerCase()),
       );
     }
     setFilteredWeeksData(filteredWeeksData);
     setPage(1);
-    window.scrollTo({ top: 100, behavior: "smooth" });
   }, [weeksData, filterValue]);
 
   useEffect(() => {
     setPage(1);
-    window.scrollTo({ top: 100, behavior: "smooth" });
   }, [sortMethod]);
-  
+
   return (
     <div className="flex flex-col w-full max-h-dvh">
       <div className="flex flex-row w-full items-center justify-start py-2">
@@ -232,7 +229,7 @@ export default function CompetitionLeaderboards({ weeksData, tablesAPI }) {
                         year: "numeric",
                         month: "short",
                         day: "numeric",
-                      }
+                      },
                     )}
                     {" to "}
                     {new Date(weekData.periodEnd).toLocaleDateString(
@@ -241,7 +238,7 @@ export default function CompetitionLeaderboards({ weeksData, tablesAPI }) {
                         year: "numeric",
                         month: "short",
                         day: "numeric",
-                      }
+                      },
                     )}
                   </div>
                 )}
@@ -255,7 +252,11 @@ export default function CompetitionLeaderboards({ weeksData, tablesAPI }) {
             </LeaderboardTitleCard>
             <div className="flex flex-col gap-1 overflow-auto rounded-xl min-w-[320px] max-w-[320px]">
               {weekData.scores.map((score, scoreIndex) => (
-                <CompetitionLeaderboardItem score={score} scoreIndex={scoreIndex} key={score.username} />
+                <CompetitionLeaderboardItem
+                  score={score}
+                  scoreIndex={scoreIndex}
+                  key={score.username}
+                />
               ))}
             </div>
           </div>

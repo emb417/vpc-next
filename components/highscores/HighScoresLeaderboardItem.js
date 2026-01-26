@@ -19,16 +19,13 @@ export default function HighScoresLeaderboardItem({ score, scoreIndex }) {
       </Link>
       <div className="ml-auto mr-1 flex gap-2 flex-row items-center">
         <Tooltip
-          title={`Posted at ${new Intl.DateTimeFormat(
-            "en-US",
-            {
-              year: "numeric",
-              month: "short",
-              day: "numeric",
-              hour: "numeric",
-              minute: "numeric",
-            }
-          ).format(new Date(score.posted))} for version ${score.versionNumber}`}
+          title={`${new Intl.DateTimeFormat("en-US", {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+            hour: "numeric",
+            minute: "numeric",
+          }).format(new Date(score.posted))}`}
           color="rgba(41, 37, 36, 0.8)"
         >
           <div className="text-orange-300 text-sm">
