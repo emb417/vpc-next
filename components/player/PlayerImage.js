@@ -42,9 +42,9 @@ export default function PlayerImage({ src, alt }) {
           height={26}
           alt={alt}
           className="rounded-full"
+          unoptimized
         />
       )}
     </div>
   );
 }
-
