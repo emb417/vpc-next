@@ -10,6 +10,7 @@ export default function PlayerLink(text, record) {
           alt={record.username}
           width={16}
           height={16}
+          fallbackClassName="w-4 h-4"
         />
         <div className="truncate pl-1">{text}</div>
       </div>

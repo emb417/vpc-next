@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 import PlayerImage from "../player/PlayerImage";
 
@@ -27,9 +25,12 @@ export default function SeasonLeaderboardItems({ username, data, index }) {
                 .userAvatarUrl
             }
             alt={username}
+            width={26}
+            height={26}
+            fallbackClassName="w-6 h-6"
           />
         ) : (
-          <div className="w-8 h-8 rounded-full bg-orange-950" />
+          <div className="w-5 h-5 rounded-full bg-orange-950" />
         )}
       </div>
       <span className="text-stone-200">{username}</span>

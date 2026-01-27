@@ -26,7 +26,11 @@ export default function CompetitionLeaderboardItem({ score, scoreIndex }) {
     >
       <span className="text-orange-300 pl-2">{scoreIndex + 1}.</span>
       <div className="flex items-center">
-        <PlayerImage src={score.userAvatarUrl} alt={score.username} />
+        <PlayerImage
+          src={score.userAvatarUrl}
+          alt={score.username}
+          fallbackClassName="w-6 h-6"
+        />
       </div>
       <span className="text-stone-200 truncate">{score.username}</span>
       <div className="ml-auto mr-1 flex gap-4 flex-row items-center">
