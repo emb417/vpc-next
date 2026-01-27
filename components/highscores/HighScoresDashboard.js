@@ -7,7 +7,6 @@ async function getData() {
 
     const response = await fetch(url, { next: { revalidate: 300 } });
 
-    // Log status and headers for quick diagnostics
     console.log(
       `${response.ok ? "✅" : "❌"} SSR Fetch Resp ${response.status} ${response.headers.get("Date")} `,
     );

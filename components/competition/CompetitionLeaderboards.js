@@ -1,7 +1,6 @@
 "use client";
 
 import { useRef, useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import {
   GiPreviousButton,
@@ -10,254 +9,261 @@ import {
 } from "react-icons/gi";
 import { CgSoftwareUpload } from "react-icons/cg";
 import { Input, Tooltip } from "antd";
+import Loading from "@/app/loading";
 import LeaderboardTitleCard from "@/components/shared/LeaderboardTitleCard";
 import CompetitionLeaderboardItem from "@/components/competition/CompetitionLeaderboardItem";
 
-const SortMethodButton = ({ sortMethod, setSortMethod, children, value }) => (
-  <button
-    className={`p-1 rounded-lg text-xs hover:bg-orange-800 duration-300 ${
-      sortMethod === value ? "bg-orange-800" : "bg-orange-950"
-    }`}
-    onClick={() => setSortMethod(value)}
-  >
-    {children}
-  </button>
-);
-
-export default function CompetitionLeaderboards({ weeksData, tablesAPI }) {
-  const searchParams = useSearchParams();
-  const week = searchParams.get("week");
-  const [highlightedId, setHighlightedId] = useState(null);
+export default function CompetitionLeaderboards({
+  scoresData = [],
+  totalCount = 0,
+  weeksPageAPI,
+  tableImagesAPI,
+}) {
+  const weeksPerPage = 4;
   const [page, setPage] = useState(1);
-  const [tablesPerPage] = useState(4);
-  const [totalPages, setTotalPages] = useState(1);
-  const [tablesToShow, setTablesToShow] = useState([]);
+  const [weeks, setWeeks] = useState(scoresData);
+  const [count, setCount] = useState(totalCount);
+  const [loading, setLoading] = useState(false);
   const [imagesUrls, setImagesUrls] = useState({});
-  const [filterValue, setFilterValue] = useState(null);
-  const [filteredWeeksData, setFilteredWeeksData] = useState(weeksData);
-  const [sortMethod, setSortMethod] = useState("recent");
   const scrollableDivRef = useRef(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(searchTerm);
+
+  useEffect(() => {
+    const timerId = setTimeout(() => {
+      setDebouncedSearchTerm(searchTerm);
+    }, 500);
+
+    return () => {
+      clearTimeout(timerId);
+    };
+  }, [searchTerm]);
+
+  const totalPages = Math.max(1, Math.ceil(count / weeksPerPage));
+
+  function unwindResponseShape(raw) {
+    if (!raw) return { results: [], totalCount: 0 };
+
+    // Case A: pipeline returns [{ totalCount, results }]
+    if (Array.isArray(raw) && raw.length > 0 && raw[0].results) {
+      return {
+        results: raw[0].results,
+        totalCount: Number(raw[0].totalCount ?? 0),
+      };
+    }
+
+    // Case B: pipeline returns empty array
+    if (Array.isArray(raw) && raw.length === 0) {
+      return { results: [], totalCount: 0 };
+    }
+
+    // Case C: unexpected but safe fallback
+    return { results: [], totalCount: 0 };
+  }
+
+  useEffect(() => {
+    const loadPage = async () => {
+      if (page === 1 && !debouncedSearchTerm) {
+        setWeeks(Array.isArray(scoresData) ? scoresData : []);
+        setCount(
+          Number.isFinite(Number(totalCount))
+            ? Number(totalCount)
+            : Array.isArray(scoresData)
+              ? scoresData.length
+              : 0,
+        );
+        return;
+      }
+
+      setLoading(true);
+      const offset = (page - 1) * weeksPerPage;
+      let url = `${weeksPageAPI}?limit=${weeksPerPage}&offset=${offset}`;
+      if (debouncedSearchTerm) {
+        url += `&searchTerm=${encodeURIComponent(debouncedSearchTerm)}`;
+      }
+
+      try {
+        const res = await fetch(url);
+        const raw = await res.json();
+        const { results: nextResults, totalCount: nextTotal } =
+          unwindResponseShape(raw);
+        setWeeks(nextResults);
+        setCount(nextTotal);
+      } catch (err) {
+        console.error("CompetitionLeaderboards loadPage error:", err);
+        setWeeks([]);
+        setCount(0);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadPage();
+  }, [page, weeksPageAPI, scoresData, totalCount, debouncedSearchTerm]);
+
+  useEffect(() => {
+    setPage(1);
+  }, [debouncedSearchTerm]);
 
   useEffect(() => {
     const fetchImagesForTables = async () => {
       const imagesData = await Promise.all(
-        tablesToShow.map(async (table) => {
-          const vpsResponse = await fetch(`${tablesAPI}/${table.vpsId}`);
-          let vpsData;
+        (weeks ?? []).map(async (week) => {
+          const id = week.vpsId;
+          const imageUrl = `${tableImagesAPI}/${id}`;
           try {
-            vpsData = await vpsResponse.json();
+            const vpsResponse = await fetch(imageUrl);
+            const vpsData = await vpsResponse.json();
+            const found = vpsData?.b2sFiles?.[0]?.imgUrl ?? null;
+            return [id, found];
           } catch (error) {
-            console.error(error);
-            vpsData = null;
+            console.error(
+              "CompetitionLeaderboards image fetch error for",
+              id,
+              error,
+            );
+            return [id, null];
           }
-          return [table.vpsId, vpsData?.b2sFiles?.[0]?.imgUrl ?? null];
         }),
       );
       setImagesUrls(Object.fromEntries(imagesData));
     };
-    fetchImagesForTables();
-  }, [tablesToShow, tablesAPI]);
 
-  useEffect(() => {
-    if (week) {
-      const weekIndex = weeksData.findIndex(
-        (weekData) => weekData.weekNumber === parseInt(week),
-      );
-      const pageWithData = Math.ceil(weekIndex / tablesPerPage) || 1;
-      setPage(pageWithData);
-      setHighlightedId(week);
+    if ((weeks ?? []).length > 0) {
+      fetchImagesForTables();
+    } else {
+      setImagesUrls({});
     }
-  }, [week, weeksData, tablesPerPage]);
-
-  useEffect(() => {
-    let sortedFilteredWeeksData = filteredWeeksData;
-    if (sortMethod === "recent") {
-      sortedFilteredWeeksData = filteredWeeksData.sort(
-        (a, b) => b.weekNumber - a.weekNumber,
-      );
-    } else if (sortMethod === "name") {
-      sortedFilteredWeeksData = filteredWeeksData.sort((a, b) =>
-        a.table.localeCompare(b.table),
-      );
-    }
-
-    const start = (page - 1) * tablesPerPage;
-    const end = Math.min(start + tablesPerPage, sortedFilteredWeeksData.length);
-    setTablesToShow(sortedFilteredWeeksData.slice(start, end));
-    setTotalPages(Math.ceil(sortedFilteredWeeksData.length / tablesPerPage));
-
-    if (scrollableDivRef.current) {
-      scrollableDivRef.current.scrollTo({ left: 0, behavior: "smooth" });
-    }
-  }, [page, filteredWeeksData, sortMethod, tablesPerPage]);
-
-  useEffect(() => {
-    let filteredWeeksData = weeksData;
-    if (filterValue) {
-      filteredWeeksData = filteredWeeksData.filter(
-        (weekData) =>
-          weekData.table.toLowerCase().includes(filterValue.toLowerCase()) ||
-          weekData.vpsId.toLowerCase().includes(filterValue.toLowerCase()),
-      );
-    }
-    setFilteredWeeksData(filteredWeeksData);
-    setPage(1);
-  }, [weeksData, filterValue]);
-
-  useEffect(() => {
-    setPage(1);
-  }, [sortMethod]);
+  }, [weeks, tableImagesAPI]);
 
   return (
-    <div className="flex flex-col w-full max-h-dvh">
+    <div className="flex flex-col flex-grow w-full max-h-dvh">
       <div className="flex flex-row w-full items-center justify-start py-2">
         <h1 className="flex flex-row items-center gap-1 text-lg text-stone-200">
-          <GiPinballFlipper /> Competition Corner
+          <GiPinballFlipper />
+          Competition Corner
           <Tooltip
-            title="Click to see instructions on how to post a competition score."
+            title="Click to see instructions on how to post a score."
             color="rgba(41, 37, 36, 0.8)"
           >
             <Link
-              href="https://discord.com/channels/652274650524418078/720381436842213397/720392464690577539"
+              href="https://discord.com/channels/652274650524418078/919336296281960468/919338053208776794"
               target="_blank"
             >
               <CgSoftwareUpload className="text-red-500 animate-pulse" />
             </Link>
           </Tooltip>
         </h1>
-        <div className="flex flex-row items-center gap-8 ml-auto">
-          <div className="hidden lg:flex w-[230px]">
+
+        <div className="flex flex-row items-center ml-auto gap-4">
+          <div className="hidden lg:flex w-[230px] items-center mx-auto">
             <Input
-              value={filterValue}
-              onChange={(e) => setFilterValue(e.target.value)}
-              placeholder="Filter by table name or VPS ID"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Search for table name"
               allowClear
               size="small"
             />
           </div>
-          <div className="hidden lg:flex flex-row items-center gap-1 text-stone-200">
-            Sort by
-            <SortMethodButton
-              sortMethod={sortMethod}
-              setSortMethod={setSortMethod}
-              value="recent"
-            >
-              Recent
-            </SortMethodButton>
-            or
-            <SortMethodButton
-              sortMethod={sortMethod}
-              setSortMethod={setSortMethod}
-              value="name"
-            >
-              Name
-            </SortMethodButton>
-          </div>
-          <div className="flex flex-row items-center gap-2 text-stone-200 ml-auto">
+          <div className="flex flex-row items-center gap-2 text-stone-200">
             <button
               className="p-1 rounded-lg bg-orange-950 text-xs hover:bg-orange-800 duration-300"
-              onClick={() => setPage(page - 1)}
-              disabled={page === 1}
+              onClick={() => setPage((p) => Math.max(1, p - 1))}
+              disabled={page === 1 || loading}
             >
               <GiPreviousButton className="text-xl" />
             </button>
+
             <span className="min-w-[max-content] text-xs text-center">
-              Page {page} of {totalPages}
+              Page {page} of {Number.isFinite(totalPages) ? totalPages : 1}
             </span>
+
             <button
               className="p-1 rounded-lg bg-orange-950 text-xs hover:bg-orange-800 duration-300"
-              onClick={() => setPage(page + 1)}
-              disabled={page === totalPages}
+              onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+              disabled={page >= totalPages || loading}
             >
               <GiNextButton className="text-xl" />
             </button>
           </div>
         </div>
       </div>
+
       <div className="lg:hidden flex w-full justify-center items-center pl-2 pb-3 text-stone-200">
-        <div className="w-[190px]">
+        <div className="flex flex-row items-center w-[190px]">
           <Input
-            value={filterValue}
-            onChange={(e) => setFilterValue(e.target.value)}
-            placeholder="Filter by name or VPS ID"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            placeholder="Search for table name"
             allowClear
             size="small"
           />
         </div>
-        <div className="flex flex-row items-center gap-1 ml-auto">
-          <span className="text-xs">Sort by</span>
-          <SortMethodButton
-            sortMethod={sortMethod}
-            setSortMethod={setSortMethod}
-            value="recent"
-          >
-            Recent
-          </SortMethodButton>
-          <span className="text-xs">or</span>
-          <SortMethodButton
-            sortMethod={sortMethod}
-            setSortMethod={setSortMethod}
-            value="name"
-          >
-            Name
-          </SortMethodButton>
-        </div>
       </div>
+
       <div
         ref={scrollableDivRef}
-        className="flex flex-row w-full xl:justify-center gap-4 text-stone-200 pb-2 mb-2 border-b-2 border-orange-950 overflow-auto"
+        className="flex flex-row w-full xl:justify-center gap-2 text-stone-200 pb-2 mb-2 border-b-2 border-orange-950 overflow-auto"
       >
-        {tablesToShow.map((weekData) => (
-          <div
-            className={`flex flex-col gap-1 items-center`}
-            key={weekData.weekNumber}
-            id={weekData.weekNumber}
-          >
-            <LeaderboardTitleCard
-              table={weekData.table}
-              imageUrl={imagesUrls[weekData.vpsId]}
-              highlighted={highlightedId == weekData.weekNumber}
-            >
-              <div className="text-sm">Week #{weekData.weekNumber}</div>
-              {weekData.periodStart &&
-                weekData.periodEnd &&
-                weekData.periodStart !== "0NaN-aN-aN" && (
-                  <div className="text-sm">
-                    {new Date(weekData.periodStart).toLocaleDateString(
-                      undefined,
-                      {
-                        year: "numeric",
-                        month: "short",
-                        day: "numeric",
-                      },
+        {loading ? (
+          <Loading />
+        ) : (
+          (weeks ?? []).map((week) => {
+            const id = week.vpsId;
+            const key = `${id}-${week.table}`;
+            return (
+              <div
+                className="flex flex-col gap-1 items-center"
+                key={key}
+                id={key}
+              >
+                <LeaderboardTitleCard
+                  table={week.table}
+                  imageUrl={imagesUrls?.[id]}
+                >
+                  <div className="text-sm">Week #{week.weekNumber}</div>
+                  {week.periodStart &&
+                    week.periodEnd &&
+                    week.periodStart !== "0NaN-aN-aN" && (
+                      <div className="text-sm">
+                        {new Date(week.periodStart).toLocaleDateString(
+                          undefined,
+                          {
+                            year: "numeric",
+                            month: "short",
+                            day: "numeric",
+                          },
+                        )}
+                        {" to "}
+                        {new Date(week.periodEnd).toLocaleDateString(
+                          undefined,
+                          {
+                            year: "numeric",
+                            month: "short",
+                            day: "numeric",
+                          },
+                        )}
+                      </div>
                     )}
-                    {" to "}
-                    {new Date(weekData.periodEnd).toLocaleDateString(
-                      undefined,
-                      {
-                        year: "numeric",
-                        month: "short",
-                        day: "numeric",
-                      },
-                    )}
-                  </div>
-                )}
-              <Link href={weekData.tableUrl || "#"} target="_blank">
-                <div className="text-xl">{weekData.table}</div>
-                <div className="text-xs">VPS ID {weekData.vpsId}</div>
-              </Link>
-            </LeaderboardTitleCard>
-            <div className="flex flex-col gap-1 overflow-auto rounded-xl min-w-[320px] max-w-[320px]">
-              {weekData.scores.map((score, scoreIndex) => (
-                <CompetitionLeaderboardItem
-                  score={score}
-                  scoreIndex={scoreIndex}
-                  key={score.username}
-                />
-              ))}
-            </div>
-          </div>
-        ))}
+                  <Link href={week.tableUrl ?? "#"} target="_blank">
+                    <div className="text-xl">{week.table}</div>
+                    <div className="text-xs">VPS ID {id}</div>
+                  </Link>
+                </LeaderboardTitleCard>
+
+                <div className="flex flex-col gap-1 overflow-auto rounded-xl min-w-[320px] max-w-[320px]">
+                  {(week.scores ?? []).map((score, scoreIndex) => (
+                    <CompetitionLeaderboardItem
+                      key={`${week.weekId}-${score.username}-${score.score}`}
+                      score={score}
+                      scoreIndex={scoreIndex}
+                    />
+                  ))}
+                </div>
+              </div>
+            );
+          })
+        )}
       </div>
     </div>
   );

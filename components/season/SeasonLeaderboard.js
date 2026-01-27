@@ -1,3 +1,5 @@
+"use client";
+
 import SeasonLeaderboardItem from "@/components/season/SeasonLeaderboardItem";
 import SeasonDropdown from "@/components/season/SeasonDropdown";
 

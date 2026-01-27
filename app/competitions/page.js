@@ -12,12 +12,13 @@ export const metadata = {
   },
 };
 
-export default function CompetitionCornerPage() {
+export default function CompetitionCornerPage({ searchParams }) {
+  const searchTerm = searchParams?.searchTerm || "";
   return (
     <Suspense
       fallback={<LoadingMessage message={`Loading ${metadata.title}...`} />}
     >
-      <CompetitionDashboard />
+      <CompetitionDashboard searchTerm={searchTerm} />
     </Suspense>
   );
 }

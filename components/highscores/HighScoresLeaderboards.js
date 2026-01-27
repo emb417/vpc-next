@@ -4,15 +4,14 @@ import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { GiPreviousButton, GiNextButton, GiHighFive } from "react-icons/gi";
 import { CgSoftwareUpload } from "react-icons/cg";
+import { Tooltip, Input } from "antd";
 import Loading from "@/app/loading";
 import LeaderboardTitleCard from "@/components/shared/LeaderboardTitleCard";
 import HighScoresLeaderboardItem from "@/components/highscores/HighScoresLeaderboardItem";
-import { Tooltip, Input } from "antd";
 
 export default function HighScoresLeaderboards({
-  // SSR-provided props (server now passes these explicitly)
-  scoresData = [], // array of tables for page 1
-  totalCount = 0, // total number of tables across all pages
+  scoresData = [],
+  totalCount = 0,
   tablesPageAPI,
   tableImagesAPI,
 }) {
@@ -29,7 +28,7 @@ export default function HighScoresLeaderboards({
   useEffect(() => {
     const timerId = setTimeout(() => {
       setDebouncedSearchTerm(searchTerm);
-    }, 500); // 500ms debounce delay
+    }, 500);
 
     return () => {
       clearTimeout(timerId);
