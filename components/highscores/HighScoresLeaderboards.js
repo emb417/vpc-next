@@ -195,7 +195,7 @@ export default function HighScoresLeaderboards({
         ) : (
           (tables ?? []).map((table) => {
             const id = table.vpsId;
-            const key = `${id}-${table.tableName}`;
+            const key = `${id}-${table.tableName}-${table.versionNumber}`;
             return (
               <div
                 className="flex flex-col gap-1 items-center"
@@ -216,7 +216,7 @@ export default function HighScoresLeaderboards({
                 <div className="flex flex-col gap-1 overflow-auto rounded-xl min-w-[320px] max-w-[320px]">
                   {(table.scores ?? []).map((score, scoreIndex) => (
                     <HighScoresLeaderboardItem
-                      key={`${table.vpsId ?? id}-${score.scoreId}`}
+                      key={`${id}-${table.tableName}-${table.versionNumber}-${score.scoreId}`}
                       score={score}
                       scoreIndex={scoreIndex}
                     />
