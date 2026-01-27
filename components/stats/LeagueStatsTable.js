@@ -20,6 +20,15 @@ function onFilterNumeric(value, record, operator) {
   }
 }
 
+function getSortedPlayerStats(playerStats, sortedInfo, rankKeyMap) {
+  if (!sortedInfo.columnKey) return playerStats;
+
+  return playerStats.map((stat) => ({
+    ...stat,
+    rank: stat[rankKeyMap[sortedInfo.columnKey]],
+  }));
+}
+
 function StatsTable({ playerStats, rankKeyMap }) {
   const [filteredInfo, setFilteredInfo] = useState({});
   const [sortedInfo, setSortedInfo] = useState({});
@@ -179,20 +188,9 @@ function StatsTable({ playerStats, rankKeyMap }) {
     setSortedInfo(sorter);
   };
 
-  const getSortedPlayerStats = (playerStats, sortedInfo) => {
-    if (!sortedInfo.columnKey) {
-      return playerStats;
-    }
-
-    return playerStats.map((stat, index) => ({
-      ...stat,
-      rank: stat[rankKeyMap[sortedInfo.columnKey]],
-    }));
-  };
-
   const sortedPlayerStats = useMemo(
-    () => getSortedPlayerStats(playerStats, sortedInfo),
-    [playerStats, sortedInfo, getSortedPlayerStats],
+    () => getSortedPlayerStats(playerStats, sortedInfo, rankKeyMap),
+    [playerStats, sortedInfo, rankKeyMap],
   );
 
   return (
