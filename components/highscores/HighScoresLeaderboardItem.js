@@ -2,6 +2,22 @@ import Link from "next/link";
 import { Tooltip } from "antd";
 
 export default function HighScoresLeaderboardItem({ score, scoreIndex }) {
+  if (!score || typeof score.score === "undefined") {
+    return (
+      <div
+        className={`flex items-center gap-2 justify-left rounded-full pr-1 w-full ${scoreIndex % 2 === 0 ? "bg-stone-900" : "bg-stone-800"}`}
+      >
+        <div className="flex items-center pl-2 text-orange-300">
+          {scoreIndex + 1}.
+        </div>
+        <div className="flex items-center truncate">No Score.</div>
+        <div className="ml-auto mr-1 flex gap-2 flex-row items-center">
+          <div className="text-orange-300 text-sm">0</div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div
       className={`flex items-center gap-2 justify-left rounded-full pr-1 w-full ${

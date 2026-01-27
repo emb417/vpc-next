@@ -7,7 +7,7 @@ import { CgSoftwareUpload } from "react-icons/cg";
 import Loading from "@/app/loading";
 import LeaderboardTitleCard from "@/components/shared/LeaderboardTitleCard";
 import HighScoresLeaderboardItem from "@/components/highscores/HighScoresLeaderboardItem";
-import { Tooltip } from "antd";
+import { Tooltip, Input } from "antd";
 
 export default function HighScoresLeaderboards({
   // SSR-provided props (server now passes these explicitly)
@@ -23,6 +23,18 @@ export default function HighScoresLeaderboards({
   const [loading, setLoading] = useState(false);
   const [imagesUrls, setImagesUrls] = useState({});
   const scrollableDivRef = useRef(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(searchTerm);
+
+  useEffect(() => {
+    const timerId = setTimeout(() => {
+      setDebouncedSearchTerm(searchTerm);
+    }, 500); // 500ms debounce delay
+
+    return () => {
+      clearTimeout(timerId);
+    };
+  }, [searchTerm]);
 
   const totalPages = Math.max(1, Math.ceil(count / tablesPerPage));
 
@@ -37,7 +49,7 @@ export default function HighScoresLeaderboards({
 
   useEffect(() => {
     const loadPage = async () => {
-      if (page === 1) {
+      if (page === 1 && !debouncedSearchTerm) {
         setTables(Array.isArray(scoresData) ? scoresData : []);
         setCount(
           Number.isFinite(Number(totalCount))
@@ -51,7 +63,10 @@ export default function HighScoresLeaderboards({
 
       setLoading(true);
       const offset = (page - 1) * tablesPerPage;
-      const url = `${tablesPageAPI}?limit=${tablesPerPage}&offset=${offset}`;
+      let url = `${tablesPageAPI}?limit=${tablesPerPage}&offset=${offset}`;
+      if (debouncedSearchTerm) {
+        url += `&searchTerm=${encodeURIComponent(debouncedSearchTerm)}`;
+      }
 
       try {
         const res = await fetch(url);
@@ -70,7 +85,11 @@ export default function HighScoresLeaderboards({
     };
 
     loadPage();
-  }, [page, tablesPageAPI, scoresData, totalCount]);
+  }, [page, tablesPageAPI, scoresData, totalCount, debouncedSearchTerm]);
+
+  useEffect(() => {
+    setPage(1);
+  }, [debouncedSearchTerm]);
 
   useEffect(() => {
     const fetchImagesForTables = async () => {
@@ -122,8 +141,17 @@ export default function HighScoresLeaderboards({
           </Tooltip>
         </h1>
 
-        <div className="flex flex-row items-center gap-8 ml-auto">
-          <div className="flex flex-row items-center gap-2 text-stone-200 ml-auto">
+        <div className="flex flex-row items-center ml-auto gap-4">
+          <div className="hidden lg:flex w-[230px] items-center mx-auto">
+            <Input
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Search for table name"
+              allowClear
+              size="small"
+            />
+          </div>
+          <div className="flex flex-row items-center gap-2 text-stone-200">
             <button
               className="p-1 rounded-lg bg-orange-950 text-xs hover:bg-orange-800 duration-300"
               onClick={() => setPage((p) => Math.max(1, p - 1))}
@@ -144,6 +172,18 @@ export default function HighScoresLeaderboards({
               <GiNextButton className="text-xl" />
             </button>
           </div>
+        </div>
+      </div>
+
+      <div className="lg:hidden flex w-full justify-center items-center pl-2 pb-3 text-stone-200">
+        <div className="flex flex-row items-center w-[190px]">
+          <Input
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            placeholder="Search for table name"
+            allowClear
+            size="small"
+          />
         </div>
       </div>
 
