@@ -3,7 +3,7 @@ import LeagueStatsTable from "@/components/stats/LeagueStatsTable";
 
 async function getData() {
   try {
-    const url = `${process.env.SSR_BASE_URL}${process.env.VPC_API_RECENT_WEEKS}`;
+    const url = `${process.env.SSR_BASE_URL}${process.env.VPC_API_RECENT_WEEKS}?limit=52`;
     console.log(`🚀 Req ${url}`);
 
     const response = await fetch(url, {
