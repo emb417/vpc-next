@@ -5,11 +5,15 @@ import RankLeaderboard from "@/components/main/RankLeaderboard";
 
 async function getData() {
   try {
-    const response = await fetch(
-      `${process.env.SSR_BASE_URL}${process.env.VPC_API_RECENT_WEEKS}?limit=13`,
-      {
-        next: { revalidate: 300 },
-      },
+    const url = `${process.env.SSR_BASE_URL}${process.env.VPC_API_RECENT_WEEKS}?limit=13`;
+    console.log(`🚀 Req ${url}`);
+
+    const response = await fetch(url, {
+      next: { revalidate: 300 },
+    });
+
+    console.log(
+      `${response.ok ? "✅" : "❌"} Resp ${response.status} ${response.headers.get("Date")} `,
     );
 
     const data = await response.json();
@@ -27,9 +31,13 @@ async function getData() {
       };
     }
 
-    const vpsResponse = await fetch(
-      `${process.env.SSR_BASE_URL}${process.env.VPS_API_TABLES_PATH}/${positionWeeksData[0].vpsId}`,
-      { next: { revalidate: 1800 } },
+    const vpsUrl = `${process.env.SSR_BASE_URL}${process.env.VPS_API_TABLES_PATH}/${positionWeeksData[0].vpsId}`;
+    console.log(`🚀 Req ${vpsUrl}`);
+
+    const vpsResponse = await fetch(vpsUrl, { next: { revalidate: 1800 } });
+
+    console.log(
+      `${vpsResponse.ok ? "✅" : "❌"} Resp ${vpsResponse.status} ${vpsResponse.headers.get("Date")} `,
     );
 
     const vpsData = await vpsResponse.json();
@@ -42,8 +50,10 @@ async function getData() {
       },
     };
   } catch (error) {
-    console.error(error);
-    return { props: { message: "Server Error" } };
+    console.error("SSR getData error:", error);
+    return {
+      props: { recentPlayerStats: [], positionWeeksData: [], vpsData: null },
+    };
   }
 }
 

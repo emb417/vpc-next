@@ -3,12 +3,12 @@ import HighScoresLeaderboards from "@/components/highscores/HighScoresLeaderboar
 async function getData() {
   try {
     const url = `${process.env.SSR_BASE_URL}${process.env.VPC_API_RECENT_TABLES}?limit=4&offset=0`;
-    console.log(`🚀 SSR Fetch Req ${url}`);
+    console.log(`🚀 Req ${url}`);
 
     const response = await fetch(url, { next: { revalidate: 300 } });
 
     console.log(
-      `${response.ok ? "✅" : "❌"} SSR Fetch Resp ${response.status} ${response.headers.get("Date")} `,
+      `${response.ok ? "✅" : "❌"} Resp ${response.status} ${response.headers.get("Date")} `,
     );
 
     const raw = await response.json();
@@ -20,10 +20,7 @@ async function getData() {
       scoresData = raw[0].results;
       totalCount = Number(raw[0].totalCount ?? scoresData.length);
     } else {
-      console.error(
-        "SSR unexpected API shape, returning empty results. Raw:",
-        raw,
-      );
+      console.error("Unexpected API shape, returning empty results. Raw:", raw);
     }
 
     return { props: { scoresData, totalCount } };

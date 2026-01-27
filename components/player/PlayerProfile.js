@@ -8,17 +8,21 @@ import PlayerCharts from "@/components/player/PlayerCharts";
 
 async function getPlayerSummaryData(username) {
   try {
-    const response = await fetch(
-      `${process.env.SSR_BASE_URL}${process.env.VPC_API_RECENT_WEEKS}?limit=52`,
-      {
-        next: { revalidate: 300 },
-      },
+    const url = `${process.env.SSR_BASE_URL}${process.env.VPC_API_RECENT_WEEKS}?limit=52`;
+    console.log(`🚀 Req ${url}`);
+
+    const response = await fetch(url, {
+      next: { revalidate: 300 },
+    });
+
+    console.log(
+      `${response.ok ? "✅" : "❌"} Resp ${response.status} ${response.headers.get("Date")} `,
     );
     const data = await response.json();
 
     return PlayerSummaryData(data, username);
   } catch (error) {
-    console.error(error);
+    console.error("SSR getPlayerSummaryData error:", error);
     throw new Error("Server Error");
   }
 }

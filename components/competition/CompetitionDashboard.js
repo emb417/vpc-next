@@ -7,12 +7,12 @@ async function getData(searchTerm, week) {
     else if (searchTerm) {
       url += `?searchTerm=${searchTerm}`;
     }
-    console.log(`🚀 SSR Fetch Req ${url}`);
+    console.log(`🚀 Req ${url}`);
 
     const response = await fetch(url, { next: { revalidate: 300 } });
 
     console.log(
-      `${response.ok ? "✅" : "❌"} SSR Fetch Resp ${response.status} ${response.headers.get("Date")} `,
+      `${response.ok ? "✅" : "❌"} Resp ${response.status} ${response.headers.get("Date")} `,
     );
 
     const raw = await response.json();

@@ -3,20 +3,25 @@ import LeagueStatsTable from "@/components/stats/LeagueStatsTable";
 
 async function getData() {
   try {
-    const response = await fetch(
-      `${process.env.SSR_BASE_URL}${process.env.VPC_API_RECENT_WEEKS}`,
-      {
-        next: { revalidate: 1800 },
-      },
+    const url = `${process.env.SSR_BASE_URL}${process.env.VPC_API_RECENT_WEEKS}`;
+    console.log(`🚀 Req ${url}`);
+
+    const response = await fetch(url, {
+      next: { revalidate: 1800 },
+    });
+
+    console.log(
+      `${response.ok ? "✅" : "❌"} Resp ${response.status} ${response.headers.get("Date")} `,
     );
+
     const data = await response.json();
 
     const { playerStats, rankKeyMap } = LeagueStats(data);
 
     return { props: { playerStats, rankKeyMap } };
   } catch (error) {
-    console.error(error);
-    return { props: { message: "Server Error" } };
+    console.error("SSR getData error:", error);
+    return { props: { playerStats: [], rankKeyMap: {} } };
   }
 }
 
