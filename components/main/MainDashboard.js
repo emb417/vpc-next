@@ -61,17 +61,12 @@ export default async function Leaderboards() {
   const { props } = await getData();
   const { recentPlayerStats, positionWeeksData, vpsData } = props;
   return (
-    <div className="flex flex-col w-full max-h-dvh items-center justify-center gap-1 pb-2">
-      <div className="flex flex-row w-full md:justify-center gap-4 py-2 overflow-auto border-b-2 border-orange-950">
-        <div className="flex min-w-[320px] max-w-[320px] lg:min-w-[420px] lg:max-w-[420px]">
-          <WeeklyLeaderboard
-            weekData={positionWeeksData[0]}
-            vpsData={vpsData}
-          />
-        </div>
-        <div className="flex min-w-[320px] max-w-[320px] lg:min-w-[420px] lg:max-w-[420px]">
-          <RankLeaderboard recentPlayerStats={recentPlayerStats} />
-        </div>
+    <div className="grid grid-cols-12 gap-8 mb-14 py-2 w-full max-w-5xl">
+      <div className="col-span-12 sm:col-span-6">
+        <WeeklyLeaderboard weekData={positionWeeksData[0]} vpsData={vpsData} />
+      </div>
+      <div className="col-span-12 sm:col-span-6">
+        <RankLeaderboard recentPlayerStats={recentPlayerStats} />
       </div>
     </div>
   );
