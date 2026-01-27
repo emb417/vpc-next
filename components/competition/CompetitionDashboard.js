@@ -1,9 +1,10 @@
 import CompetitionLeaderboards from "@/components/competition/CompetitionLeaderboards";
 
-async function getData(searchTerm) {
+async function getData(searchTerm, week) {
   try {
     let url = `${process.env.SSR_BASE_URL}${process.env.VPC_API_COMPETITION_WEEKS}`;
-    if (searchTerm) {
+    if (week) url += `?week=${week}`;
+    else if (searchTerm) {
       url += `?searchTerm=${searchTerm}`;
     }
     console.log(`🚀 SSR Fetch Req ${url}`);
@@ -36,8 +37,8 @@ async function getData(searchTerm) {
   }
 }
 
-export default async function CompetitionDashboard({ searchTerm }) {
-  const { props } = await getData(searchTerm);
+export default async function CompetitionDashboard({ searchTerm, week }) {
+  const { props } = await getData(searchTerm, week);
   const { scoresData, totalCount } = props;
   return (
     <CompetitionLeaderboards

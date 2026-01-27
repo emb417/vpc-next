@@ -6,7 +6,7 @@ import RankLeaderboard from "@/components/main/RankLeaderboard";
 async function getData() {
   try {
     const response = await fetch(
-      `${process.env.SSR_BASE_URL}${process.env.VPC_API_RECENT_WEEKS}`,
+      `${process.env.SSR_BASE_URL}${process.env.VPC_API_RECENT_WEEKS}?limit=13`,
       {
         next: { revalidate: 300 },
       },
