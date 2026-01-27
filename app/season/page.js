@@ -12,12 +12,13 @@ export const metadata = {
   },
 };
 
-export default function SeasonPage() {
+export default function SeasonPage({ searchParams }) {
+  const season = searchParams?.season || "5";
   return (
     <Suspense
       fallback={<LoadingMessage message={`Loading ${metadata.title}...`} />}
     >
-      <SeasonDashboard />
+      <SeasonDashboard season={season} />
     </Suspense>
   );
 }
