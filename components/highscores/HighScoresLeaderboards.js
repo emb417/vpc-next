@@ -194,7 +194,7 @@ export default function HighScoresLeaderboards({
           <Loading />
         ) : (
           (tables ?? []).map((table) => {
-            const id = table.vpsId ?? table.tableId;
+            const id = table.vpsId;
             const key = `${id}-${table.tableName}`;
             return (
               <div
@@ -208,6 +208,7 @@ export default function HighScoresLeaderboards({
                 >
                   <Link href={table.tableUrl || "#"} target="_blank">
                     <div className="text-xl">{table.tableName}</div>
+                    <div className="text-sm">v{table.versionNumber}</div>
                     <div className="text-xs">VPS ID {id}</div>
                   </Link>
                 </LeaderboardTitleCard>
@@ -215,7 +216,7 @@ export default function HighScoresLeaderboards({
                 <div className="flex flex-col gap-1 overflow-auto rounded-xl min-w-[320px] max-w-[320px]">
                   {(table.scores ?? []).map((score, scoreIndex) => (
                     <HighScoresLeaderboardItem
-                      key={`${table.tableId ?? id}-${score.scoreId}`}
+                      key={`${table.vpsId ?? id}-${score.scoreId}`}
                       score={score}
                       scoreIndex={scoreIndex}
                     />
