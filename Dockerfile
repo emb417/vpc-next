@@ -6,6 +6,8 @@
 # -----------------------------------------------------------
 FROM node:24-slim AS builder
 
+ENV TZ=America/Los_Angeles
+
 # Set the working directory inside the container. All subsequent commands will
 # run in this directory unless otherwise specified.
 WORKDIR /app
@@ -39,6 +41,8 @@ RUN NEXT_TELEMETRY_DISABLED=1 npm run build
 # the production application, reducing the final image size and attack surface.
 # -----------------------------------------------------------
 FROM node:24-slim AS runner
+
+ENV TZ=America/Los_Angeles
 
 # Set the working directory.
 WORKDIR /app
