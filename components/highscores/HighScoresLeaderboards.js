@@ -9,6 +9,14 @@ import Loading from "@/app/loading";
 import LeaderboardTitleCard from "@/components/shared/LeaderboardTitleCard";
 import HighScoresLeaderboardItem from "@/components/highscores/HighScoresLeaderboardItem";
 
+const truncate = (str, num) => {
+  if (str.length > num) {
+    return str.slice(0, num) + "...";
+  } else {
+    return str;
+  }
+};
+
 export default function HighScoresLeaderboards({
   scoresData = [],
   totalCount = 0,
@@ -208,6 +216,11 @@ export default function HighScoresLeaderboards({
                 >
                   <Link href={table.tableUrl || "#"} target="_blank">
                     <div className="text-xl">{table.tableName}</div>
+                    <div className="text-md">
+                      {table.authorName
+                        ? truncate(table.authorName, 30)
+                        : "Unknown"}
+                    </div>
                     <div className="text-sm">v{table.versionNumber}</div>
                     <div className="text-xs">VPS ID {id}</div>
                   </Link>
