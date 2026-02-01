@@ -5,7 +5,7 @@ import { Tooltip } from "antd";
 
 export default function RankLeaderboard({ recentPlayerStats }) {
   return (
-    <div className="flex flex-col h-full w-full items-center justify-center">
+    <div className="flex flex-col w-full items-center justify-center">
       <div className="flex flex-col mb-2 items-center">
         <Image
           src="/icon.png"

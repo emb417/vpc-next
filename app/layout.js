@@ -2,7 +2,7 @@ import TopBar from "@/components/nav/TopBar";
 import "./globals.css";
 
 export const metadata = {
-  metadataBase: new URL("https://virtualpinballchat.com"),
+  metadataBase: process.env.METADATA_URL,
 };
 
 export default function RootLayout({ children }) {

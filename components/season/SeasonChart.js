@@ -40,7 +40,8 @@ export default function PinballChart({ weeksData }) {
   const [data, setData] = useState({ datasets: [] });
 
   const usernames = useMemo(() => {
-    const sortedScores = weeksData[0].scores.sort(
+    if (!weeksData || weeksData.length === 0 || !weeksData[0].scores) return [];
+    const sortedScores = [...weeksData[0].scores].sort(
       (a, b) => b.cumulativePoints - a.cumulativePoints
     );
     const usernamesSet = new Set(sortedScores.map((score) => score.username));
@@ -59,13 +60,14 @@ export default function PinballChart({ weeksData }) {
   }, [usernames]);
 
   useEffect(() => {
-    const filteredWeeksData = weeksData.filter((item) => item.season === 5);
+    if (!weeksData || weeksData.length === 0) return;
+
     const topScores = weeksData[0].scores.slice(0, 20);
     const datasets = topScores.map((score) => {
       return {
         type: "line",
         label: score.username,
-        data: filteredWeeksData.map((item) => ({
+        data: weeksData.map((item) => ({
           x: item.currentSeasonWeekNumber,
           y: getScores(item, [score.username])[0]?.cumulativePoints || null,
         })),
@@ -81,7 +83,7 @@ export default function PinballChart({ weeksData }) {
       };
     });
 
-    const label = filteredWeeksData.map((item) => item.currentSeasonWeekNumber);
+    const label = weeksData.map((item) => item.currentSeasonWeekNumber);
     setData({ label, datasets });
   }, [weeksData, usernameOptions]);
 

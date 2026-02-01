@@ -1,50 +1,45 @@
 import HighScoresLeaderboards from "@/components/highscores/HighScoresLeaderboards";
-import { console } from "inspector";
 
 async function getData() {
   try {
-    const vpsResponse = await fetch(
-      `${process.env.SSR_BASE_URL}${process.env.VPC_API_SCORES_PATH}`,
-      {
-        cache: "no-store",
-      }
+    const url = `${process.env.SSR_BASE_URL}${process.env.VPC_API_RECENT_TABLES}?limit=4&offset=0`;
+    console.log(`🚀 Req ${url}`);
+
+    const response = await fetch(url, { next: { revalidate: 300 } });
+
+    console.log(
+      `${response.ok ? "✅" : "❌"} Resp ${response.status} ${response.headers.get("Date")} `,
     );
-    const data = await vpsResponse.json();
 
-    const vpcResponse = await fetch(
-      `${process.env.SSR_BASE_URL}${process.env.VPC_API_PATH}`,
-      {
-        next: { revalidate: 3600 },
-      }
-    );
-    const vpcData = await vpcResponse.json();
+    const raw = await response.json();
 
-    const vpsIdsByRecency = Array.from(
-      new Set(
-        vpcData
-          .find((obj) => obj.channelName === "competition-corner")
-          .weeks.filter((week) => !isNaN(parseInt(week.weekNumber)))
-      )
-    )
-      .sort((a, b) => b.weekNumber - a.weekNumber)
-      .map((item) => item.vpsId);
+    let scoresData = [];
+    let totalCount = 0;
 
-    return { props: { data, vpsIdsByRecency } };
+    if (Array.isArray(raw) && raw.length > 0) {
+      scoresData = raw[0].results;
+      totalCount = Number(raw[0].totalCount ?? scoresData.length);
+    } else {
+      console.error("Unexpected API shape, returning empty results. Raw:", raw);
+    }
+
+    return { props: { scoresData, totalCount } };
   } catch (error) {
-    console.error(error);
-    return { props: { message: "Server Error" } };
+    console.error("SSR getData error:", error);
+    return { props: { scoresData: [], totalCount: 0 } };
   }
 }
 
-export default async function HistoryDashboard() {
+export default async function HighScoresDashboard() {
   const { props } = await getData();
-  const { data, vpsIdsByRecency } = props;
+  const { scoresData, totalCount } = props;
 
   return (
     <HighScoresLeaderboards
-      scoresData={data}
-      vpsIdsByRecency={vpsIdsByRecency}
-      tablesAPI={`${process.env.CSR_BASE_URL}${process.env.VPS_API_TABLES_PATH}`}
+      scoresData={scoresData}
+      totalCount={totalCount}
+      tablesPageAPI={`${process.env.CSR_BASE_URL}${process.env.VPC_API_RECENT_TABLES}`}
+      tableImagesAPI={`${process.env.CSR_BASE_URL}${process.env.VPS_API_TABLES_PATH}`}
     />
   );
 }

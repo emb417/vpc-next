@@ -6,6 +6,8 @@
 # -----------------------------------------------------------
 FROM node:24-slim AS builder
 
+ENV TZ=America/Los_Angeles
+
 # Set the working directory inside the container. All subsequent commands will
 # run in this directory unless otherwise specified.
 WORKDIR /app
@@ -40,7 +42,8 @@ RUN NEXT_TELEMETRY_DISABLED=1 npm run build
 # -----------------------------------------------------------
 FROM node:24-slim AS runner
 
-ENV PORT=3333
+ENV TZ=America/Los_Angeles
+
 # Set the working directory.
 WORKDIR /app
 
@@ -54,7 +57,7 @@ COPY --from=builder --chown=node:node /app/.next/standalone ./
 COPY --from=builder --chown=node:node /app/.next/static ./.next/static
 
 # Expose the port on which the Next.js application will listen.
-EXPOSE 3333
+EXPOSE 3000
 
 # The command to run the Next.js application in production.
 # This starts the Next.js server.

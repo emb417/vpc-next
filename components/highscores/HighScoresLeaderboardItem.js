@@ -2,6 +2,22 @@ import Link from "next/link";
 import { Tooltip } from "antd";
 
 export default function HighScoresLeaderboardItem({ score, scoreIndex }) {
+  if (!score || typeof score.score === "undefined") {
+    return (
+      <div
+        className={`flex items-center gap-2 justify-left rounded-full pr-1 w-full ${scoreIndex % 2 === 0 ? "bg-stone-900" : "bg-stone-800"}`}
+      >
+        <div className="flex items-center pl-2 text-orange-300">
+          {scoreIndex + 1}.
+        </div>
+        <div className="flex items-center truncate">No Score.</div>
+        <div className="ml-auto mr-1 flex gap-2 flex-row items-center">
+          <div className="text-orange-300 text-sm">0</div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div
       className={`flex items-center gap-2 justify-left rounded-full pr-1 w-full ${
@@ -19,16 +35,13 @@ export default function HighScoresLeaderboardItem({ score, scoreIndex }) {
       </Link>
       <div className="ml-auto mr-1 flex gap-2 flex-row items-center">
         <Tooltip
-          title={`Posted at ${new Intl.DateTimeFormat(
-            "en-US",
-            {
-              year: "numeric",
-              month: "short",
-              day: "numeric",
-              hour: "numeric",
-              minute: "numeric",
-            }
-          ).format(new Date(score.posted))} for version ${score.versionNumber}`}
+          title={`${new Intl.DateTimeFormat("en-US", {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+            hour: "numeric",
+            minute: "numeric",
+          }).format(new Date(score.posted))}`}
           color="rgba(41, 37, 36, 0.8)"
         >
           <div className="text-orange-300 text-sm">

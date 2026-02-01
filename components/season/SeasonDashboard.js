@@ -1,15 +1,19 @@
-import SeasonChart from "@/components/season/SeasonChart";
-import SeasonLeaderboard from "@/components/season/SeasonLeaderboard";
+import SeasonDetails from "@/components/season/SeasonDetails";
 import SeasonStats from "@/lib/SeasonStats";
 
-async function getData() {
+async function getData(season) {
   try {
-    const response = await fetch(
-      `${process.env.SSR_BASE_URL}${process.env.VPC_API_PATH}`,
-      {
-        next: { revalidate: 3600 },
-      }
+    const url = `${process.env.SSR_BASE_URL}${process.env.VPC_API_SEASON_WEEKS}?season=${season}`;
+    console.log(`🚀 Req ${url}`);
+
+    const response = await fetch(url, {
+      next: { revalidate: 3600 },
+    });
+
+    console.log(
+      `${response.ok ? "✅" : "❌"} Resp ${response.status} ${response.headers.get("Date")} `,
     );
+
     const data = await response.json();
 
     const seasonWeeksData = SeasonStats(data);
@@ -20,22 +24,14 @@ async function getData() {
       },
     };
   } catch (error) {
-    console.error(error);
-    return { props: { message: "Server Error" } };
+    console.error("SSR getData error:", error);
+    return { props: { weeksData: [] } };
   }
 }
 
-export default async function SeasonDashboard() {
-  const { props } = await getData();
+export default async function SeasonDashboard({ season = "5" }) {
+  const { props } = await getData(season);
   const { weeksData } = props;
-  return (
-    <div className="grid grid-cols-12 mb-14 py-2 gap-4 w-full">
-      <div className="col-span-12 sm:col-span-8 md:col-span-6 lg:col-span-4 xl:col-span-3">
-        <SeasonLeaderboard weeksData={weeksData} />
-      </div>
-      <div className="invisible sm:visible col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-8 xl:col-span-9">
-        <SeasonChart weeksData={weeksData} />
-      </div>
-    </div>
-  );
+
+  return <SeasonDetails weeksData={weeksData} />;
 }

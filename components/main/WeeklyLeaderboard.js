@@ -5,7 +5,7 @@ import LeaderboardTitleCard from "@/components/shared/LeaderboardTitleCard";
 
 export default function WeeklyLeaderboard({ weekData, vpsData }) {
   return (
-    <div className="flex flex-col h-full w-full items-center text-stone-200">
+    <div className="flex flex-col w-full items-center text-stone-200">
       <LeaderboardTitleCard
         imageUrl={vpsData.b2sFiles?.[0]?.imgUrl ?? null}
         table={weekData.table}
@@ -32,10 +32,7 @@ export default function WeeklyLeaderboard({ weekData, vpsData }) {
               })}
             </div>
           )}
-        <Link
-          href={`https://virtual-pinball-spreadsheet.web.app/game/${weekData.vpsId}/`}
-          target="_blank"
-        >
+        <Link href={weekData.tableUrl ?? "#"} target="_blank">
           <div className="text-xl">{weekData.table}</div>
           <div className="text-xs">VPS ID {weekData.vpsId}</div>
         </Link>
@@ -60,6 +57,7 @@ export default function WeeklyLeaderboard({ weekData, vpsData }) {
                   height={20}
                   alt={score.username}
                   className="rounded-full"
+                  unoptimized
                 />
               </div>
               <span className="text-md text-stone-300 truncate">

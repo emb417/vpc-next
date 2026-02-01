@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import LoadingMessage from "@/components/nav/LoadingMessage";
 import PlayerProfile from "@/components/player/PlayerProfile";
 
+export const dynamic = "force-dynamic";
 export async function generateMetadata({ params }) {
   const username = params.username;
 
