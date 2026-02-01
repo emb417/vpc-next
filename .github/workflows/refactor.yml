@@ -1,6 +1,6 @@
 # This workflow builds and pushes the Docker image for the Next.js service to Docker Hub.
 
-name: Docker CI for VPC Next Service
+name: Docker CI for refactor branch
 
 on:
   push:

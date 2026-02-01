@@ -1,6 +1,6 @@
 # This workflow builds and pushes the Docker image for the Next.js service to Docker Hub.
 
-name: Docker CI for VPC Next Service
+name: Docker CI for main branch
 
 on:
   push:
@@ -35,4 +35,4 @@ jobs:
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/vpc-next:latest
             ${{ secrets.DOCKERHUB_USERNAME }}/vpc-next:${{ github.sha }}
-          platforms: linux/amd64
+          platforms: linux/amd64,linux/arm64
