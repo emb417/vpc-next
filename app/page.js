@@ -6,7 +6,7 @@ export const dynamic = "force-dynamic";
 export const metadata = {
   title: "Virtual Pinball Chat",
   description:
-    "Virtual Pinball Chat league's main dashboard for weekly competition and power ranking leaderboards, plus pages for high score leaderboards, player profiles, statistics, and more.",
+    "The hub for the Virtual Pinball Chat Competition League. Track weekly standings and power rankings, view global high scores, and dive into detailed player profiles and performance statistics.",
   alternates: {
     canonical: "/",
   },

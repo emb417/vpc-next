@@ -6,7 +6,7 @@ export const dynamic = "force-dynamic";
 export const metadata = {
   title: "Season Leaderboard",
   description:
-    "Virtaul Pinball Chat league's season leaderboard and chart, only for the current or most recent season.",
+    "Live Season Tracking. Access the current season’s definitive leaderboard and performance charts to see exactly where the field stands in the race for the title.",
   alternates: {
     canonical: "/season",
   },

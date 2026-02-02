@@ -8,7 +8,7 @@ export async function generateMetadata({ params }) {
 
   return {
     title: `VPC Player ${username}`,
-    description: `Virtual Pinball Chat league's player ${username} ranking, rivals, stats, competition history, charts and more.`,
+    description: `Player Profile: ${username}. A complete career breakdown featuring personal power rankings, closest rivalries, competition history, and performance charts.`,
     alternates: {
       canonical: `/player/${username}`,
     },

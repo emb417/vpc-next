@@ -6,7 +6,7 @@ export const dynamic = "force-dynamic";
 export const metadata = {
   title: "League Statistics",
   description:
-    "Virtual Pinball Chat league's statistics for the past 52 weeks and 13 weeks.",
+    "Comprehensive performance analytics. Analyze league trends and player momentum with detailed statistical breakdowns covering the past 13 and 52 weeks.",
   alternates: {
     canonical: "/stats",
   },

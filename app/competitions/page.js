@@ -6,7 +6,7 @@ export const dynamic = "force-dynamic";
 export const metadata = {
   title: "Competition Corner",
   description:
-    "Virtual Pinball Chat league's weekly competitions. Filter by table name, VPS ID, and sort by name or recently played in competition.",
+    "Weekly Competition Archive. Relive every past event with a searchable database of weekly tables. Simply search by Table Name to access dedicated historical leaderboards.",
   alternates: {
     canonical: "/competitions",
   },

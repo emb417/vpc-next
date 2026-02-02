@@ -6,7 +6,7 @@ export const dynamic = "force-dynamic";
 export const metadata = {
   title: "High Score Corner",
   description:
-    "Virtual Pinball Chat high score corner leaderboards. Filter by table name, VPS ID, and sort by name or recently played in competition.",
+    "High Score Corner. Master the machines with a searchable database of tablea. Search by Table Name to see the most recent high scores posted.",
   alternates: {
     canonical: "/highscores",
   },
