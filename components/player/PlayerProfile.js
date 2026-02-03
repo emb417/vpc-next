@@ -11,9 +11,7 @@ async function getPlayerSummaryData(username) {
     const url = `${process.env.SSR_BASE_URL}${process.env.VPC_API_RECENT_WEEKS}?limit=52`;
     console.log(`🚀 Req ${url}`);
 
-    const response = await fetch(url, {
-      next: { revalidate: 300 },
-    });
+    const response = await fetch(url, { cache: "no-store" });
 
     console.log(
       `${response.ok ? "✅" : "❌"} Resp ${response.status} ${response.headers.get("Date")} `,

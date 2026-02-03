@@ -51,7 +51,7 @@ This file provides instructional context for Gemini CLI interactions within the 
 ## Development Conventions
 
 - **Server Components:** Prefer React Server Components (RSC) for data fetching where possible (e.g., `MainDashboard.js`).
-- **Data Fetching:** Uses standard `fetch` with Next.js revalidation options (`{ next: { revalidate: ... } }`).
+- **Data Fetching:** Uses standard `fetch` with Next.js no cache (`{ cache: "no-store" }`) and revalidation options (`{ next: { revalidate: ... } }`).
 - **Styling:** Primarily utility-first CSS using Tailwind. Components from Ant Design are used for complex UI elements like dropdowns or tables.
 - **State Management:** Relies on URL parameters and server-side state for most navigation-driven data.
 - **Standalone Output:** The project is configured for `output: 'standalone'` in `next.config.mjs` for optimized Docker deployments.

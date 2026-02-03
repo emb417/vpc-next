@@ -9,7 +9,7 @@ async function getData(searchTerm, week) {
     }
     console.log(`🚀 Req ${url}`);
 
-    const response = await fetch(url, { next: { revalidate: 300 } });
+    const response = await fetch(url, { cache: "no-store" });
 
     console.log(
       `${response.ok ? "✅" : "❌"} Resp ${response.status} ${response.headers.get("Date")} `,

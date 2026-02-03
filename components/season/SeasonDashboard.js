@@ -6,9 +6,7 @@ async function getData(season) {
     const url = `${process.env.SSR_BASE_URL}${process.env.VPC_API_SEASON_WEEKS}?season=${season}`;
     console.log(`🚀 Req ${url}`);
 
-    const response = await fetch(url, {
-      next: { revalidate: 3600 },
-    });
+    const response = await fetch(url, { cache: "no-store" });
 
     console.log(
       `${response.ok ? "✅" : "❌"} Resp ${response.status} ${response.headers.get("Date")} `,
