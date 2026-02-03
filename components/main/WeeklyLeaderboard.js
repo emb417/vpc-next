@@ -1,7 +1,7 @@
 import Link from "next/link";
-import Image from "next/image";
 import { Tooltip } from "antd";
 import LeaderboardTitleCard from "@/components/shared/LeaderboardTitleCard";
+import PlayerImage from "@/components/player/PlayerImage";
 
 export default function WeeklyLeaderboard({ weekData, vpsData }) {
   return (
@@ -40,7 +40,9 @@ export default function WeeklyLeaderboard({ weekData, vpsData }) {
       <div className="flex flex-col overflow-auto w-full items-center gap-1">
         {weekData.scores.map((score, index) => (
           <Link
-            href={`/player/${score.username}`}
+            href={
+              score.username === "No Score" ? "#" : `/player/${score.username}`
+            }
             key={score.username}
             className={`flex flex-col w-full items-center justify-left rounded-xl px-2 ${
               index % 2 === 0 ? "bg-stone-900" : "bg-stone-800"
@@ -51,12 +53,10 @@ export default function WeeklyLeaderboard({ weekData, vpsData }) {
                 {score.position}.
               </div>
               <div className="flex rounded-full items-center">
-                <Image
+                <PlayerImage
                   src={score.userAvatarUrl}
-                  width={20}
-                  height={20}
                   alt={score.username}
-                  className="rounded-full"
+                  fallbackClassName="w-6 h-6"
                   unoptimized
                 />
               </div>
