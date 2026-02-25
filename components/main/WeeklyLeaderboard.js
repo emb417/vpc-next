@@ -4,6 +4,14 @@ import LeaderboardTitleCard from "@/components/shared/LeaderboardTitleCard";
 import LeaderboardTitleCardContent from "@/components/shared/LeaderboardTitleCardContent";
 import PlayerImage from "@/components/player/PlayerImage";
 
+const truncate = (str, num) => {
+  if (str.length > num) {
+    return str.slice(0, num) + "...";
+  } else {
+    return str;
+  }
+};
+
 export default function WeeklyLeaderboard({ weekData, vpsData }) {
   const downloadUrl = weekData.tableUrl ?? "#";
 
@@ -25,6 +33,9 @@ export default function WeeklyLeaderboard({ weekData, vpsData }) {
           periodStart={weekData.periodStart}
           periodEnd={weekData.periodEnd}
           version={weekData.versionNumber}
+          author={
+            weekData.authorName ? truncate(weekData.authorName, 30) : undefined
+          }
         />
       </LeaderboardTitleCard>
 

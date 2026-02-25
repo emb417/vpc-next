@@ -14,6 +14,13 @@ import LeaderboardTitleCard from "@/components/shared/LeaderboardTitleCard";
 import LeaderboardTitleCardContent from "@/components/shared/LeaderboardTitleCardContent";
 import CompetitionLeaderboardItem from "@/components/competition/CompetitionLeaderboardItem";
 
+const truncate = (str, num) => {
+  if (str.length > num) {
+    return str.slice(0, num) + "...";
+  } else {
+    return str;
+  }
+};
 // ---------------------------------------------------------------------------
 // Main component
 // ---------------------------------------------------------------------------
@@ -227,6 +234,11 @@ export default function CompetitionLeaderboards({
                     periodStart={week.periodStart}
                     periodEnd={week.periodEnd}
                     version={week.versionNumber}
+                    author={
+                      week.authorName
+                        ? truncate(week.authorName, 30)
+                        : undefined
+                    }
                   />
                 </LeaderboardTitleCard>
 
