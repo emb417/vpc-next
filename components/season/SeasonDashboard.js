@@ -13,23 +13,46 @@ async function getData(season) {
     );
 
     const data = await response.json();
-
     const seasonWeeksData = SeasonStats(data);
 
-    return {
-      props: {
-        weeksData: seasonWeeksData,
-      },
-    };
+    return seasonWeeksData;
   } catch (error) {
     console.error("SSR getData error:", error);
-    return { props: { weeksData: [] } };
+    return [];
   }
 }
 
-export default async function SeasonDashboard({ season = "5" }) {
-  const { props } = await getData(season);
-  const { weeksData } = props;
+async function getSeasons() {
+  try {
+    const url = `${process.env.SSR_BASE_URL}${process.env.VPC_API_SEASONS}`;
+    console.log(`🚀 Req ${url}`);
+    const response = await fetch(url, { cache: "no-store" });
+    console.log(
+      `${response.ok ? "✅" : "❌"} Resp ${response.status} ${response.headers.get("Date")}`,
+    );
+    const data = await response.json();
+    return data
+      .sort((a, b) => Number(b.seasonNumber) - Number(a.seasonNumber))
+      .map((season) => ({
+        value: season.seasonNumber.toString(),
+        label: season.seasonName,
+      }));
+  } catch (error) {
+    console.error("SSR getSeasons error:", error);
+    return [];
+  }
+}
 
-  return <SeasonDetails weeksData={weeksData} />;
+export default async function SeasonDashboard({ season }) {
+  const seasonOptions = await getSeasons();
+  const currentSeason = season ?? seasonOptions[0]?.value;
+  const weeksData = await getData(currentSeason);
+
+  return (
+    <SeasonDetails
+      weeksData={weeksData}
+      currentSeasonId={currentSeason}
+      seasonOptions={seasonOptions}
+    />
+  );
 }
