@@ -11,8 +11,12 @@ import { CgSoftwareUpload } from "react-icons/cg";
 import { Input, Tooltip } from "antd";
 import Loading from "@/app/loading";
 import LeaderboardTitleCard from "@/components/shared/LeaderboardTitleCard";
+import LeaderboardTitleCardContent from "@/components/shared/LeaderboardTitleCardContent";
 import CompetitionLeaderboardItem from "@/components/competition/CompetitionLeaderboardItem";
 
+// ---------------------------------------------------------------------------
+// Main component
+// ---------------------------------------------------------------------------
 export default function CompetitionLeaderboards({
   scoresData = [],
   totalCount = 0,
@@ -33,31 +37,22 @@ export default function CompetitionLeaderboards({
     const timerId = setTimeout(() => {
       setDebouncedSearchTerm(searchTerm);
     }, 500);
-
-    return () => {
-      clearTimeout(timerId);
-    };
+    return () => clearTimeout(timerId);
   }, [searchTerm]);
 
   const totalPages = Math.max(1, Math.ceil(count / weeksPerPage));
 
   function unwindResponseShape(raw) {
     if (!raw) return { results: [], totalCount: 0 };
-
-    // Case A: pipeline returns [{ totalCount, results }]
     if (Array.isArray(raw) && raw.length > 0 && raw[0].results) {
       return {
         results: raw[0].results,
         totalCount: Number(raw[0].totalCount ?? 0),
       };
     }
-
-    // Case B: pipeline returns empty array
     if (Array.isArray(raw) && raw.length === 0) {
       return { results: [], totalCount: 0 };
     }
-
-    // Case C: unexpected but safe fallback
     return { results: [], totalCount: 0 };
   }
 
@@ -138,6 +133,7 @@ export default function CompetitionLeaderboards({
 
   return (
     <div className="flex flex-col flex-grow w-full max-h-dvh">
+      {/* ── Header ── */}
       <div className="flex flex-row w-full items-center justify-start py-2">
         <h1 className="flex flex-row items-center gap-1 text-lg text-stone-200">
           <GiPinballFlipper />
@@ -173,11 +169,9 @@ export default function CompetitionLeaderboards({
             >
               <GiPreviousButton className="text-xl" />
             </button>
-
             <span className="min-w-[max-content] text-xs text-center">
               Page {page} of {Number.isFinite(totalPages) ? totalPages : 1}
             </span>
-
             <button
               className="p-1 rounded-lg bg-orange-950 text-xs hover:bg-orange-800 duration-300"
               onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
@@ -189,6 +183,7 @@ export default function CompetitionLeaderboards({
         </div>
       </div>
 
+      {/* ── Mobile search ── */}
       <div className="lg:hidden flex w-full justify-center items-center pl-2 pb-3 text-stone-200">
         <div className="flex flex-row items-center w-[190px]">
           <Input
@@ -201,6 +196,7 @@ export default function CompetitionLeaderboards({
         </div>
       </div>
 
+      {/* ── Leaderboard columns ── */}
       <div
         ref={scrollableDivRef}
         className="flex flex-row w-full xl:justify-center gap-2 text-stone-200 pb-2 mb-2 border-b-2 border-orange-950 overflow-auto"
@@ -211,6 +207,8 @@ export default function CompetitionLeaderboards({
           (weeks ?? []).map((week) => {
             const id = week.vpsId;
             const key = `${id}-${week.table}`;
+            const downloadUrl = week.tableUrl ?? "#";
+
             return (
               <div
                 className="flex flex-col gap-1 items-center"
@@ -221,36 +219,18 @@ export default function CompetitionLeaderboards({
                   table={week.table}
                   imageUrl={imagesUrls?.[id]}
                 >
-                  <div className="text-sm">Week #{week.weekNumber}</div>
-                  {week.periodStart &&
-                    week.periodEnd &&
-                    week.periodStart !== "0NaN-aN-aN" && (
-                      <div className="text-sm">
-                        {new Date(week.periodStart).toLocaleDateString(
-                          undefined,
-                          {
-                            year: "numeric",
-                            month: "short",
-                            day: "numeric",
-                          },
-                        )}
-                        {" to "}
-                        {new Date(week.periodEnd).toLocaleDateString(
-                          undefined,
-                          {
-                            year: "numeric",
-                            month: "short",
-                            day: "numeric",
-                          },
-                        )}
-                      </div>
-                    )}
-                  <Link href={week.tableUrl ?? "#"} target="_blank">
-                    <div className="text-xl">{week.table}</div>
-                    <div className="text-xs">VPS ID {id}</div>
-                  </Link>
+                  <LeaderboardTitleCardContent
+                    title={week.table}
+                    vpsId={id}
+                    downloadUrl={week.tableUrl}
+                    weekNumber={week.weekNumber}
+                    periodStart={week.periodStart}
+                    periodEnd={week.periodEnd}
+                    version={week.versionNumber}
+                  />
                 </LeaderboardTitleCard>
 
+                {/* ── Scores list ── */}
                 <div className="flex flex-col gap-1 overflow-auto rounded-xl min-w-[320px] max-w-[320px]">
                   {(week.scores ?? []).map((score, scoreIndex) => (
                     <CompetitionLeaderboardItem

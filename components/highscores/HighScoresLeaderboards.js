@@ -7,6 +7,7 @@ import { CgSoftwareUpload } from "react-icons/cg";
 import { Tooltip, Input } from "antd";
 import Loading from "@/app/loading";
 import LeaderboardTitleCard from "@/components/shared/LeaderboardTitleCard";
+import LeaderboardTitleCardContent from "@/components/shared/LeaderboardTitleCardContent";
 import HighScoresLeaderboardItem from "@/components/highscores/HighScoresLeaderboardItem";
 
 const truncate = (str, num) => {
@@ -17,6 +18,9 @@ const truncate = (str, num) => {
   }
 };
 
+// ---------------------------------------------------------------------------
+// Main component
+// ---------------------------------------------------------------------------
 export default function HighScoresLeaderboards({
   scoresData = [],
   totalCount = 0,
@@ -37,17 +41,13 @@ export default function HighScoresLeaderboards({
     const timerId = setTimeout(() => {
       setDebouncedSearchTerm(searchTerm);
     }, 500);
-
-    return () => {
-      clearTimeout(timerId);
-    };
+    return () => clearTimeout(timerId);
   }, [searchTerm]);
 
   const totalPages = Math.max(1, Math.ceil(count / tablesPerPage));
 
   function unwindResponseShape(raw) {
     if (!raw) return { results: [], totalCount: 0 };
-
     return {
       results: raw[0].results ?? [],
       totalCount: Number(raw[0].totalCount ?? 0),
@@ -131,6 +131,7 @@ export default function HighScoresLeaderboards({
 
   return (
     <div className="flex flex-col flex-grow w-full max-h-dvh">
+      {/* ── Header ── */}
       <div className="flex flex-row w-full items-center justify-start py-2">
         <h1 className="flex flex-row items-center gap-1 text-lg text-stone-200">
           <GiHighFive />
@@ -166,11 +167,9 @@ export default function HighScoresLeaderboards({
             >
               <GiPreviousButton className="text-xl" />
             </button>
-
             <span className="min-w-[max-content] text-xs text-center">
               Page {page} of {Number.isFinite(totalPages) ? totalPages : 1}
             </span>
-
             <button
               className="p-1 rounded-lg bg-orange-950 text-xs hover:bg-orange-800 duration-300"
               onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
@@ -182,6 +181,7 @@ export default function HighScoresLeaderboards({
         </div>
       </div>
 
+      {/* ── Mobile search ── */}
       <div className="lg:hidden flex w-full justify-center items-center pl-2 pb-3 text-stone-200">
         <div className="flex flex-row items-center w-[190px]">
           <Input
@@ -194,6 +194,7 @@ export default function HighScoresLeaderboards({
         </div>
       </div>
 
+      {/* ── Leaderboard columns ── */}
       <div
         ref={scrollableDivRef}
         className="flex flex-row w-full xl:justify-center gap-2 text-stone-200 pb-2 mb-2 border-b-2 border-orange-950 overflow-auto"
@@ -204,6 +205,8 @@ export default function HighScoresLeaderboards({
           (tables ?? []).map((table) => {
             const id = table.vpsId;
             const key = `${id}-${table.tableName}-${table.versionNumber}`;
+            const downloadUrl = table.tableUrl || "#";
+
             return (
               <div
                 className="flex flex-col gap-1 items-center"
@@ -214,18 +217,20 @@ export default function HighScoresLeaderboards({
                   table={table.tableName}
                   imageUrl={imagesUrls?.[id]}
                 >
-                  <Link href={table.tableUrl || "#"} target="_blank">
-                    <div className="text-xl">{table.tableName}</div>
-                    <div className="text-md">
-                      {table.authorName
+                  <LeaderboardTitleCardContent
+                    title={table.tableName}
+                    vpsId={id}
+                    downloadUrl={table.tableUrl}
+                    version={table.versionNumber}
+                    author={
+                      table.authorName
                         ? truncate(table.authorName, 30)
-                        : "Unknown"}
-                    </div>
-                    <div className="text-sm">v{table.versionNumber}</div>
-                    <div className="text-xs">VPS ID {id}</div>
-                  </Link>
+                        : undefined
+                    }
+                  />
                 </LeaderboardTitleCard>
 
+                {/* ── Scores list ── */}
                 <div className="flex flex-col gap-1 overflow-auto rounded-xl min-w-[320px] max-w-[320px]">
                   {(table.scores ?? []).map((score, scoreIndex) => (
                     <HighScoresLeaderboardItem

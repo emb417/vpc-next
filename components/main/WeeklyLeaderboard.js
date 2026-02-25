@@ -1,9 +1,12 @@
 import Link from "next/link";
 import { Tooltip } from "antd";
 import LeaderboardTitleCard from "@/components/shared/LeaderboardTitleCard";
+import LeaderboardTitleCardContent from "@/components/shared/LeaderboardTitleCardContent";
 import PlayerImage from "@/components/player/PlayerImage";
 
 export default function WeeklyLeaderboard({ weekData, vpsData }) {
+  const downloadUrl = weekData.tableUrl ?? "#";
+
   return (
     <div className="flex flex-col w-full items-center text-stone-200">
       <LeaderboardTitleCard
@@ -14,29 +17,18 @@ export default function WeeklyLeaderboard({ weekData, vpsData }) {
         periodEnd={weekData.periodEnd}
         priority
       >
-        <div className="text-sm">Week #{weekData.weekNumber}</div>
-        {weekData.periodStart &&
-          weekData.periodEnd &&
-          weekData.periodStart !== "0NaN-aN-aN" && (
-            <div className="text-sm">
-              {new Date(weekData.periodStart).toLocaleDateString(undefined, {
-                year: "numeric",
-                month: "short",
-                day: "numeric",
-              })}
-              {" to "}
-              {new Date(weekData.periodEnd).toLocaleDateString(undefined, {
-                year: "numeric",
-                month: "short",
-                day: "numeric",
-              })}
-            </div>
-          )}
-        <Link href={weekData.tableUrl ?? "#"} target="_blank">
-          <div className="text-xl">{weekData.table}</div>
-          <div className="text-xs">VPS ID {weekData.vpsId}</div>
-        </Link>
+        <LeaderboardTitleCardContent
+          title={weekData.table}
+          vpsId={weekData.vpsId}
+          downloadUrl={weekData.tableUrl}
+          weekNumber={weekData.weekNumber}
+          periodStart={weekData.periodStart}
+          periodEnd={weekData.periodEnd}
+          version={weekData.versionNumber}
+        />
       </LeaderboardTitleCard>
+
+      {/* ── Scores list ── */}
       <div className="flex flex-col overflow-auto w-full items-center gap-1">
         {weekData.scores.map((score, index) => (
           <Link
