@@ -8,7 +8,7 @@ import PlayerCharts from "@/components/player/PlayerCharts";
 
 async function getPlayerSummaryData(username) {
   try {
-    const url = `${process.env.SSR_BASE_URL}${process.env.VPC_API_RECENT_WEEKS}?limit=52`;
+    const url = `${process.env.SSR_BASE_URL}${process.env.VPC_API_RECENT_WEEKS}?limit=9999`;
     console.log(`🚀 Req ${url}`);
 
     const response = await fetch(url, { cache: "no-store" });

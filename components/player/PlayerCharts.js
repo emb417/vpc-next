@@ -24,7 +24,7 @@ ChartJS.register(
   LineElement,
   PointElement,
   LinearScale,
-  Tooltip
+  Tooltip,
 );
 
 const selectSharedProps = {
@@ -95,7 +95,7 @@ export default function PlayerCharts({ weeksData, username }) {
 
   const usernames = useMemo(() => {
     const usernamesSet = new Set(
-      weeksData.flatMap((item) => item.scores.map((score) => score.username))
+      weeksData.flatMap((item) => item.scores.map((score) => score.username)),
     );
     return Array.from(usernamesSet);
   }, [weeksData]);
@@ -111,12 +111,25 @@ export default function PlayerCharts({ weeksData, username }) {
     }, []);
   }, [usernames]);
 
+  const userWeeksData = useMemo(() => {
+    const playedWeekNumbers = weeksData
+      .filter((week) =>
+        week.scores.some((score) => selectedUsernames.includes(score.username)),
+      )
+      .map((week) => week.weekNumber);
+
+    if (playedWeekNumbers.length === 0) return weeksData;
+
+    const minWeekNumber = Math.min(...playedWeekNumbers);
+    return weeksData.filter((week) => week.weekNumber >= minWeekNumber);
+  }, [weeksData, selectedUsernames]);
+
   useEffect(() => {
     const rollingAverageDatasets = selectedUsernames.map((username) => ({
       type: "line",
       yAxisID: "y",
       label: username,
-      data: weeksData.map((item) => {
+      data: userWeeksData.map((item) => {
         return {
           x: item.weekNumber,
           y: getScores(item, [username])[0]?.rollingAveragePosition || null,
@@ -125,7 +138,7 @@ export default function PlayerCharts({ weeksData, username }) {
           week: item.weekNumber,
           periodStart: item.periodStart,
           periodEnd: item.periodEnd,
-          minWeekNumber: weeksData[0].weekNumber,
+          minWeekNumber: userWeeksData[0].weekNumber,
         };
       }),
       backgroundColor: selectOptions.find((option) => option.value === username)
@@ -143,7 +156,7 @@ export default function PlayerCharts({ weeksData, username }) {
       type: "bubble",
       yAxisID: "y",
       label: username,
-      data: weeksData.map((item) => ({
+      data: userWeeksData.map((item) => ({
         x: item.weekNumber,
         y: getScores(item, [username])[0]?.position || null,
         r: Math.max(item.numberOfPlayers / 5, 4),
@@ -165,7 +178,7 @@ export default function PlayerCharts({ weeksData, username }) {
       type: "line",
       yAxisID: "y2",
       label: username,
-      data: weeksData.map((item) => {
+      data: userWeeksData.map((item) => {
         return {
           x: item.weekNumber,
           y: getScores(item, [username])[0]?.rollingWinPercentage || null,
@@ -175,7 +188,7 @@ export default function PlayerCharts({ weeksData, username }) {
           week: item.weekNumber,
           periodStart: item.periodStart,
           periodEnd: item.periodEnd,
-          minWeekNumber: weeksData[0].weekNumber,
+          minWeekNumber: userWeeksData[0].weekNumber,
         };
       }),
       backgroundColor: selectOptions.find((option) => option.value === username)
@@ -199,9 +212,9 @@ export default function PlayerCharts({ weeksData, username }) {
     if (selectedDatasets.includes("positionDatasets")) {
       datasets.push(...positionDatasets);
     }
-    const label = weeksData.map((item) => item.weekNumber);
+    const label = userWeeksData.map((item) => item.weekNumber);
     setData({ label, datasets });
-  }, [selectedUsernames, weeksData, selectOptions, selectedDatasets]);
+  }, [selectedUsernames, userWeeksData, selectOptions, selectedDatasets]);
 
   return (
     <div className="flex flex-col w-full bg-stone-900 text-stone-200 items-start gap-1 border-2 border-orange-950 rounded-xl px-2 pt-1 pb-2">
@@ -216,7 +229,7 @@ export default function PlayerCharts({ weeksData, username }) {
               closable: true,
               onClose: () =>
                 setSelectedUsernames(
-                  selectedUsernames.filter((username) => username !== value)
+                  selectedUsernames.filter((username) => username !== value),
                 ),
             })
           }
@@ -232,7 +245,7 @@ export default function PlayerCharts({ weeksData, username }) {
               closable: true,
               onClose: () =>
                 setSelectedDatasets(
-                  selectedDatasets.filter((dataset) => dataset !== value)
+                  selectedDatasets.filter((dataset) => dataset !== value),
                 ),
             })
           }
