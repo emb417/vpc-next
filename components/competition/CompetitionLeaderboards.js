@@ -206,56 +206,58 @@ export default function CompetitionLeaderboards({
       {/* ── Leaderboard columns ── */}
       <div
         ref={scrollableDivRef}
-        className="flex flex-row w-full xl:justify-center gap-2 text-stone-200 pb-2 mb-2 border-b-2 border-orange-950 overflow-auto"
+        className="flex flex-row w-full gap-2 text-stone-200 pb-2 mb-2 border-b-2 border-orange-950 overflow-auto"
       >
-        {loading ? (
-          <Loading />
-        ) : (
-          (weeks ?? []).map((week) => {
-            const id = week.vpsId;
-            const key = `${id}-${week.table}`;
-            const downloadUrl = week.tableUrl ?? "#";
+        <div className="flex flex-row gap-2 mx-auto">
+          {loading ? (
+            <Loading />
+          ) : (
+            (weeks ?? []).map((week) => {
+              const id = week.vpsId;
+              const key = `${id}-${week.table}`;
+              const downloadUrl = week.tableUrl ?? "#";
 
-            return (
-              <div
-                className="flex flex-col gap-1 items-center"
-                key={key}
-                id={key}
-              >
-                <LeaderboardTitleCard
-                  table={week.table}
-                  imageUrl={imagesUrls?.[id]}
+              return (
+                <div
+                  className="flex flex-col gap-1 items-center"
+                  key={key}
+                  id={key}
                 >
-                  <LeaderboardTitleCardContent
-                    title={week.table}
-                    vpsId={id}
-                    downloadUrl={week.tableUrl}
-                    weekNumber={week.weekNumber}
-                    periodStart={week.periodStart}
-                    periodEnd={week.periodEnd}
-                    version={week.versionNumber}
-                    author={
-                      week.authorName
-                        ? truncate(week.authorName, 30)
-                        : undefined
-                    }
-                  />
-                </LeaderboardTitleCard>
-
-                {/* ── Scores list ── */}
-                <div className="flex flex-col gap-1 overflow-auto rounded-xl min-w-[320px] max-w-[320px]">
-                  {(week.scores ?? []).map((score, scoreIndex) => (
-                    <CompetitionLeaderboardItem
-                      key={`${week.weekId}-${score.username}-${score.score}`}
-                      score={score}
-                      scoreIndex={scoreIndex}
+                  <LeaderboardTitleCard
+                    table={week.table}
+                    imageUrl={imagesUrls?.[id]}
+                  >
+                    <LeaderboardTitleCardContent
+                      title={week.table}
+                      vpsId={id}
+                      downloadUrl={week.tableUrl}
+                      weekNumber={week.weekNumber}
+                      periodStart={week.periodStart}
+                      periodEnd={week.periodEnd}
+                      version={week.versionNumber}
+                      author={
+                        week.authorName
+                          ? truncate(week.authorName, 30)
+                          : undefined
+                      }
                     />
-                  ))}
+                  </LeaderboardTitleCard>
+
+                  {/* ── Scores list ── */}
+                  <div className="flex flex-col gap-1 overflow-auto rounded-xl min-w-[320px] max-w-[320px]">
+                    {(week.scores ?? []).map((score, scoreIndex) => (
+                      <CompetitionLeaderboardItem
+                        key={`${week.weekId}-${score.username}-${score.score}`}
+                        score={score}
+                        scoreIndex={scoreIndex}
+                      />
+                    ))}
+                  </div>
                 </div>
-              </div>
-            );
-          })
-        )}
+              );
+            })
+          )}
+        </div>
       </div>
     </div>
   );

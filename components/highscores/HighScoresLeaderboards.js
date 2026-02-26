@@ -197,53 +197,55 @@ export default function HighScoresLeaderboards({
       {/* ── Leaderboard columns ── */}
       <div
         ref={scrollableDivRef}
-        className="flex flex-row w-full xl:justify-center gap-2 text-stone-200 pb-2 mb-2 border-b-2 border-orange-950 overflow-auto"
+        className="flex flex-row w-full gap-2 text-stone-200 pb-2 mb-2 border-b-2 border-orange-950 overflow-auto"
       >
-        {loading ? (
-          <Loading />
-        ) : (
-          (tables ?? []).map((table) => {
-            const id = table.vpsId;
-            const key = `${id}-${table.tableName}-${table.versionNumber}`;
-            const downloadUrl = table.tableUrl || "#";
+        <div className="flex flex-row gap-2 mx-auto">
+          {loading ? (
+            <Loading />
+          ) : (
+            (tables ?? []).map((table) => {
+              const id = table.vpsId;
+              const key = `${id}-${table.tableName}-${table.versionNumber}`;
+              const downloadUrl = table.tableUrl || "#";
 
-            return (
-              <div
-                className="flex flex-col gap-1 items-center"
-                key={key}
-                id={key}
-              >
-                <LeaderboardTitleCard
-                  table={table.tableName}
-                  imageUrl={imagesUrls?.[id]}
+              return (
+                <div
+                  className="flex flex-col gap-1 items-center"
+                  key={key}
+                  id={key}
                 >
-                  <LeaderboardTitleCardContent
-                    title={table.tableName}
-                    vpsId={id}
-                    downloadUrl={table.tableUrl}
-                    version={table.versionNumber}
-                    author={
-                      table.authorName
-                        ? truncate(table.authorName, 30)
-                        : undefined
-                    }
-                  />
-                </LeaderboardTitleCard>
-
-                {/* ── Scores list ── */}
-                <div className="flex flex-col gap-1 overflow-auto rounded-xl min-w-[320px] max-w-[320px]">
-                  {(table.scores ?? []).map((score, scoreIndex) => (
-                    <HighScoresLeaderboardItem
-                      key={`${id}-${table.tableName}-${table.versionNumber}-${score.scoreId}`}
-                      score={score}
-                      scoreIndex={scoreIndex}
+                  <LeaderboardTitleCard
+                    table={table.tableName}
+                    imageUrl={imagesUrls?.[id]}
+                  >
+                    <LeaderboardTitleCardContent
+                      title={table.tableName}
+                      vpsId={id}
+                      downloadUrl={table.tableUrl}
+                      version={table.versionNumber}
+                      author={
+                        table.authorName
+                          ? truncate(table.authorName, 30)
+                          : undefined
+                      }
                     />
-                  ))}
+                  </LeaderboardTitleCard>
+
+                  {/* ── Scores list ── */}
+                  <div className="flex flex-col gap-1 overflow-auto rounded-xl min-w-[320px] max-w-[320px]">
+                    {(table.scores ?? []).map((score, scoreIndex) => (
+                      <HighScoresLeaderboardItem
+                        key={`${id}-${table.tableName}-${table.versionNumber}-${score.scoreId}`}
+                        score={score}
+                        scoreIndex={scoreIndex}
+                      />
+                    ))}
+                  </div>
                 </div>
-              </div>
-            );
-          })
-        )}
+              );
+            })
+          )}
+        </div>
       </div>
     </div>
   );
