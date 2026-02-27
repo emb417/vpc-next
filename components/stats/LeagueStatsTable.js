@@ -17,7 +17,7 @@ function StatsTable({ playerStats }) {
   const [filteredInfo, setFilteredInfo] = useState({});
   const [sortedInfo, setSortedInfo] = useState({});
 
-  const columns = useMemo(() => getColumns(rankKeyMap), [rankKeyMap]);
+  const columns = useMemo(() => getColumns(rankKeyMap), []);
 
   const handleChange = (pagination, filters, sorter) => {
     setFilteredInfo(filters);
