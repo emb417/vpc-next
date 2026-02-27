@@ -4,12 +4,7 @@ import PlayerFilterDropdown from "@/components/stats/PlayerFilterDropdown";
 import PlayerLink from "@/components/stats/PlayerLink";
 import WeeksPlayedFilterDropdown from "@/components/stats/WeeksPlayedFilterDropdown";
 import { ConfigProvider, Table, theme } from "antd";
-
-function SectionLabel({ children }) {
-  return (
-    <div className="text-lg text-stone-200 uppercase pl-1">{children}</div>
-  );
-}
+import SectionLabel from "./SectionLabel";
 
 function onFilterNumeric(value, record, operator) {
   const [op, filterValue] = value.split(",");
