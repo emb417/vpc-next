@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  GiCalendar,
   GiFireShield,
   GiPolarStar,
   GiStarsStack,
@@ -8,6 +9,7 @@ import {
   GiTrophyCup,
   GiTrophiesShelf,
   GiUpgrade,
+  GiPinballFlipper,
 } from "react-icons/gi";
 
 import TrophyShelfCard from "./TrophyShelfCard";
@@ -15,6 +17,7 @@ import AwardCard from "./AwardCard";
 import SectionLabel from "./SectionLabel";
 import ParticipationCard from "./ParticipationCard";
 import AvgPlayersCard from "./AvgPlayersCard";
+import RankListCard from "./RankListCard";
 import PlayersPerWeekChart from "./PlayersPerWeekChart";
 
 // ── Main Component ────────────────────────────────────────────────────────────
@@ -36,6 +39,8 @@ export default function LeagueSummaryStats({ leagueStats }) {
     mostImproved52,
     mostActive52,
     mostActive13,
+    topMakers,
+    topEras,
   } = leagueStats;
 
   const counts = weeklyPlayerCounts.map((w) => w.count);
@@ -45,8 +50,8 @@ export default function LeagueSummaryStats({ leagueStats }) {
       {/* ── Participation ── */}
       <SectionLabel>Participation</SectionLabel>
 
-      {/* Row 1 — Trophy cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-2">
+      {/* Row 1 — Trophy cards + Table stats */}
+      <div className="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-6 gap-2">
         <TrophyShelfCard
           icon={GiTrophyCup}
           label="Most Points"
@@ -111,6 +116,20 @@ export default function LeagueSummaryStats({ leagueStats }) {
               sub: (p) => `${p.recentWeeksPlayed} weeks`,
             },
           ]}
+        />
+
+        <RankListCard
+          icon={GiPinballFlipper}
+          label="Top Makers By Players"
+          items={topMakers}
+          nameKey="maker"
+        />
+
+        <RankListCard
+          icon={GiCalendar}
+          label="Top Eras By Players"
+          items={topEras}
+          nameKey="era"
         />
       </div>
 
