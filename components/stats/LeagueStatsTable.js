@@ -5,6 +5,12 @@ import PlayerLink from "@/components/stats/PlayerLink";
 import WeeksPlayedFilterDropdown from "@/components/stats/WeeksPlayedFilterDropdown";
 import { ConfigProvider, Table, theme } from "antd";
 
+function SectionLabel({ children }) {
+  return (
+    <div className="text-lg text-stone-200 uppercase pl-1">{children}</div>
+  );
+}
+
 function onFilterNumeric(value, record, operator) {
   const [op, filterValue] = value.split(",");
   const numberValue = record[operator];
@@ -22,7 +28,6 @@ function onFilterNumeric(value, record, operator) {
 
 function getSortedPlayerStats(playerStats, sortedInfo, rankKeyMap) {
   if (!sortedInfo.columnKey) return playerStats;
-
   return playerStats.map((stat) => ({
     ...stat,
     rank: stat[rankKeyMap[sortedInfo.columnKey]],
@@ -128,53 +133,54 @@ function StatsTable({ playerStats, rankKeyMap }) {
       children: [
         {
           title: "Total Points",
-          dataIndex: "totalPoints",
-          key: "totalPoints",
+          dataIndex: "totalPoints52",
+          key: "totalPoints52",
           sorter: (a, b) =>
-            b[rankKeyMap["totalPoints"]] - a[rankKeyMap["totalPoints"]],
+            b[rankKeyMap["totalPoints52"]] - a[rankKeyMap["totalPoints52"]],
           sortDirections: ["descend", "ascend", "descend"],
           align: "center",
           width: 100,
         },
         {
           title: "Weeks Played",
-          dataIndex: "weeksPlayed",
-          key: "weeksPlayed",
+          dataIndex: "weeksPlayed52",
+          key: "weeksPlayed52",
           sorter: (a, b) =>
-            b[rankKeyMap["weeksPlayed"]] - a[rankKeyMap["weeksPlayed"]],
+            b[rankKeyMap["weeksPlayed52"]] - a[rankKeyMap["weeksPlayed52"]],
           sortDirections: ["descend", "ascend", "descend"],
           align: "center",
           width: 100,
           onFilter: (value, record) =>
-            onFilterNumeric(value, record, "weeksPlayed"),
+            onFilterNumeric(value, record, "weeksPlayed52"),
           filterDropdown: WeeksPlayedFilterDropdown,
         },
         {
           title: "Avg. Points",
-          dataIndex: "averagePoints",
-          key: "averagePoints",
+          dataIndex: "averagePoints52",
+          key: "averagePoints52",
           sorter: (a, b) =>
-            b[rankKeyMap["averagePoints"]] - a[rankKeyMap["averagePoints"]],
+            b[rankKeyMap["averagePoints52"]] - a[rankKeyMap["averagePoints52"]],
           sortDirections: ["descend", "ascend", "descend"],
           align: "center",
           width: 100,
         },
         {
           title: "Win %",
-          dataIndex: "winPercentage",
-          key: "winPercentage",
+          dataIndex: "winPercentage52",
+          key: "winPercentage52",
           sorter: (a, b) =>
-            b[rankKeyMap["winPercentage"]] - a[rankKeyMap["winPercentage"]],
+            b[rankKeyMap["winPercentage52"]] - a[rankKeyMap["winPercentage52"]],
           sortDirections: ["descend", "ascend", "descend"],
           align: "center",
           width: 100,
         },
         {
           title: "Avg. Position",
-          dataIndex: "averagePosition",
-          key: "averagePosition",
+          dataIndex: "averagePosition52",
+          key: "averagePosition52",
           sorter: (a, b) =>
-            a[rankKeyMap["averagePosition"]] - b[rankKeyMap["averagePosition"]],
+            a[rankKeyMap["averagePosition52"]] -
+            b[rankKeyMap["averagePosition52"]],
           sortDirections: ["ascend", "descend", "ascend"],
           align: "center",
           width: 100,
@@ -195,6 +201,7 @@ function StatsTable({ playerStats, rankKeyMap }) {
 
   return (
     <div className="flex flex-col h-dvh gap-2 w-full py-2">
+      <SectionLabel>Stats Table</SectionLabel>
       <ConfigProvider theme={{ algorithm: theme.darkAlgorithm }}>
         <Table
           bordered={true}
