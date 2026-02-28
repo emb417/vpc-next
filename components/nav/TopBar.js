@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
+import { AiOutlineClose, AiOutlineMenu, AiOutlineQuestionCircle } from "react-icons/ai";
 import { GiPinballFlipper, GiChart, GiHighFive, GiProgression } from "react-icons/gi";
 
 export default function Navbar() {
@@ -40,6 +40,12 @@ export default function Navbar() {
       icon: <GiChart className="text-xl" />,
       href: "/season",
       text: "Season Leaderboard",
+    },
+    {
+      id: 5,
+      icon: <AiOutlineQuestionCircle className="text-xl" />,
+      href: "/faqs",
+      text: "How to Join",
     },
   ];
 
