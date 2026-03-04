@@ -1,15 +1,24 @@
 import HighScoresLeaderboards from "@/components/highscores/HighScoresLeaderboards";
+import { fetchWithLogging } from "@/lib/fetchWithLogging";
+import { logEvent } from "@/lib/logger";
 
 async function getData() {
+  const overallStart = Date.now();
+
+  logEvent({ type: "highscores_dashboard_start" });
+
   try {
     const url = `${process.env.SSR_BASE_URL}${process.env.VPC_API_RECENT_TABLES}?limit=4&offset=0`;
-    console.log(`🚀 Req ${url}`);
 
-    const response = await fetch(url, { next: { revalidate: 300 } });
-
-    console.log(
-      `${response.ok ? "✅" : "❌"} Resp ${response.status} ${response.headers.get("Date")} `,
+    const response = await fetchWithLogging(
+      url,
+      { next: { revalidate: 300 } },
+      "getRecentTables",
     );
+
+    if (!response.ok) {
+      throw new Error(`Upstream error ${response.status}`);
+    }
 
     const raw = await response.json();
 
@@ -20,12 +29,23 @@ async function getData() {
       scoresData = raw[0].results;
       totalCount = Number(raw[0].totalCount ?? scoresData.length);
     } else {
-      console.error("Unexpected API shape, returning empty results. Raw:", raw);
+      logEvent({
+        type: "highscores_dashboard_unexpected_shape",
+        raw,
+      });
     }
+
+    logEvent({
+      type: "highscores_dashboard_complete",
+      durationMs: Date.now() - overallStart,
+    });
 
     return { props: { scoresData, totalCount } };
   } catch (error) {
-    console.error("SSR getData error:", error);
+    logEvent({
+      type: "highscores_dashboard_error",
+      error: error.message,
+    });
     return { props: { scoresData: [], totalCount: 0 } };
   }
 }

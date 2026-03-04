@@ -1,19 +1,32 @@
 import CompetitionLeaderboards from "@/components/competition/CompetitionLeaderboards";
+import { fetchWithLogging } from "@/lib/fetchWithLogging";
+import { logEvent } from "@/lib/logger";
 
 async function getData(searchTerm, week) {
+  const overallStart = Date.now();
+
+  logEvent({
+    type: "competition_dashboard_start",
+    week,
+    searchTerm,
+  });
+
   try {
     let url = `${process.env.SSR_BASE_URL}${process.env.VPC_API_COMPETITION_WEEKS}`;
     if (week) url += `?week=${week}`;
     else if (searchTerm) {
       url += `?searchTerm=${searchTerm}`;
     }
-    console.log(`🚀 Req ${url}`);
 
-    const response = await fetch(url, { cache: "no-store" });
-
-    console.log(
-      `${response.ok ? "✅" : "❌"} Resp ${response.status} ${response.headers.get("Date")} `,
+    const response = await fetchWithLogging(
+      url,
+      { cache: "no-store" },
+      "getCompetitionWeeks",
     );
+
+    if (!response.ok) {
+      throw new Error(`Upstream error ${response.status}`);
+    }
 
     const raw = await response.json();
 
@@ -24,15 +37,23 @@ async function getData(searchTerm, week) {
       scoresData = raw[0].results;
       totalCount = Number(raw[0].totalCount ?? scoresData.length);
     } else {
-      console.error(
-        "SSR unexpected API shape, returning empty results. Raw:",
+      logEvent({
+        type: "competition_dashboard_unexpected_shape",
         raw,
-      );
+      });
     }
+
+    logEvent({
+      type: "competition_dashboard_complete",
+      durationMs: Date.now() - overallStart,
+    });
 
     return { props: { scoresData, totalCount } };
   } catch (error) {
-    console.error("SSR getData error:", error);
+    logEvent({
+      type: "competition_dashboard_error",
+      error: error.message,
+    });
     return { props: { scoresData: [], totalCount: 0 } };
   }
 }

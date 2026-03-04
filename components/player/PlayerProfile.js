@@ -5,22 +5,49 @@ import PlayerRivals from "@/components/player/PlayerRivals";
 import PlayerCompetitions from "@/components/player/PlayerCompetitions";
 import PlayerInsights from "@/components/player/PlayerInsights";
 import PlayerCharts from "@/components/player/PlayerCharts";
+import { fetchWithLogging } from "@/lib/fetchWithLogging";
+import { logEvent } from "@/lib/logger";
 
 async function getPlayerSummaryData(username) {
+  const start = Date.now();
+
+  logEvent({
+    type: "player_profile_start",
+    username,
+  });
+
   try {
     const url = `${process.env.SSR_BASE_URL}${process.env.VPC_API_RECENT_WEEKS}?limit=9999`;
-    console.log(`🚀 Req ${url}`);
 
-    const response = await fetch(url, { cache: "no-store" });
-
-    console.log(
-      `${response.ok ? "✅" : "❌"} Resp ${response.status} ${response.headers.get("Date")} `,
+    const response = await fetchWithLogging(
+      url,
+      { cache: "no-store" },
+      "getRecentWeeksForPlayerProfile",
     );
+
+    if (!response.ok) {
+      throw new Error(`Upstream error ${response.status}`);
+    }
+
     const data = await response.json();
 
-    return PlayerSummaryData(data, username);
+    const result = PlayerSummaryData(data, username);
+
+    logEvent({
+      type: "player_profile_complete",
+      username,
+      durationMs: Date.now() - start,
+    });
+
+    return result;
   } catch (error) {
-    console.error("SSR getPlayerSummaryData error:", error);
+    logEvent({
+      type: "player_profile_error",
+      username,
+      error: error.message,
+      durationMs: Date.now() - start,
+    });
+
     throw new Error("Server Error");
   }
 }
@@ -30,6 +57,12 @@ export default async function PlayerProfile({ username }) {
     await getPlayerSummaryData(username);
 
   if (!user) {
+    logEvent({
+      type: "player_profile_redirect",
+      username,
+      reason: "user_not_found",
+    });
+
     redirect("/");
   }
 
