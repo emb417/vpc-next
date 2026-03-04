@@ -6,15 +6,32 @@ import {
   CategoryScale,
   LinearScale,
   Tooltip,
+  LineElement,
+  PointElement,
 } from "chart.js";
 import { GiMinions } from "react-icons/gi";
 
-ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip);
+ChartJS.register(
+  BarElement,
+  CategoryScale,
+  LinearScale,
+  Tooltip,
+  LineElement,
+  PointElement,
+);
 
 export default function PlayersPerWeekChart({ weeklyPlayerCounts }) {
   const router = useRouter();
   const counts = weeklyPlayerCounts.map((w) => w.count);
   const labels = weeklyPlayerCounts.map((w) => `Wk ${w.weekNumber}`);
+
+  // Calculate 13-week rolling average
+  const rollingAverage = counts.map((_, index) => {
+    const start = Math.max(0, index - 12);
+    const window = counts.slice(start, index + 1);
+    const sum = window.reduce((a, b) => a + b, 0);
+    return sum / window.length;
+  });
 
   const options = {
     onClick: (_, elements) => {
@@ -31,7 +48,12 @@ export default function PlayersPerWeekChart({ weeklyPlayerCounts }) {
         callbacks: {
           title: (ctx) =>
             `Week ${weeklyPlayerCounts[ctx[0].dataIndex]?.weekNumber}`,
-          label: (ctx) => ` ${ctx.raw} players`,
+          label: (ctx) => {
+            if (ctx.dataset.type === "line") {
+              return ` 13-Wk Avg: ${ctx.raw.toFixed(1)}`;
+            }
+            return ` ${ctx.raw} players`;
+          },
         },
       },
     },
@@ -57,11 +79,24 @@ export default function PlayersPerWeekChart({ weeklyPlayerCounts }) {
     labels,
     datasets: [
       {
+        type: "line",
+        label: "13-Week Average",
+        data: rollingAverage,
+        borderColor: "rgba(251, 146, 60, 0.8)",
+        borderWidth: 2,
+        pointRadius: 0,
+        tension: 0.4,
+        order: 1,
+      },
+      {
+        type: "bar",
+        label: "Players",
         data: counts,
         backgroundColor: "rgba(194, 65, 12, 0.6)",
         borderColor: "rgba(194, 65, 12, 1)",
         borderWidth: 1,
         borderRadius: 2,
+        order: 2,
       },
     ],
   };
