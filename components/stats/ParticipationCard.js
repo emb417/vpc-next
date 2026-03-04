@@ -1,6 +1,6 @@
 import { GiHumanPyramid } from "react-icons/gi";
 
-export default function ParticipationCard({ playersAllTime, players52, players13 }) {
+export default function ParticipationCard({ playersAllTime, players52, players13, className = "" }) {
   const stats = [
     { label: "All Time", value: playersAllTime, pct: 100 },
     {
@@ -16,7 +16,7 @@ export default function ParticipationCard({ playersAllTime, players52, players13
   ];
 
   return (
-    <div className="flex flex-col gap-2 bg-stone-900 border border-orange-950 rounded-xl px-3 py-2.5">
+    <div className={`flex flex-col gap-2 bg-stone-900 border border-orange-950 rounded-xl px-3 py-2.5 ${className}`}>
       <div className="flex items-center gap-1.5 text-stone-400 text-xs uppercase tracking-wider">
         <GiHumanPyramid className="text-orange-600 shrink-0 text-lg" />
         Total Players

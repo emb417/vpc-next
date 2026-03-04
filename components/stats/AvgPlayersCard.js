@@ -8,6 +8,7 @@ export default function AvgPlayersCard({
   rollingAvg13,
   prevAvg13,
   counts,
+  className = "",
 }) {
   const stats = [
     {
@@ -25,7 +26,7 @@ export default function AvgPlayersCard({
   ];
 
   return (
-    <div className="flex flex-col gap-2 bg-stone-900 border border-orange-950 rounded-xl px-3 py-2.5">
+    <div className={`flex flex-col gap-2 bg-stone-900 border border-orange-950 rounded-xl px-3 py-2.5 ${className}`}>
       <div className="flex items-center gap-1.5 text-stone-400 text-xs uppercase tracking-wider">
         <GiPerson className="text-orange-600 shrink-0 text-lg" />
         Avg. Players / Week

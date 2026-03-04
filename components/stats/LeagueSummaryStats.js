@@ -134,22 +134,30 @@ export default function LeagueSummaryStats({ leagueStats }) {
       </div>
 
       {/* Row 2 — Participation Stats & Charts */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-        <ParticipationCard
-          playersAllTime={playersAllTime}
-          players52={players52}
-          players13={players13}
-        />
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-2 items-stretch">
+        <div className="lg:col-span-1 flex flex-col">
+          <ParticipationCard
+            playersAllTime={playersAllTime}
+            players52={players52}
+            players13={players13}
+            className="h-full"
+          />
+        </div>
 
-        <AvgPlayersCard
-          rollingAvg52={rollingAvg52}
-          prevAvg52={prevAvg52}
-          rollingAvg13={rollingAvg13}
-          prevAvg13={prevAvg13}
-          counts={counts}
-        />
+        <div className="lg:col-span-2 flex flex-col">
+          <AvgPlayersCard
+            rollingAvg52={rollingAvg52}
+            prevAvg52={prevAvg52}
+            rollingAvg13={rollingAvg13}
+            prevAvg13={prevAvg13}
+            counts={counts}
+            className="h-full"
+          />
+        </div>
 
-        <PlayersPerWeekChart weeklyPlayerCounts={weeklyPlayerCounts} />
+        <div className="md:col-span-2 lg:col-span-3 flex flex-col">
+          <PlayersPerWeekChart weeklyPlayerCounts={weeklyPlayerCounts} className="h-full" />
+        </div>
       </div>
 
       {/* ── All-Time Honors Board ── */}

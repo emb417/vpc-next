@@ -20,7 +20,7 @@ ChartJS.register(
   PointElement,
 );
 
-export default function PlayersPerWeekChart({ weeklyPlayerCounts }) {
+export default function PlayersPerWeekChart({ weeklyPlayerCounts, className = "" }) {
   const router = useRouter();
   const counts = weeklyPlayerCounts.map((w) => w.count);
   const labels = weeklyPlayerCounts.map((w) => `Wk ${w.weekNumber}`);
@@ -102,7 +102,7 @@ export default function PlayersPerWeekChart({ weeklyPlayerCounts }) {
   };
 
   return (
-    <div className="flex flex-col gap-2 bg-stone-900 border border-orange-950 rounded-xl px-3 py-2.5">
+    <div className={`flex flex-col gap-2 bg-stone-900 border border-orange-950 rounded-xl px-3 py-2.5 ${className}`}>
       <div className="flex items-center gap-1.5 text-stone-400 text-xs uppercase tracking-wider">
         <GiMinions className="text-orange-600 shrink-0 text-lg" />
         Players per Week
