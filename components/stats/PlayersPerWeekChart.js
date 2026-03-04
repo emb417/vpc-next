@@ -20,7 +20,10 @@ ChartJS.register(
   PointElement,
 );
 
-export default function PlayersPerWeekChart({ weeklyPlayerCounts, className = "" }) {
+export default function PlayersPerWeekChart({
+  weeklyPlayerCounts,
+  className = "",
+}) {
   const router = useRouter();
   const counts = weeklyPlayerCounts.map((w) => w.count);
   const labels = weeklyPlayerCounts.map((w) => `Wk ${w.weekNumber}`);
@@ -45,14 +48,30 @@ export default function PlayersPerWeekChart({ weeklyPlayerCounts, className = ""
       legend: { display: false },
       tooltip: {
         backgroundColor: "rgba(41, 37, 36, 0.9)",
+        mode: "index",
+        intersect: false,
         callbacks: {
           title: (ctx) =>
             `Week ${weeklyPlayerCounts[ctx[0].dataIndex]?.weekNumber}`,
           label: (ctx) => {
-            if (ctx.dataset.type === "line") {
-              return ` 13-Wk Avg: ${ctx.raw.toFixed(1)}`;
+            // Empty label callback so that the footer can display all info
+            return null;
+          },
+          footer: (ctx) => {
+            const players = ctx.find((c) => c.dataset.type === "bar")?.raw;
+            const avg = ctx.find((c) => c.dataset.type === "line")?.raw;
+
+            let indicator = "—"; // Neutral
+            if (players > avg) {
+              indicator = "▲"; // Up arrow
+            } else if (players < avg) {
+              indicator = "▼"; // Down arrow
             }
-            return ` ${ctx.raw} players`;
+
+            return [
+              `${players} Players ${indicator}`,
+              `${avg ? avg.toFixed(1) : "N/A"} 13-Wk Avg`,
+            ];
           },
         },
       },
@@ -102,16 +121,15 @@ export default function PlayersPerWeekChart({ weeklyPlayerCounts, className = ""
   };
 
   return (
-    <div className={`flex flex-col gap-2 bg-stone-900 border border-orange-950 rounded-xl px-3 py-2.5 ${className}`}>
+    <div
+      className={`flex flex-col gap-2 bg-stone-900 border border-orange-950 rounded-xl px-3 py-2.5 ${className}`}
+    >
       <div className="flex items-center gap-1.5 text-stone-400 text-xs uppercase tracking-wider">
         <GiMinions className="text-orange-600 shrink-0 text-lg" />
         Players per Week
       </div>
       <div className="flex-1 cursor-pointer" style={{ height: "120px" }}>
-        <Bar
-          data={data}
-          options={{ ...options, maintainAspectRatio: false }}
-        />
+        <Bar data={data} options={{ ...options, maintainAspectRatio: false }} />
       </div>
     </div>
   );
