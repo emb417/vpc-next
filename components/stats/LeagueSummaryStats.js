@@ -69,19 +69,18 @@ export default function LeagueSummaryStats({ leagueStats }) {
           ]}
         />
         <TrophyShelfCard
-          icon={GiStarsStack}
-          label="Best Win Rate"
+          icon={GiFireShield}
+          label="Most Active"
           windows={[
             {
               label: "52 Weeks",
-              player: bestWinPct52,
-              sub: (p) =>
-                `${Number(p._pct ?? p.recentWinPercentage).toFixed(1)}%`,
+              player: mostActive52,
+              sub: (p) => `${p.weeksPlayed52} weeks`,
             },
             {
               label: "13 Weeks",
-              player: bestWinPct13,
-              sub: (p) => `${Number(p.recentWinPercentage).toFixed(1)}%`,
+              player: mostActive13,
+              sub: (p) => `${p.recentWeeksPlayed} weeks`,
             },
           ]}
         />
@@ -102,18 +101,19 @@ export default function LeagueSummaryStats({ leagueStats }) {
           ]}
         />
         <TrophyShelfCard
-          icon={GiFireShield}
-          label="Most Active"
+          icon={GiStarsStack}
+          label="Best Win Rate"
           windows={[
             {
               label: "52 Weeks",
-              player: mostActive52,
-              sub: (p) => `${p.weeksPlayed52} weeks`,
+              player: bestWinPct52,
+              sub: (p) =>
+                `${Number(p._pct ?? p.recentWinPercentage).toFixed(1)}%`,
             },
             {
               label: "13 Weeks",
-              player: mostActive13,
-              sub: (p) => `${p.recentWeeksPlayed} weeks`,
+              player: bestWinPct13,
+              sub: (p) => `${Number(p.recentWinPercentage).toFixed(1)}%`,
             },
           ]}
         />
