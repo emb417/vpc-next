@@ -12,9 +12,10 @@ export const metadata = {
   },
 };
 
-export default function CompetitionCornerPage({ searchParams }) {
-  const searchTerm = searchParams?.searchTerm || "";
-  const week = searchParams?.week || "";
+export default async function CompetitionCornerPage({ searchParams }) {
+  const resolvedSearchParams = await searchParams;
+  const searchTerm = resolvedSearchParams?.searchTerm || "";
+  const week = resolvedSearchParams?.week || "";
   return (
     <Suspense
       fallback={<LoadingMessage message={`Loading ${metadata.title}...`} />}

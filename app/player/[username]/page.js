@@ -4,7 +4,8 @@ import PlayerProfile from "@/components/player/PlayerProfile";
 
 export const dynamic = "force-dynamic";
 export async function generateMetadata({ params }) {
-  const username = params.username;
+  const resolvedParams = await params;
+  const username = resolvedParams.username;
 
   return {
     title: `VPC Player ${username}`,
@@ -15,8 +16,9 @@ export async function generateMetadata({ params }) {
   };
 }
 
-export default function PlayerProfilePage({ params }) {
-  const username = params.username;
+export default async function PlayerProfilePage({ params }) {
+  const resolvedParams = await params;
+  const username = resolvedParams.username;
   return (
     <Suspense
       fallback={

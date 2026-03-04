@@ -12,8 +12,9 @@ export const metadata = {
   },
 };
 
-export default function SeasonPage({ searchParams }) {
-  const season = searchParams?.season || "5";
+export default async function SeasonPage({ searchParams }) {
+  const resolvedSearchParams = await searchParams;
+  const season = resolvedSearchParams?.season || "5";
   return (
     <Suspense
       key={season}
