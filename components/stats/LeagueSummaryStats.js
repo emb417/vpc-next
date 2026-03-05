@@ -3,6 +3,7 @@
 import {
   GiCalendar,
   GiFireShield,
+  GiOctoman,
   GiPolarStar,
   GiStarsStack,
   GiCheckeredFlag,
@@ -41,6 +42,7 @@ export default function LeagueSummaryStats({ leagueStats }) {
     mostActive13,
     topMakers,
     topEras,
+    topDesigners,
   } = leagueStats;
 
   const counts = weeklyPlayerCounts.map((w) => w.count);
@@ -50,8 +52,8 @@ export default function LeagueSummaryStats({ leagueStats }) {
       {/* ── Participation ── */}
       <SectionLabel>Participation</SectionLabel>
 
-      {/* Row 1 — Trophy cards + Table stats */}
-      <div className="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-6 gap-2">
+      {/* Row 1 — Trophy cards */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
         <TrophyShelfCard
           icon={GiTrophyCup}
           label="Most Points"
@@ -117,23 +119,33 @@ export default function LeagueSummaryStats({ leagueStats }) {
             },
           ]}
         />
+      </div>
 
+      {/* Row 2 — Table stats */}
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2">
         <RankListCard
           icon={GiPinballFlipper}
-          label="Top Makers By Players"
+          label="Top Manufacturers (min 8 weeks)"
           items={topMakers}
           nameKey="maker"
         />
-
         <RankListCard
           icon={GiCalendar}
-          label="Top Eras By Players"
+          label="Top Eras"
           items={topEras}
           nameKey="era"
         />
+        <div className="md:col-span-2 xl:col-span-1">
+          <RankListCard
+            icon={GiOctoman}
+            label="Top Designers (min 8 weeks)"
+            items={topDesigners}
+            nameKey="designer"
+          />
+        </div>
       </div>
 
-      {/* Row 2 — Participation Stats & Charts */}
+      {/* Row 3 — Participation Stats & Charts */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-2 items-stretch">
         <div className="lg:col-span-1 flex flex-col">
           <ParticipationCard
@@ -156,7 +168,10 @@ export default function LeagueSummaryStats({ leagueStats }) {
         </div>
 
         <div className="md:col-span-2 lg:col-span-3 flex flex-col">
-          <PlayersPerWeekChart weeklyPlayerCounts={weeklyPlayerCounts} className="h-full" />
+          <PlayersPerWeekChart
+            weeklyPlayerCounts={weeklyPlayerCounts}
+            className="h-full"
+          />
         </div>
       </div>
 

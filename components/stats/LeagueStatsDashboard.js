@@ -6,24 +6,50 @@ import { logEvent } from "@/lib/logger";
 
 async function getData() {
   const overallStart = Date.now();
-
   logEvent({ type: "league_stats_dashboard_start" });
 
   try {
     const url = `${process.env.SSR_BASE_URL}${process.env.VPC_API_RECENT_WEEKS}?limit=9999`;
-
     const response = await fetchWithLogging(
       url,
       { cache: "no-store" },
       "getRecentWeeksForLeagueStats",
     );
 
-    if (!response.ok) {
-      throw new Error(`Upstream error ${response.status}`);
-    }
+    if (!response.ok) throw new Error(`Upstream error ${response.status}`);
 
     const data = await response.json();
-    const { playerStats, rankKeyMap, leagueStats } = LeagueStats(data);
+
+    const vpsResponse = await fetchWithLogging(
+      `${process.env.SSR_BASE_URL}${process.env.VPS_API_GAMES_PATH}`,
+      { cache: "no-store" },
+      "getVpsGames",
+    );
+
+    if (!vpsResponse.ok) throw new Error(`VPS API error ${vpsResponse.status}`);
+
+    const vpsGames = await vpsResponse.json();
+
+    // Build lookup map: vpsId -> { maker, year, designer }
+    const vpsLookup = Object.fromEntries(
+      vpsGames
+        .flatMap((g) =>
+          (g.tableFiles ?? []).map((t) => [
+            t.id,
+            {
+              maker: g.manufacturer,
+              year: g.year,
+              designer: g.designers?.[0] ?? null,
+            },
+          ]),
+        )
+        .filter(([id]) => id),
+    );
+
+    const { playerStats, rankKeyMap, leagueStats } = LeagueStats(
+      data,
+      vpsLookup,
+    );
 
     logEvent({
       type: "league_stats_dashboard_complete",
