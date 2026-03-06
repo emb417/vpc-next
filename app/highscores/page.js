@@ -12,12 +12,15 @@ export const metadata = {
   },
 };
 
-export default function HighScoreCornerPage() {
+export default async function HighScoreCornerPage({ searchParams }) {
+  const resolvedSearchParams = await searchParams;
+  const searchTerm = resolvedSearchParams?.searchTerm || "";
+  const vpsId = resolvedSearchParams?.vpsId || "";
   return (
     <Suspense
       fallback={<LoadingMessage message={`Loading ${metadata.title}...`} />}
     >
-      <HighScoresDashboard />
+      <HighScoresDashboard searchTerm={searchTerm} vpsId={vpsId} />
     </Suspense>
   );
 }

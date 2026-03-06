@@ -26,6 +26,8 @@ export default function HighScoresLeaderboards({
   totalCount = 0,
   tablesPageAPI,
   tableImagesAPI,
+  initialSearchTerm = "",
+  initialVpsId = "",
 }) {
   const tablesPerPage = 4;
   const [page, setPage] = useState(1);
@@ -34,8 +36,12 @@ export default function HighScoresLeaderboards({
   const [loading, setLoading] = useState(false);
   const [imagesUrls, setImagesUrls] = useState({});
   const scrollableDivRef = useRef(null);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(searchTerm);
+  const [searchTerm, setSearchTerm] = useState(initialSearchTerm);
+  const [debouncedSearchTerm, setDebouncedSearchTerm] =
+    useState(initialSearchTerm);
+  const [vpsId, setVpsId] = useState(initialVpsId);
+  const [debouncedVpsId, setDebouncedVpsId] = useState(initialVpsId);
+  const isInitialMount = useRef(true);
 
   useEffect(() => {
     const timerId = setTimeout(() => {
@@ -43,6 +49,13 @@ export default function HighScoresLeaderboards({
     }, 500);
     return () => clearTimeout(timerId);
   }, [searchTerm]);
+
+  useEffect(() => {
+    const timerId = setTimeout(() => {
+      setDebouncedVpsId(vpsId);
+    }, 500);
+    return () => clearTimeout(timerId);
+  }, [vpsId]);
 
   const totalPages = Math.max(1, Math.ceil(count / tablesPerPage));
 
@@ -56,15 +69,16 @@ export default function HighScoresLeaderboards({
 
   useEffect(() => {
     const loadPage = async () => {
-      if (page === 1 && !debouncedSearchTerm) {
+      if (isInitialMount.current) {
+        isInitialMount.current = false;
         setTables(Array.isArray(scoresData) ? scoresData : []);
-        setCount(
-          Number.isFinite(Number(totalCount))
-            ? Number(totalCount)
-            : Array.isArray(scoresData)
-              ? scoresData.length
-              : 0,
-        );
+        setCount(Number.isFinite(Number(totalCount)) ? Number(totalCount) : 0);
+        return;
+      }
+
+      if (page === 1 && !debouncedSearchTerm && !debouncedVpsId) {
+        setTables(Array.isArray(scoresData) ? scoresData : []);
+        setCount(Number.isFinite(Number(totalCount)) ? Number(totalCount) : 0);
         return;
       }
 
@@ -73,6 +87,9 @@ export default function HighScoresLeaderboards({
       let url = `${tablesPageAPI}?limit=${tablesPerPage}&offset=${offset}`;
       if (debouncedSearchTerm) {
         url += `&searchTerm=${encodeURIComponent(debouncedSearchTerm)}`;
+      }
+      if (debouncedVpsId) {
+        url += `&vpsId=${encodeURIComponent(debouncedVpsId)}`;
       }
 
       try {
@@ -92,11 +109,18 @@ export default function HighScoresLeaderboards({
     };
 
     loadPage();
-  }, [page, tablesPageAPI, scoresData, totalCount, debouncedSearchTerm]);
+  }, [
+    page,
+    tablesPageAPI,
+    scoresData,
+    totalCount,
+    debouncedSearchTerm,
+    debouncedVpsId,
+  ]);
 
   useEffect(() => {
     setPage(1);
-  }, [debouncedSearchTerm]);
+  }, [debouncedSearchTerm, debouncedVpsId]);
 
   useEffect(() => {
     const fetchImagesForTables = async () => {

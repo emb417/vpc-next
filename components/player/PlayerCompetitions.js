@@ -1,21 +1,17 @@
 import Link from "next/link";
-import {
-  CgChevronDoubleDownO,
-  CgChevronUpO,
-  CgSoftwareUpload,
-} from "react-icons/cg";
+import { CgChevronUpO, CgSoftwareUpload } from "react-icons/cg";
 import { GiRibbonMedal } from "react-icons/gi";
 import { Tooltip } from "antd";
 
 export default function PlayerCompetitions({ weeksData }) {
   return (
     <div className="flex flex-col w-full items-start gap-1 border-2 border-orange-950 rounded-xl px-2 py-1">
-      <div className="flex w-full">
-        <div className="flex items-center text-sm text-stone-200 pl-1">
+      <div className="flex w-full items-center">
+        <div className="flex items-center text-lg lg:text-xl text-stone-200 pl-1 h-[38px]">
           <Link href="/competitions">Competition Corner</Link>
         </div>
         {!weeksData[0].score && (
-          <div className="flex items-center ml-auto text-xs text-stone-200">
+          <div className="flex items-center ml-auto text-lg text-stone-200">
             <Link
               href="https://discord.com/channels/652274650524418078/720381436842213397"
               target="_blank"
@@ -41,7 +37,9 @@ export default function PlayerCompetitions({ weeksData }) {
         )}
         {weeksData[0].score && !weeksData[0].nextScore && (
           <div className="flex flex-row items-center ml-auto text-xs">
-            <div className="flex items-center text-stone-200">{weeksData[0].nextPlayer}</div>
+            <div className="flex items-center text-stone-200">
+              {weeksData[0].nextPlayer}
+            </div>
             <div className="flex items-center pl-1 text-xl">
               <GiRibbonMedal className="text-blue-500" />
             </div>
@@ -73,7 +71,7 @@ export default function PlayerCompetitions({ weeksData }) {
       <hr className="w-full pb-1 border-1 border-orange-950" />
       <div
         id="scrollableDiv"
-        className="flex flex-col w-full h-[402px] overflow-auto gap-1"
+        className="flex flex-col w-full h-[240px] md:h-[360px] xl:h-[480px] overflow-auto gap-1"
       >
         {weeksData.map((weekData, index) => (
           <div
@@ -102,11 +100,11 @@ export default function PlayerCompetitions({ weeksData }) {
               <Tooltip
                 title={`${
                   Number.isNaN(
-                    (weekData.score / weekData.scores[0].score) * 100
+                    (weekData.score / weekData.scores[0].score) * 100,
                   )
                     ? 0
                     : Math.round(
-                        (weekData.score / weekData.scores[0].score) * 100
+                        (weekData.score / weekData.scores[0].score) * 100,
                       )
                 }% to 1st Place`}
                 placement="topRight"
@@ -120,7 +118,7 @@ export default function PlayerCompetitions({ weeksData }) {
                             (weekData.score / weekData.scores[0].score) * 100
                           }%`,
                   }}
-                  className={`mr-auto ${
+                  className={`mr-auto max-w-full ${
                     !weekData.score
                       ? "border-t-0"
                       : "border-t-4 border-stone-400"
@@ -148,11 +146,6 @@ export default function PlayerCompetitions({ weeksData }) {
             </Link>
           </div>
         ))}
-        <div className="flex justify-center items-center text-2xl sticky bottom-0">
-          <Tooltip title="Scroll Down for More">
-            <CgChevronDoubleDownO className="text-orange-600 animate-bounce" />
-          </Tooltip>
-        </div>
       </div>
     </div>
   );

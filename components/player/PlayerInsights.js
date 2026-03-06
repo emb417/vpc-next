@@ -11,9 +11,7 @@ export default function PlayerSummary({ user }) {
       >
         <PlayerInsightItem title="Best Performance to Average">
           {user.bestPerformance.week !== 0 && (
-            <Link
-              href={`/competitions?week=${user.bestPerformance.week}`}
-            >
+            <Link href={`/competitions?week=${user.bestPerformance.week}`}>
               <span className="text-sm">
                 P{user.bestPerformance.position} of{" "}
                 {user.bestPerformance.players}
@@ -24,8 +22,7 @@ export default function PlayerSummary({ user }) {
           )}
           {user.bestPerformance.week === 0 && (
             <span className="text-sm">
-              P{user.bestPerformance.position} of{" "}
-              {user.bestPerformance.players}
+              P{user.bestPerformance.position} of {user.bestPerformance.players}
               <span className="text-stone-200"> | </span>
               {user.bestPerformance.table}
             </span>
@@ -33,9 +30,7 @@ export default function PlayerSummary({ user }) {
         </PlayerInsightItem>
         <PlayerInsightItem title="Worst Performance to Average">
           {user.worstPerformance.week !== 0 && (
-            <Link
-              href={`/competitions?week=${user.worstPerformance.week}`}
-            >
+            <Link href={`/competitions?week=${user.worstPerformance.week}`}>
               <span className="text-sm">
                 P{user.worstPerformance.position} of{" "}
                 {user.worstPerformance.players}
