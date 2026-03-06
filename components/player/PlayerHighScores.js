@@ -6,6 +6,18 @@ import { FaCaretDown, FaCaretUp } from "react-icons/fa6";
 import CopyButton from "../shared/CopyButton";
 import { Input } from "antd";
 
+const formatDate = (date) => {
+  const parts = new Intl.DateTimeFormat(undefined, {
+    year: "2-digit",
+    month: "2-digit",
+    day: "2-digit",
+    weekday: "short",
+  }).formatToParts(date);
+
+  const get = (type) => parts.find((p) => p.type === type)?.value ?? "";
+  return `${get("weekday")} ${get("month")}/${get("day")}/${get("year")}`;
+};
+
 export default function PlayerHighScores({ highScores }) {
   const [sortCol, setSortCol] = useState("posted");
   const [sortDir, setSortDir] = useState("desc");
@@ -125,7 +137,7 @@ export default function PlayerHighScores({ highScores }) {
           <table className="w-full text-xs border-collapse">
             <thead>
               <tr className="border-b border-stone-800">
-                <SortableColHeader col="posted" width="100px">
+                <SortableColHeader col="posted" width="104px">
                   Date
                 </SortableColHeader>
                 <SortableColHeader col="rank" width="60px">
@@ -151,9 +163,9 @@ export default function PlayerHighScores({ highScores }) {
                   className="border-b border-stone-800/50 hover:bg-stone-800/40 transition-colors"
                 >
                   <td
-                    className={`px-2 py-1.5 text-right tabular-nums ${sortCol === "posted" ? "text-orange-400 font-semibold" : "text-stone-400"}`}
+                    className={`px-2 py-1.5 text-center tabular-nums ${sortCol === "posted" ? "text-orange-400 font-semibold" : "text-stone-400"}`}
                   >
-                    {new Date(score.posted).toLocaleDateString()}
+                    {formatDate(new Date(score.posted))}
                   </td>
                   <td
                     className={`px-2 py-1.5 text-center tabular-nums ${sortCol === "rank" ? "text-orange-400 font-semibold" : "text-stone-400"}`}
