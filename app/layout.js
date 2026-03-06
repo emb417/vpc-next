@@ -2,7 +2,7 @@ import TopBar from "@/components/nav/TopBar";
 import "./globals.css";
 
 export const metadata = {
-  metadataBase: process.env.METADATA_URL,
+  metadataBase: new URL(process.env.METADATA_URL),
 };
 
 export default function RootLayout({ children }) {
