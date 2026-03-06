@@ -1,21 +1,36 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { AiOutlineClose, AiOutlineMenu, AiOutlineQuestionCircle } from "react-icons/ai";
-import { GiPinballFlipper, GiChart, GiHighFive, GiProgression } from "react-icons/gi";
+import {
+  AiOutlineClose,
+  AiOutlineMenu,
+  AiOutlineQuestionCircle,
+} from "react-icons/ai";
+import {
+  GiPinballFlipper,
+  GiChart,
+  GiHighFive,
+  GiProgression,
+} from "react-icons/gi";
 
 export default function Navbar() {
-  // State to manage the navbar's visibility
   const [nav, setNav] = useState(false);
+  const menuRef = useRef(null);
 
-  // Toggle function to handle the navbar's display
-  const handleNav = () => {
-    setNav(!nav);
-  };
+  const handleNav = () => setNav(!nav);
 
-  // Array containing navigation items
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (nav && menuRef.current && !menuRef.current.contains(e.target)) {
+        setNav(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [nav]);
+
   const navItems = [
     {
       id: 1,
@@ -55,16 +70,18 @@ export default function Navbar() {
       <h1 className="text-3xl pl-4 p-1">
         <Link href="/" className="flex items-center gap-1">
           <Image src="/icon.png" alt="VPC Logo" width={30} height={30} />
-          <span className="text-xl hover:text-orange-300">Virtual Pinball Chat</span>
+          <span className="text-xl hover:text-orange-300">
+            Virtual Pinball Chat
+          </span>
         </Link>
       </h1>
 
       {/* Desktop Navigation */}
-      <ul className="hidden sm:flex items-center px-4 ml-auto">
+      <ul className="hidden lg:flex items-center px-4 ml-auto">
         {navItems.map((item) => (
           <li key={item.id}>
             <Link href={item.href}>
-              <div className="flex flex-row items-center cursor-pointer duration-300 hover:text-orange-300 p-2 gap-1">
+              <div className="flex flex-row items-center cursor-pointer duration-300 hover:text-orange-300 p-2 gap-1 text-xs xl:text-base">
                 {item.icon}
                 {item.text}
               </div>
@@ -74,15 +91,16 @@ export default function Navbar() {
       </ul>
 
       {/* Mobile Navigation Icon */}
-      <div onClick={handleNav} className="block sm:hidden pr-4 pt-2 ml-auto">
+      <div onClick={handleNav} className="block lg:hidden pr-4 pt-2 ml-auto">
         {nav ? <AiOutlineClose size={20} /> : <AiOutlineMenu size={20} />}
       </div>
 
       {/* Mobile Navigation Menu */}
       <ul
+        ref={menuRef}
         className={
           nav
-            ? "fixed sm:hidden left-0 top-0 w-[80%] h-full border-r-2 border-r-orange-950 bg-stone-950 ease-in-out duration-500 z-50"
+            ? "fixed lg:hidden left-0 top-0 w-[80%] h-full border-r-2 border-r-orange-950 bg-stone-950 ease-in-out duration-500 z-50"
             : "fixed top-0 left-[-100%] w-[80%] h-full border-r-2 border-r-orange-950 bg-stone-950 ease-in-out duration-500 z-50"
         }
       >
@@ -109,7 +127,6 @@ export default function Navbar() {
         {navItems.map((item) => (
           <li key={item.id} className="flex w-full justify-center">
             <Link
-              key={item.id}
               href={item.href}
               onClick={handleNav}
               className="flex w-full justify-center text-xl cursor-pointer duration-300 hover:text-orange-300"
