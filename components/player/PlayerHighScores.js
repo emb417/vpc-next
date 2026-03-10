@@ -126,6 +126,13 @@ export default function PlayerHighScores({ highScores }) {
           allowClear
           size="small"
           className="ml-auto w-48"
+          suffix={
+            <span className="text-xs text-stone-500">
+              {filteredHighScores.length === highScores.length
+                ? `${highScores.length} Total`
+                : `${filteredHighScores.length}/${highScores.length} Filtered`}
+            </span>
+          }
         />
       </div>
       <hr className="w-full pb-1 border-1 border-orange-950" />
