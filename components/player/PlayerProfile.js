@@ -5,6 +5,7 @@ import PlayerRivals from "@/components/player/PlayerRivals";
 import PlayerCompetitions from "@/components/player/PlayerCompetitions";
 import PlayerHighScores from "@/components/player/PlayerHighScores";
 import PlayerInsights from "@/components/player/PlayerInsights";
+import PlayerHighScoreInsights from "@/components/player/PlayerHighScoreInsights";
 import PlayerCharts from "@/components/player/PlayerCharts";
 import { fetchWithLogging } from "@/lib/fetchWithLogging";
 import { logEvent } from "@/lib/logger";
@@ -95,12 +96,61 @@ async function getPlayerSummaryData(username) {
   }
 }
 
+async function getVpsLookup() {
+  const start = Date.now();
+  logEvent({ type: "player_profile_vps_lookup_start" });
+
+  try {
+    const vpsResponse = await fetchWithLogging(
+      `${process.env.SSR_BASE_URL}${process.env.VPS_API_GAMES_PATH}`,
+      { cache: "no-store" },
+      "getVpsGamesForPlayerProfile",
+    );
+
+    if (!vpsResponse.ok) throw new Error(`VPS API error ${vpsResponse.status}`);
+
+    const vpsGames = await vpsResponse.json();
+
+    const vpsLookup = Object.fromEntries(
+      vpsGames
+        .flatMap((g) =>
+          (g.tableFiles ?? []).map((t) => [
+            t.id,
+            {
+              maker: g.manufacturer,
+              year: g.year,
+              designer: g.designers?.[0] ?? null,
+            },
+          ]),
+        )
+        .filter(([id]) => id),
+    );
+
+    logEvent({
+      type: "player_profile_vps_lookup_complete",
+      durationMs: Date.now() - start,
+    });
+
+    return vpsLookup;
+  } catch (error) {
+    logEvent({
+      type: "player_profile_vps_lookup_error",
+      error: error.message,
+    });
+    return {};
+  }
+}
+
 export default async function PlayerProfile({ username }) {
-  const [{ playerStats, playerRivals, user, userPositionData }, highScores] =
-    await Promise.all([
-      getPlayerSummaryData(username),
-      getPlayerHighScores(username),
-    ]);
+  const [
+    { playerStats, playerRivals, user, userPositionData },
+    highScores,
+    vpsLookup,
+  ] = await Promise.all([
+    getPlayerSummaryData(username),
+    getPlayerHighScores(username),
+    getVpsLookup(),
+  ]);
 
   if (!user) {
     logEvent({
@@ -128,9 +178,17 @@ export default async function PlayerProfile({ username }) {
           <PlayerHighScores highScores={highScores} />
         </div>
       </div>
-      <div className="flex flex-col gap-4 w-full max-w-4xl">
-        <PlayerInsights user={user} />
-        <PlayerCharts weeksData={userPositionData} username={user.username} />
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 w-full max-w-4xl xl:max-w-full">
+        <div className="flex flex-col gap-4">
+          <PlayerInsights user={user} />
+          <PlayerCharts weeksData={userPositionData} username={user.username} />
+        </div>
+        <div>
+          <PlayerHighScoreInsights
+            highScores={highScores}
+            vpsLookup={vpsLookup}
+          />
+        </div>
       </div>
     </div>
   );
