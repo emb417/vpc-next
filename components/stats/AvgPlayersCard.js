@@ -15,13 +15,13 @@ export default function AvgPlayersCard({
       label: "52 Weeks",
       value: rollingAvg52,
       prev: prevAvg52,
-      spark: counts.slice(-52),
+      spark: counts.slice(-53, -1),
     },
     {
       label: "13 Weeks",
       value: rollingAvg13,
       prev: prevAvg13,
-      spark: counts.slice(-13),
+      spark: counts.slice(-14, -1),
     },
   ];
 
