@@ -12,6 +12,14 @@ export default function ScoreBotUsage() {
       </SectionLabel>
       <div className="bg-stone-900 border border-orange-950 rounded-xl p-6 text-stone-300 space-y-4">
         <div className="grid grid-cols-1 gap-4">
+          <div>
+            <p className="text-stone-300">
+              Virtual Pinball Chat uses a Discord bot to track both weekly
+              competition scores and high scores outside of the weekly
+              competition. The bot also manages raffle entries and automates
+              weekly competition table selections.
+            </p>
+          </div>
           <div className="bg-stone-950 p-3 rounded-lg border border-stone-800">
             <p className="text-xs text-stone-500 uppercase font-bold mb-1">
               Post a Score{" "}

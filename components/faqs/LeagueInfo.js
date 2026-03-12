@@ -1,5 +1,6 @@
 import { FaTrophy } from "react-icons/fa";
 import SectionLabel from "@/components/stats/SectionLabel";
+import Link from "next/link";
 
 export default function LeagueInfo() {
   return (
@@ -12,10 +13,9 @@ export default function LeagueInfo() {
       </SectionLabel>
       <div className="bg-stone-900 border border-orange-950 rounded-xl p-6 text-stone-300 space-y-4 text-sm">
         <div>
-          <h4 className="text-orange-300 font-bold">Season Structure</h4>
-          <p>Regular Season: 12 weeks | Playoffs: 4 weeks</p>
+          <h4 className="text-orange-300 font-bold">Points Structure</h4>
           <p className="text-xs text-stone-500 mt-1">
-            Participation automatically accumulates season points.
+            Participation automatically accumulates points.
           </p>
         </div>
 
@@ -47,12 +47,28 @@ export default function LeagueInfo() {
         </div>
 
         <div>
-          <h4 className="text-orange-300 font-bold">Playoff Format</h4>
+          <h4 className="text-orange-300 font-bold">Participation</h4>
           <p>
-            Top 16 players advance to the{" "}
-            <strong>Tournament of Champions</strong>.
+            All players get at least 1 point for each week they participate in.
           </p>
-          <p>Single elimination, S-curve seeding (1 vs 16, etc.).</p>
+        </div>
+
+        <div>
+          <h4 className="text-orange-300 font-bold">
+            Propose Table for Approved List
+          </h4>
+          <p>
+            To request a new table to be added to the approved list, start a new
+            thread in the{" "}
+            <Link
+              href="https://discord.com/channels/652274650524418078/1477084728535552042"
+              target="_blank"
+              className="text-orange-400 hover:text-orange-300"
+            >
+              Curated List
+            </Link>{" "}
+            forum. Check the Post Guidelines for more info.
+          </p>
         </div>
       </div>
     </div>

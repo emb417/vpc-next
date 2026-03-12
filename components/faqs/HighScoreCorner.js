@@ -12,8 +12,8 @@ export default function HighScoreCorner() {
       </SectionLabel>
       <div className="bg-stone-900 border border-orange-950 rounded-xl p-6 text-stone-300 space-y-6">
         <p>
-          Search, track, and post high scores in a structured manner outside of
-          the weekly competition.
+          Post and search high scores (using VPS ID or Table URL) outside of the
+          weekly competition.
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -25,7 +25,8 @@ export default function HighScoreCorner() {
               </span>
             </h5>
             <p className="text-xs">
-              <code>/post-high-score</code>
+              <code>/post-high-score</code> and select the VPS ID or Table URL
+              option
             </p>
             <p className="text-xs">
               Or: <code>!high &lt;score&gt; &lt;tablesearchterm&gt;</code>
@@ -35,26 +36,21 @@ export default function HighScoreCorner() {
             </p>
           </div>
           <div className="bg-stone-950 p-4 rounded-lg border border-stone-800 space-y-2">
-            <h5 className="text-orange-300 font-bold text-sm">Search Tables</h5>
+            <h5 className="text-orange-300 font-bold text-sm">
+              Search High Scores
+            </h5>
             <p className="text-xs">
-              <code>/show-table-lists</code>
-            </p>
-            <p className="text-xs">
-              <code>/show-table-high-scores &lt;tablesearchterm&gt;</code>
+              <code>/show-table-high-scores</code>
             </p>
             <p className="text-xs text-stone-500 italic">
               Example: /show-table-high-scores tablesearchterm: cactus
             </p>
           </div>
           <div className="bg-stone-950 p-4 rounded-lg border border-stone-800 space-y-2">
-            <h5 className="text-orange-300 font-bold text-sm">
-              Propose New Tables
-            </h5>
+            <h5 className="text-orange-300 font-bold text-sm">New Tables</h5>
             <p className="text-xs">
-              Provide the VPS ID in the channel and tag the moderators.
-            </p>
-            <p className="text-xs text-stone-500 italic">
-              Example: Please add Skyway. VPS Id: qo-m1I-F
+              Posting a score for a new table will automatically create the new
+              table.
             </p>
           </div>
         </div>

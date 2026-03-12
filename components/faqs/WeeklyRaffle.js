@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { FaTicketAlt } from "react-icons/fa";
 import SectionLabel from "@/components/stats/SectionLabel";
 
@@ -41,9 +42,16 @@ export default function WeeklyRaffle() {
         <div className="space-y-2 border-t border-orange-950/50 pt-2">
           <h4 className="text-orange-300 font-bold">Qualifying Tables</h4>
           <p>
-            Tables on the Approved List are pre-qualified. Others require a
-            combined <strong>3 🏆 Trophies</strong> from players who enter it to
-            qualify.
+            Tables on the{" "}
+            <Link
+              href="https://docs.google.com/spreadsheets/d/1cQoj3uVV78KGRRJqWSiJSbSZ-LLP5Kp1M2aNMCJj4X4/edit?usp=sharing)"
+              target="_blank"
+              className="text-orange-400 hover:text-orange-300"
+            >
+              Approved List
+            </Link>{" "}
+            are pre-qualified. Others require a combined{" "}
+            <strong>3 🏆 Trophies</strong> from players who enter it to qualify.
           </p>
           <p className="text-xs italic text-stone-500 mt-2">
             Check /show-raffle-board for the Pending (⏳) icon.
