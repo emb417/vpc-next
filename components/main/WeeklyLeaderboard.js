@@ -18,7 +18,7 @@ export default function WeeklyLeaderboard({ weekData, vpsData }) {
   return (
     <div className="flex flex-col w-full items-center text-stone-200">
       <LeaderboardTitleCard
-        imageUrl={vpsData.b2sFiles?.[0]?.imgUrl ?? null}
+        imageUrl={vpsData?.imgUrl ?? null}
         table={weekData.table}
         weekNumber={weekData.weekNumber}
         periodStart={weekData.periodStart}

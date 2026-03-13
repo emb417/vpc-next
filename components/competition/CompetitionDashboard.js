@@ -66,7 +66,6 @@ export default async function CompetitionDashboard({ searchTerm, week }) {
       scoresData={scoresData}
       totalCount={totalCount}
       weeksPageAPI={`${process.env.CSR_BASE_URL}${process.env.VPC_API_COMPETITION_WEEKS}`}
-      tableImagesAPI={`${process.env.CSR_BASE_URL}${process.env.VPS_API_TABLES_PATH}`}
     />
   );
 }

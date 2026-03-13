@@ -25,7 +25,6 @@ export default function HighScoresLeaderboards({
   scoresData = [],
   totalCount = 0,
   tablesPageAPI,
-  tableImagesAPI,
   initialSearchTerm = "",
   initialVpsId = "",
 }) {
@@ -34,7 +33,6 @@ export default function HighScoresLeaderboards({
   const [tables, setTables] = useState(scoresData);
   const [count, setCount] = useState(totalCount);
   const [loading, setLoading] = useState(false);
-  const [imagesUrls, setImagesUrls] = useState({});
   const scrollableDivRef = useRef(null);
   const [searchTerm, setSearchTerm] = useState(initialSearchTerm);
   const [debouncedSearchTerm, setDebouncedSearchTerm] =
@@ -121,37 +119,6 @@ export default function HighScoresLeaderboards({
   useEffect(() => {
     setPage(1);
   }, [debouncedSearchTerm, debouncedVpsId]);
-
-  useEffect(() => {
-    const fetchImagesForTables = async () => {
-      const imagesData = await Promise.all(
-        (tables ?? []).map(async (table) => {
-          const id = table.vpsId ?? table.tableId;
-          const imageUrl = `${tableImagesAPI}/${id}`;
-          try {
-            const vpsResponse = await fetch(imageUrl);
-            const vpsData = await vpsResponse.json();
-            const found = vpsData?.b2sFiles?.[0]?.imgUrl ?? null;
-            return [id, found];
-          } catch (error) {
-            console.error(
-              "HighScoresLeaderboards image fetch error for",
-              id,
-              error,
-            );
-            return [id, null];
-          }
-        }),
-      );
-      setImagesUrls(Object.fromEntries(imagesData));
-    };
-
-    if ((tables ?? []).length > 0) {
-      fetchImagesForTables();
-    } else {
-      setImagesUrls({});
-    }
-  }, [tables, tableImagesAPI]);
 
   return (
     <div className="flex flex-col flex-grow w-full max-h-dvh">
@@ -240,7 +207,7 @@ export default function HighScoresLeaderboards({
                 >
                   <LeaderboardTitleCard
                     table={table.tableName}
-                    imageUrl={imagesUrls?.[id]}
+                    imageUrl={table.vpsData?.imgUrl}
                   >
                     <LeaderboardTitleCardContent
                       title={table.tableName}

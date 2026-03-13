@@ -28,14 +28,12 @@ export default function CompetitionLeaderboards({
   scoresData = [],
   totalCount = 0,
   weeksPageAPI,
-  tableImagesAPI,
 }) {
   const weeksPerPage = 4;
   const [page, setPage] = useState(1);
   const [weeks, setWeeks] = useState(scoresData);
   const [count, setCount] = useState(totalCount);
   const [loading, setLoading] = useState(false);
-  const [imagesUrls, setImagesUrls] = useState({});
   const scrollableDivRef = useRef(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(searchTerm);
@@ -106,37 +104,6 @@ export default function CompetitionLeaderboards({
   useEffect(() => {
     setPage(1);
   }, [debouncedSearchTerm]);
-
-  useEffect(() => {
-    const fetchImagesForTables = async () => {
-      const imagesData = await Promise.all(
-        (weeks ?? []).map(async (week) => {
-          const id = week.vpsId;
-          const imageUrl = `${tableImagesAPI}/${id}`;
-          try {
-            const vpsResponse = await fetch(imageUrl);
-            const vpsData = await vpsResponse.json();
-            const found = vpsData?.b2sFiles?.[0]?.imgUrl ?? null;
-            return [id, found];
-          } catch (error) {
-            console.error(
-              "CompetitionLeaderboards image fetch error for",
-              id,
-              error,
-            );
-            return [id, null];
-          }
-        }),
-      );
-      setImagesUrls(Object.fromEntries(imagesData));
-    };
-
-    if ((weeks ?? []).length > 0) {
-      fetchImagesForTables();
-    } else {
-      setImagesUrls({});
-    }
-  }, [weeks, tableImagesAPI]);
 
   return (
     <div className="flex flex-col flex-grow w-full max-h-dvh">
@@ -225,7 +192,7 @@ export default function CompetitionLeaderboards({
                 >
                   <LeaderboardTitleCard
                     table={week.table}
-                    imageUrl={imagesUrls?.[id]}
+                    imageUrl={week.vpsData?.imgUrl}
                   >
                     <LeaderboardTitleCardContent
                       title={week.table}

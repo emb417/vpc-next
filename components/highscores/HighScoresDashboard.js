@@ -67,7 +67,6 @@ export default async function HighScoresDashboard({ searchTerm, vpsId }) {
       scoresData={scoresData}
       totalCount={totalCount}
       tablesPageAPI={`${process.env.CSR_BASE_URL}${process.env.VPC_API_RECENT_TABLES}`}
-      tableImagesAPI={`${process.env.CSR_BASE_URL}${process.env.VPS_API_TABLES_PATH}`}
       initialSearchTerm={searchTerm || ""}
       initialVpsId={vpsId || ""}
     />

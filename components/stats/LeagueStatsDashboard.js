@@ -20,30 +20,18 @@ async function getData() {
 
     const data = await response.json();
 
-    const vpsResponse = await fetchWithLogging(
-      `${process.env.SSR_BASE_URL}${process.env.VPS_API_GAMES_PATH}`,
-      { cache: "no-store" },
-      "getVpsGames",
-    );
-
-    if (!vpsResponse.ok) throw new Error(`VPS API error ${vpsResponse.status}`);
-
-    const vpsGames = await vpsResponse.json();
-
-    // Build lookup map: vpsId -> { maker, year, designer }
+    // Build lookup map: vpsId -> { maker, year, designer } from enriched data
     const vpsLookup = Object.fromEntries(
-      vpsGames
-        .flatMap((g) =>
-          (g.tableFiles ?? []).map((t) => [
-            t.id,
-            {
-              maker: g.manufacturer,
-              year: g.year,
-              designer: g.designers?.[0] ?? null,
-            },
-          ]),
-        )
-        .filter(([id]) => id),
+      data
+        .filter((w) => w.vpsId && w.vpsData)
+        .map((w) => [
+          w.vpsId,
+          {
+            maker: w.vpsData.maker,
+            year: w.vpsData.year,
+            designer: w.vpsData.designer,
+          },
+        ]),
     );
 
     const { playerStats, rankKeyMap, leagueStats } = LeagueStats(

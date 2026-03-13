@@ -96,60 +96,13 @@ async function getPlayerSummaryData(username) {
   }
 }
 
-async function getVpsLookup() {
-  const start = Date.now();
-  logEvent({ type: "player_profile_vps_lookup_start" });
-
-  try {
-    const vpsResponse = await fetchWithLogging(
-      `${process.env.SSR_BASE_URL}${process.env.VPS_API_GAMES_PATH}`,
-      { cache: "no-store" },
-      "getVpsGamesForPlayerProfile",
-    );
-
-    if (!vpsResponse.ok) throw new Error(`VPS API error ${vpsResponse.status}`);
-
-    const vpsGames = await vpsResponse.json();
-
-    const vpsLookup = Object.fromEntries(
-      vpsGames
-        .flatMap((g) =>
-          (g.tableFiles ?? []).map((t) => [
-            t.id,
-            {
-              maker: g.manufacturer,
-              year: g.year,
-              designer: g.designers?.[0] ?? null,
-            },
-          ]),
-        )
-        .filter(([id]) => id),
-    );
-
-    logEvent({
-      type: "player_profile_vps_lookup_complete",
-      durationMs: Date.now() - start,
-    });
-
-    return vpsLookup;
-  } catch (error) {
-    logEvent({
-      type: "player_profile_vps_lookup_error",
-      error: error.message,
-    });
-    return {};
-  }
-}
-
 export default async function PlayerProfile({ username }) {
   const [
     { playerStats, playerRivals, user, userPositionData },
     highScores,
-    vpsLookup,
   ] = await Promise.all([
     getPlayerSummaryData(username),
     getPlayerHighScores(username),
-    getVpsLookup(),
   ]);
 
   if (!user) {
@@ -161,6 +114,20 @@ export default async function PlayerProfile({ username }) {
 
     redirect("/");
   }
+
+  // Create vpsLookup from highScores for PlayerHighScoreInsights
+  const vpsLookup = Object.fromEntries(
+    highScores
+      .filter((s) => s.vpsId && s.vpsData)
+      .map((s) => [
+        s.vpsId,
+        {
+          maker: s.vpsData.maker,
+          year: s.vpsData.year,
+          designer: s.vpsData.designer,
+        },
+      ]),
+  );
 
   return (
     <div className="flex flex-col w-full items-center gap-4 py-2">

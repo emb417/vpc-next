@@ -24,19 +24,7 @@ async function getData() {
     const positionWeeksData = LeaderboardStats(data);
     const recentPlayerStats = RecentStats(data);
 
-    let vpsData = null;
-
-    if (positionWeeksData?.length) {
-      const vpsUrl = `${process.env.SSR_BASE_URL}${process.env.VPS_API_TABLES_PATH}/${positionWeeksData[0].vpsId}`;
-
-      const vpsResponse = await fetchWithLogging(
-        vpsUrl,
-        { next: { revalidate: 1800 } },
-        "getVpsTable",
-      );
-
-      vpsData = await vpsResponse.json();
-    }
+    const vpsData = positionWeeksData?.[0]?.vpsData || null;
 
     logEvent({
       type: "main_dashboard_complete",
