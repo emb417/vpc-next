@@ -10,8 +10,8 @@ export default function CompetitionRules() {
           Competition Corner Rules
         </div>
       </SectionLabel>
-      <div className="bg-stone-900 border border-orange-950 rounded-xl p-6 text-stone-300 space-y-4 text-sm leading-relaxed">
-        <p className="text-orange-200 font-semibold italic">
+      <div className="bg-stone-100 dark:bg-stone-900 border border-orange-500 dark:border-orange-950 rounded-xl p-6 text-stone-700 dark:text-stone-300 space-y-4 text-sm leading-relaxed">
+        <p className="text-orange-700 dark:text-orange-200 font-semibold italic">
           &quot;Welcome to COMPETITION CORNER where we all play the Table of the
           Week!&quot;
         </p>

@@ -10,15 +10,15 @@ export default function HighScoreCorner() {
           High Score Corner
         </div>
       </SectionLabel>
-      <div className="bg-stone-900 border border-orange-950 rounded-xl p-6 text-stone-300 space-y-6">
+      <div className="bg-stone-100 dark:bg-stone-900 border border-orange-500 dark:border-orange-950 rounded-xl p-6 text-stone-700 dark:text-stone-300 space-y-6">
         <p>
           Post and search high scores (using VPS ID or Table URL) outside of the
           weekly competition.
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="bg-stone-950 p-4 rounded-lg border border-stone-800 space-y-2">
-            <h5 className="text-orange-300 font-bold text-sm">
+          <div className="bg-stone-200 dark:bg-stone-950 p-4 rounded-lg border border-stone-300 dark:border-stone-800 space-y-2">
+            <h5 className="text-orange-700 dark:text-orange-300 font-bold text-sm">
               Post High Score{" "}
               <span className="text-xs text-stone-500 lowercase">
                 (Photo Required)
@@ -35,8 +35,8 @@ export default function HighScoreCorner() {
               Example: !high 12000000 cactus
             </p>
           </div>
-          <div className="bg-stone-950 p-4 rounded-lg border border-stone-800 space-y-2">
-            <h5 className="text-orange-300 font-bold text-sm">
+          <div className="bg-stone-200 dark:bg-stone-950 p-4 rounded-lg border border-stone-300 dark:border-stone-800 space-y-2">
+            <h5 className="text-orange-700 dark:text-orange-300 font-bold text-sm">
               Search High Scores
             </h5>
             <p className="text-xs">
@@ -46,8 +46,8 @@ export default function HighScoreCorner() {
               Example: /show-table-high-scores tablesearchterm: cactus
             </p>
           </div>
-          <div className="bg-stone-950 p-4 rounded-lg border border-stone-800 space-y-2">
-            <h5 className="text-orange-300 font-bold text-sm">New Tables</h5>
+          <div className="bg-stone-200 dark:bg-stone-950 p-4 rounded-lg border border-stone-300 dark:border-stone-800 space-y-2">
+            <h5 className="text-orange-700 dark:text-orange-300 font-bold text-sm">New Tables</h5>
             <p className="text-xs">
               Posting a score for a new table will automatically create the new
               table.

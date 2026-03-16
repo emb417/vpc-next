@@ -10,20 +10,20 @@ export default function ScoreBotUsage() {
           How to use Score Bot
         </div>
       </SectionLabel>
-      <div className="bg-stone-900 border border-orange-950 rounded-xl p-6 text-stone-300 space-y-4">
+      <div className="bg-stone-100 dark:bg-stone-900 border border-orange-500 dark:border-orange-950 rounded-xl p-6 text-stone-700 dark:text-stone-300 space-y-4">
         <div className="grid grid-cols-1 gap-4">
           <div>
-            <p className="text-stone-300">
+            <p>
               Virtual Pinball Chat uses a Discord bot to track both weekly
               competition scores and high scores outside of the weekly
               competition. The bot also manages raffle entries and automates
               weekly competition table selections.
             </p>
           </div>
-          <div className="bg-stone-950 p-3 rounded-lg border border-stone-800">
+          <div className="bg-stone-200 dark:bg-stone-950 p-3 rounded-lg border border-stone-300 dark:border-stone-800">
             <p className="text-xs text-stone-500 uppercase font-bold mb-1">
               Post a Score{" "}
-              <span className="text-xs text-stone-600 lowercase">
+              <span className="text-xs text-stone-600 dark:text-stone-400 lowercase">
                 (Photo Required)
               </span>
             </p>
@@ -31,14 +31,14 @@ export default function ScoreBotUsage() {
               <code>/post-score</code>
             </p>
             <p className="text-sm">
-              Or: <code className="text-orange-300">!score &lt;value&gt;</code>{" "}
-              <span className="text-xs text-stone-400">(attach photo)</span>
+              Or: <code className="text-orange-700 dark:text-orange-300">!score &lt;value&gt;</code>{" "}
+              <span className="text-xs text-stone-500 dark:text-stone-400">(attach photo)</span>
             </p>
             <p className="text-xs text-stone-500 italic">
               Example: !score 12000000
             </p>
           </div>
-          <div className="bg-stone-950 p-3 rounded-lg border border-stone-800">
+          <div className="bg-stone-200 dark:bg-stone-950 p-3 rounded-lg border border-stone-300 dark:border-stone-800">
             <p className="text-xs text-stone-500 uppercase font-bold mb-1">
               View Info
             </p>
@@ -49,7 +49,7 @@ export default function ScoreBotUsage() {
               <code>/show-leaderboard</code> - View the current leaderboard
             </p>
           </div>
-          <div className="bg-stone-950 p-3 rounded-lg border border-stone-800">
+          <div className="bg-stone-200 dark:bg-stone-950 p-3 rounded-lg border border-stone-300 dark:border-stone-800">
             <p className="text-xs text-stone-500 uppercase font-bold mb-1">
               Raffle Commands
             </p>
