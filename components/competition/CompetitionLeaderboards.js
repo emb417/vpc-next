@@ -1,25 +1,25 @@
 "use client";
 
-import { useRef, useEffect, useState } from "react";
-import Link from "next/link";
-import {
-  GiPreviousButton,
-  GiNextButton,
-  GiPinballFlipper,
-} from "react-icons/gi";
-import { CgSoftwareUpload } from "react-icons/cg";
-import { Input, Tooltip } from "antd";
+import { useRef, useEffect, useState, useCallback } from "react";
+import { GiPinballFlipper } from "react-icons/gi";
+import { Input } from "antd";
 import Loading from "@/app/loading";
 import LeaderboardTitleCard from "@/components/shared/LeaderboardTitleCard";
 import LeaderboardTitleCardContent from "@/components/shared/LeaderboardTitleCardContent";
 import CompetitionLeaderboardItem from "@/components/competition/CompetitionLeaderboardItem";
 
-const truncate = (str, num) => {
-  if (str.length > num) {
-    return str.slice(0, num) + "...";
-  } else {
-    return str;
+// ── Helpers ──────────────────────────────────────────────────────────────────
+
+function unwrap(raw) {
+  if (Array.isArray(raw) && raw.length > 0 && raw[0].results) {
+    return { results: raw[0].results, total: Number(raw[0].totalCount ?? 0) };
   }
+  return { results: [], total: 0 };
+}
+
+const truncate = (str, num) => {
+  if (str.length > num) return str.slice(0, num) + "...";
+  return str;
 };
 
 export default function CompetitionLeaderboards({
@@ -28,80 +28,99 @@ export default function CompetitionLeaderboards({
   weeksPageAPI,
 }) {
   const weeksPerPage = 4;
-  const [page, setPage] = useState(1);
+
   const [weeks, setWeeks] = useState(scoresData);
   const [count, setCount] = useState(totalCount);
+  const [offset, setOffset] = useState(weeksPerPage); // first page already loaded via SSR
   const [loading, setLoading] = useState(false);
-  const scrollableDivRef = useRef(null);
+  const [hasMore, setHasMore] = useState(totalCount > weeksPerPage);
   const [searchTerm, setSearchTerm] = useState("");
-  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(searchTerm);
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
 
+  const sentinelRef = useRef(null);
+  const observerRef = useRef(null);
+
+  // Debounce search
   useEffect(() => {
-    const timerId = setTimeout(() => {
-      setDebouncedSearchTerm(searchTerm);
-    }, 500);
-    return () => clearTimeout(timerId);
+    const id = setTimeout(() => setDebouncedSearchTerm(searchTerm), 500);
+    return () => clearTimeout(id);
   }, [searchTerm]);
 
-  const totalPages = Math.max(1, Math.ceil(count / weeksPerPage));
-
-  function unwindResponseShape(raw) {
-    if (!raw) return { results: [], totalCount: 0 };
-    if (Array.isArray(raw) && raw.length > 0 && raw[0].results) {
-      return {
-        results: raw[0].results,
-        totalCount: Number(raw[0].totalCount ?? 0),
-      };
-    }
-    if (Array.isArray(raw) && raw.length === 0) {
-      return { results: [], totalCount: 0 };
-    }
-    return { results: [], totalCount: 0 };
-  }
-
+  // Reset everything when search changes
   useEffect(() => {
-    const loadPage = async () => {
-      if (page === 1 && !debouncedSearchTerm) {
-        setWeeks(Array.isArray(scoresData) ? scoresData : []);
-        setCount(
-          Number.isFinite(Number(totalCount))
-            ? Number(totalCount)
-            : Array.isArray(scoresData)
-              ? scoresData.length
-              : 0,
-        );
-        return;
-      }
+    if (!debouncedSearchTerm) {
+      // Restore SSR data
+      setWeeks(Array.isArray(scoresData) ? scoresData : []);
+      setCount(totalCount);
+      setOffset(weeksPerPage);
+      setHasMore(totalCount > weeksPerPage);
+      return;
+    }
 
+    // Fresh search — fetch from offset 0
+    let cancelled = false;
+    const run = async () => {
       setLoading(true);
-      const offset = (page - 1) * weeksPerPage;
-      let url = `${weeksPageAPI}?limit=${weeksPerPage}&offset=${offset}`;
-      if (debouncedSearchTerm) {
-        url += `&searchTerm=${encodeURIComponent(debouncedSearchTerm)}`;
-      }
-
       try {
+        const url = `${weeksPageAPI}?limit=${weeksPerPage}&offset=0&searchTerm=${encodeURIComponent(debouncedSearchTerm)}`;
         const res = await fetch(url);
         const raw = await res.json();
-        const { results: nextResults, totalCount: nextTotal } =
-          unwindResponseShape(raw);
-        setWeeks(nextResults);
-        setCount(nextTotal);
+        if (cancelled) return;
+        const { results, total } = unwrap(raw);
+        setWeeks(results);
+        setCount(total);
+        setOffset(weeksPerPage);
+        setHasMore(total > weeksPerPage);
       } catch (err) {
-        console.error("CompetitionLeaderboards loadPage error:", err);
-        setWeeks([]);
-        setCount(0);
+        console.error("CompetitionLeaderboards search error:", err);
+        if (!cancelled) {
+          setWeeks([]);
+          setCount(0);
+          setHasMore(false);
+        }
       } finally {
-        setLoading(false);
+        if (!cancelled) setLoading(false);
       }
     };
+    run();
+    return () => {
+      cancelled = true;
+    };
+  }, [debouncedSearchTerm]); // eslint-disable-line react-hooks/exhaustive-deps
 
-    loadPage();
-  }, [page, weeksPageAPI, scoresData, totalCount, debouncedSearchTerm]);
+  const loadMore = useCallback(async () => {
+    if (loading || !hasMore) return;
+    setLoading(true);
+    try {
+      let url = `${weeksPageAPI}?limit=${weeksPerPage}&offset=${offset}`;
+      if (debouncedSearchTerm)
+        url += `&searchTerm=${encodeURIComponent(debouncedSearchTerm)}`;
+      const res = await fetch(url);
+      const raw = await res.json();
+      const { results, total } = unwrap(raw);
+      setWeeks((prev) => [...prev, ...results]);
+      setCount(total);
+      setOffset((prev) => prev + weeksPerPage);
+      setHasMore(offset + weeksPerPage < total);
+    } catch (err) {
+      console.error("CompetitionLeaderboards loadMore error:", err);
+    } finally {
+      setLoading(false);
+    }
+  }, [loading, hasMore, offset, debouncedSearchTerm, weeksPageAPI]);
 
+  // Wire up IntersectionObserver to the sentinel
   useEffect(() => {
-    setPage(1);
-  }, [debouncedSearchTerm]);
+    if (observerRef.current) observerRef.current.disconnect();
+    observerRef.current = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) loadMore();
+      },
+      { threshold: 0.1 },
+    );
+    if (sentinelRef.current) observerRef.current.observe(sentinelRef.current);
+    return () => observerRef.current?.disconnect();
+  }, [loadMore]);
 
   return (
     <div className="flex flex-col flex-grow w-full max-h-dvh">
@@ -111,7 +130,6 @@ export default function CompetitionLeaderboards({
           <GiPinballFlipper />
           Competition Corner
         </h1>
-
         <div className="flex flex-row items-center ml-auto gap-4">
           <div className="hidden lg:flex w-[230px] items-center mx-auto">
             <Input
@@ -121,25 +139,6 @@ export default function CompetitionLeaderboards({
               allowClear
               size="small"
             />
-          </div>
-          <div className="flex flex-row items-center gap-2 text-stone-800 dark:text-stone-200">
-            <button
-              className="p-1 rounded-lg bg-orange-100 dark:bg-orange-900 text-xs hover:bg-orange-300 dark:hover:bg-orange-700 duration-300"
-              onClick={() => setPage((p) => Math.max(1, p - 1))}
-              disabled={page === 1 || loading}
-            >
-              <GiPreviousButton className="text-xl" />
-            </button>
-            <span className="min-w-[max-content] text-xs text-center">
-              Page {page} of {Number.isFinite(totalPages) ? totalPages : 1}
-            </span>
-            <button
-              className="p-1 rounded-lg bg-orange-100 dark:bg-orange-900 text-xs hover:bg-orange-300 dark:hover:bg-orange-700 duration-300"
-              onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-              disabled={page >= totalPages || loading}
-            >
-              <GiNextButton className="text-xl" />
-            </button>
           </div>
         </div>
       </div>
@@ -157,61 +156,65 @@ export default function CompetitionLeaderboards({
         </div>
       </div>
 
-      {/* ── Leaderboard columns ── */}
-      <div
-        ref={scrollableDivRef}
-        className="flex flex-row w-full gap-2 text-stone-800 dark:text-stone-200 pb-2 mb-2 border-b-2 border-orange-500 dark:border-orange-950 overflow-auto"
-      >
+      {/* ── Scrollable leaderboard row ── */}
+      <div className="flex flex-row w-full gap-2 text-stone-800 dark:text-stone-200 pb-2 mb-2 border-b-2 border-orange-500 dark:border-orange-950 overflow-x-auto overflow-y-hidden">
         <div className="flex flex-row gap-2 mx-auto">
-          {loading ? (
-            <Loading />
-          ) : (
-            (weeks ?? []).map((week) => {
-              const id = week.vpsId;
-              const key = `${id}-${week.table}`;
-
-              return (
-                <div
-                  className="flex flex-col gap-1 items-center"
-                  key={key}
-                  id={key}
+          {(weeks ?? []).map((week) => {
+            const id = week.vpsId;
+            const key = `${id}-${week.table}`;
+            return (
+              <div
+                className="flex flex-col gap-1 items-center"
+                key={key}
+                id={key}
+              >
+                <LeaderboardTitleCard
+                  table={week.table}
+                  imageUrl={week.vpsData?.imgUrl}
                 >
-                  <LeaderboardTitleCard
-                    table={week.table}
-                    imageUrl={week.vpsData?.imgUrl}
-                  >
-                    <LeaderboardTitleCardContent
-                      title={week.table}
-                      vpsId={id}
-                      downloadUrl={week.tableUrl}
-                      weekNumber={week.weekNumber}
-                      periodStart={week.periodStart}
-                      periodEnd={week.periodEnd}
-                      version={week.versionNumber}
-                      author={
-                        week.authorName
-                          ? truncate(week.authorName, 30)
-                          : undefined
-                      }
+                  <LeaderboardTitleCardContent
+                    title={week.table}
+                    vpsId={id}
+                    downloadUrl={week.tableUrl}
+                    weekNumber={week.weekNumber}
+                    periodStart={week.periodStart}
+                    periodEnd={week.periodEnd}
+                    version={week.versionNumber}
+                    author={
+                      week.authorName
+                        ? truncate(week.authorName, 30)
+                        : undefined
+                    }
+                  />
+                </LeaderboardTitleCard>
+                <div className="flex flex-col gap-1 overflow-auto rounded-xl min-w-[320px] max-w-[320px]">
+                  {(week.scores ?? []).map((score, scoreIndex) => (
+                    <CompetitionLeaderboardItem
+                      key={`${week.weekId}-${score.username}-${score.score}`}
+                      score={score}
+                      scoreIndex={scoreIndex}
                     />
-                  </LeaderboardTitleCard>
-
-                  {/* ── Scores list ── */}
-                  <div className="flex flex-col gap-1 overflow-auto rounded-xl min-w-[320px] max-w-[320px]">
-                    {(week.scores ?? []).map((score, scoreIndex) => (
-                      <CompetitionLeaderboardItem
-                        key={`${week.weekId}-${score.username}-${score.score}`}
-                        score={score}
-                        scoreIndex={scoreIndex}
-                      />
-                    ))}
-                  </div>
+                  ))}
                 </div>
-              );
-            })
-          )}
+              </div>
+            );
+          })}
+
+          {/* Sentinel — observed to trigger loadMore */}
+          <div
+            ref={sentinelRef}
+            className="flex items-center px-4 min-w-[40px]"
+          >
+            {loading && <Loading />}
+          </div>
         </div>
       </div>
+
+      {!hasMore && weeks.length > 0 && (
+        <p className="text-center text-xs text-stone-400 dark:text-stone-600 py-1">
+          All {count} weeks loaded
+        </p>
+      )}
     </div>
   );
 }
