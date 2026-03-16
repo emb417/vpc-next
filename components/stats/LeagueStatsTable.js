@@ -4,6 +4,7 @@ import { ConfigProvider, Table, theme } from "antd";
 import SectionLabel from "./SectionLabel";
 import { getColumns } from "./LeagueStatsColumns";
 import { rankKeyMap } from "../../lib/LeaguePlayerSorter.js";
+import { useTheme } from "@/lib/ThemeContext";
 
 function getSortedPlayerStats(playerStats, sortedInfo) {
   if (!sortedInfo.columnKey) return playerStats;
@@ -16,6 +17,7 @@ function getSortedPlayerStats(playerStats, sortedInfo) {
 function StatsTable({ playerStats }) {
   const [filteredInfo, setFilteredInfo] = useState({});
   const [sortedInfo, setSortedInfo] = useState({});
+  const { theme: appTheme } = useTheme();
 
   const columns = useMemo(() => getColumns(rankKeyMap), []);
 
@@ -32,10 +34,14 @@ function StatsTable({ playerStats }) {
   return (
     <div className="flex flex-col h-dvh gap-2 w-full py-2">
       <SectionLabel>Stats Table</SectionLabel>
-      <ConfigProvider theme={{ algorithm: theme.darkAlgorithm }}>
+      <ConfigProvider
+        theme={{
+          algorithm:
+            appTheme === "dark" ? theme.darkAlgorithm : theme.defaultAlgorithm,
+        }}
+      >
         <Table
           bordered={true}
-          colorBgContainer="#111111"
           size="small"
           rowKey={"username"}
           columns={columns}
@@ -47,7 +53,7 @@ function StatsTable({ playerStats }) {
           sticky
         />
       </ConfigProvider>
-      <hr className="border-1 border-orange-900" />
+      <hr className="border-1 border-orange-500 dark:border-orange-900" />
     </div>
   );
 }

@@ -21,7 +21,6 @@ import AvgPlayersCard from "./AvgPlayersCard";
 import RankListCard from "./RankListCard";
 import PlayersPerWeekChart from "./PlayersPerWeekChart";
 
-// ── Main Component ────────────────────────────────────────────────────────────
 export default function LeagueSummaryStats({ leagueStats }) {
   const {
     weeklyPlayerCounts,
@@ -216,7 +215,7 @@ export default function LeagueSummaryStats({ leagueStats }) {
         />
       </div>
 
-      <hr className="border-orange-950" />
+      <hr className="border-orange-500 dark:border-orange-950" />
     </div>
   );
 }

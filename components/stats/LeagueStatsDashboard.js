@@ -59,7 +59,7 @@ export default async function StatsDashboard() {
   const { playerStats, rankKeyMap, leagueStats } = props;
 
   return (
-    <div className="flex flex-col w-full gap-2 py-2 text-stone-200">
+    <div className="flex flex-col w-full gap-2 py-2">
       {leagueStats && <LeagueSummaryStats leagueStats={leagueStats} />}
       <LeagueStatsTable playerStats={playerStats} rankKeyMap={rankKeyMap} />
     </div>

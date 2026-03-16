@@ -3,8 +3,8 @@ import PlayerImage from "@/components/player/PlayerImage";
 
 export default function TrophyShelfCard({ icon: Icon, label, windows }) {
   return (
-    <div className="flex flex-col gap-2 bg-stone-900 border border-orange-950 rounded-xl px-3 py-2.5">
-      <div className="flex items-center gap-1.5 text-stone-400 text-xs uppercase tracking-wider">
+    <div className="flex flex-col gap-2 bg-stone-200 dark:bg-stone-900 border border-orange-500 dark:border-orange-950 rounded-xl px-3 py-2.5">
+      <div className="flex items-center gap-1.5 text-stone-600 dark:text-stone-400 text-xs uppercase tracking-wider">
         <Icon className="text-orange-600 shrink-0 text-lg" />
         {label}
       </div>
@@ -18,7 +18,7 @@ export default function TrophyShelfCard({ icon: Icon, label, windows }) {
             {player ? (
               <Link
                 href={`/player/${player.username}`}
-                className="flex flex-col items-center gap-1 hover:text-orange-300 transition-colors min-w-0 w-full"
+                className="flex flex-col items-center gap-1 hover:text-orange-600 dark:hover:text-orange-300 transition-colors min-w-0 w-full"
               >
                 <PlayerImage
                   src={player.userAvatarUrl}
@@ -27,15 +27,15 @@ export default function TrophyShelfCard({ icon: Icon, label, windows }) {
                   height={32}
                   className="rounded-full shrink-0"
                 />
-                <span className="text-stone-100 text-xs font-semibold truncate w-full text-center leading-none">
+                <span className="text-stone-800 dark:text-stone-100 text-xs font-semibold truncate w-full text-center leading-none">
                   {player.username}
                 </span>
-                <span className="text-orange-500 text-xs shrink-0 text-center">
+                <span className="text-orange-600 dark:text-orange-500 text-xs shrink-0 text-center">
                   {sub(player)}
                 </span>
               </Link>
             ) : (
-              <span className="text-stone-600 text-xs text-center">
+              <span className="text-stone-500 dark:text-stone-600 text-xs text-center">
                 Not enough data
               </span>
             )}

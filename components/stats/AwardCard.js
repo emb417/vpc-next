@@ -4,8 +4,8 @@ import PlayerImage from "@/components/player/PlayerImage";
 export default function AwardCard({ icon: Icon, label, players, sub }) {
   if (!players?.length) return null;
   return (
-    <div className="flex flex-col gap-2 bg-stone-900 border border-orange-950 rounded-xl px-3 py-2.5 h-full">
-      <div className="flex items-center gap-1.5 text-stone-400 text-xs uppercase tracking-wider">
+    <div className="flex flex-col gap-2 bg-stone-200 dark:bg-stone-900 border border-orange-500 dark:border-orange-950 rounded-xl px-3 py-2.5 h-full">
+      <div className="flex items-center gap-1.5 text-stone-600 dark:text-stone-400 text-xs uppercase tracking-wider">
         <Icon className="text-orange-600 shrink-0 text-lg" />
         {label}
       </div>
@@ -14,9 +14,9 @@ export default function AwardCard({ icon: Icon, label, players, sub }) {
           <Link
             key={player.username}
             href={`/player/${player.username}`}
-            className="flex items-center gap-1.5 hover:text-orange-300 transition-colors duration-200 min-w-0"
+            className="flex items-center gap-1.5 hover:text-orange-600 dark:hover:text-orange-300 transition-colors duration-200 min-w-0"
           >
-            <span className="text-orange-700 text-xs shrink-0 w-4">
+            <span className="text-orange-600 text-xs shrink-0 w-4">
               {i + 1}.
             </span>
             <PlayerImage
@@ -26,7 +26,7 @@ export default function AwardCard({ icon: Icon, label, players, sub }) {
               height={16}
               className="rounded-full shrink-0"
             />
-            <span className="text-stone-100 text-xs font-semibold truncate leading-none">
+            <span className="text-stone-800 dark:text-stone-100 text-xs font-semibold truncate leading-none">
               {player.username}
             </span>
             <span className="text-stone-500 text-xs shrink-0 ml-auto">

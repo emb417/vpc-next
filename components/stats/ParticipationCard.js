@@ -1,6 +1,11 @@
 import { GiHumanPyramid } from "react-icons/gi";
 
-export default function ParticipationCard({ playersAllTime, players52, players13, className = "" }) {
+export default function ParticipationCard({
+  playersAllTime,
+  players52,
+  players13,
+  className = "",
+}) {
   const stats = [
     { label: "All Time", value: playersAllTime, pct: 100 },
     {
@@ -16,8 +21,10 @@ export default function ParticipationCard({ playersAllTime, players52, players13
   ];
 
   return (
-    <div className={`flex flex-col gap-2 bg-stone-900 border border-orange-950 rounded-xl px-3 py-2.5 ${className}`}>
-      <div className="flex items-center gap-1.5 text-stone-400 text-xs uppercase tracking-wider">
+    <div
+      className={`flex flex-col gap-2 bg-stone-200 dark:bg-stone-900 border border-orange-500 dark:border-orange-950 rounded-xl px-3 py-2.5 ${className}`}
+    >
+      <div className="flex items-center gap-1.5 text-stone-600 dark:text-stone-400 text-xs uppercase tracking-wider">
         <GiHumanPyramid className="text-orange-600 shrink-0 text-lg" />
         Total Players
       </div>
@@ -26,14 +33,16 @@ export default function ParticipationCard({ playersAllTime, players52, players13
           <div key={label} className="flex flex-col gap-0.5">
             <div className="flex flex-row justify-between items-baseline">
               <span className="text-stone-500 text-xs">{label}</span>
-              <span className="text-stone-100 text-xs font-semibold">
+              <span className="text-stone-800 dark:text-stone-100 text-xs font-semibold">
                 {value}{" "}
-                <span className="text-stone-600 font-normal">({pct}%)</span>
+                <span className="text-stone-500 dark:text-stone-600 font-normal">
+                  ({pct}%)
+                </span>
               </span>
             </div>
-            <div className="w-full h-1.5 bg-stone-800 rounded-full overflow-hidden">
+            <div className="w-full h-1.5 bg-stone-300 dark:bg-stone-800 rounded-full overflow-hidden">
               <div
-                className="h-full bg-orange-700 rounded-full transition-all duration-500"
+                className="h-full bg-orange-600 dark:bg-orange-700 rounded-full transition-all duration-500"
                 style={{ width: `${pct}%` }}
               />
             </div>

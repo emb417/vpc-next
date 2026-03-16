@@ -26,8 +26,10 @@ export default function AvgPlayersCard({
   ];
 
   return (
-    <div className={`flex flex-col gap-2 bg-stone-900 border border-orange-950 rounded-xl px-3 py-2.5 ${className}`}>
-      <div className="flex items-center gap-1.5 text-stone-400 text-xs uppercase tracking-wider">
+    <div
+      className={`flex flex-col gap-2 bg-stone-200 dark:bg-stone-900 border border-orange-500 dark:border-orange-950 rounded-xl px-3 py-2.5 ${className}`}
+    >
+      <div className="flex items-center gap-1.5 text-stone-600 dark:text-stone-400 text-xs uppercase tracking-wider">
         <GiPerson className="text-orange-600 shrink-0 text-lg" />
         Avg. Players / Week
       </div>
@@ -37,7 +39,7 @@ export default function AvgPlayersCard({
             <div className="flex flex-row justify-between items-baseline w-full">
               <span className="text-stone-500 text-xs">{label}</span>
               <div className="flex items-baseline gap-1.5">
-                <span className="text-stone-100 text-lg font-semibold leading-none">
+                <span className="text-stone-800 dark:text-stone-100 text-lg font-semibold leading-none">
                   {value}
                 </span>
                 <TrendIndicator current={value} previous={prev} />

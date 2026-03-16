@@ -1,3 +1,6 @@
+"use client";
+
+import { useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { Bar } from "react-chartjs-2";
 import {
@@ -10,6 +13,7 @@ import {
   PointElement,
 } from "chart.js";
 import { GiMinions } from "react-icons/gi";
+import { useTheme } from "@/lib/ThemeContext";
 
 ChartJS.register(
   BarElement,
@@ -25,10 +29,15 @@ export default function PlayersPerWeekChart({
   className = "",
 }) {
   const router = useRouter();
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
+
+  const textColor = isDark ? "#78716c" : "#57534e";
+  const gridColor = isDark ? "rgba(120,113,108,0.15)" : "rgba(87,83,78,0.15)";
+
   const counts = weeklyPlayerCounts.map((w) => w.count);
   const labels = weeklyPlayerCounts.map((w) => `Wk ${w.weekNumber}`);
 
-  // Calculate 13-week rolling average
   const rollingAverage = counts.map((_, index) => {
     const start = Math.max(0, index - 12);
     const window = counts.slice(start, index + 1);
@@ -36,63 +45,63 @@ export default function PlayersPerWeekChart({
     return sum / window.length;
   });
 
-  const options = {
-    onClick: (_, elements) => {
-      if (!elements || elements.length === 0) return;
-      const weekNumber = weeklyPlayerCounts[elements[0].index]?.weekNumber;
-      if (weekNumber) router.push(`/competitions?week=${weekNumber}`);
-    },
-    responsive: true,
-    animation: { duration: 500 },
-    plugins: {
-      legend: { display: false },
-      tooltip: {
-        backgroundColor: "rgba(41, 37, 36, 0.9)",
-        mode: "index",
-        intersect: false,
-        callbacks: {
-          title: (ctx) =>
-            `Week ${weeklyPlayerCounts[ctx[0].dataIndex]?.weekNumber}`,
-          label: (ctx) => {
-            // Empty label callback so that the footer can display all info
-            return null;
-          },
-          footer: (ctx) => {
-            const players = ctx.find((c) => c.dataset.type === "bar")?.raw;
-            const avg = ctx.find((c) => c.dataset.type === "line")?.raw;
-
-            let indicator = "—"; // Neutral
-            if (players > avg) {
-              indicator = "▲"; // Up arrow
-            } else if (players < avg) {
-              indicator = "▼"; // Down arrow
-            }
-
-            return [
-              `${players} Players ${indicator}`,
-              `${avg ? avg.toFixed(1) : "N/A"} 13-Wk Avg`,
-            ];
+  const options = useMemo(
+    () => ({
+      onClick: (_, elements) => {
+        if (!elements || elements.length === 0) return;
+        const weekNumber = weeklyPlayerCounts[elements[0].index]?.weekNumber;
+        if (weekNumber) router.push(`/competitions?week=${weekNumber}`);
+      },
+      responsive: true,
+      animation: { duration: 500 },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: isDark
+            ? "rgba(41, 37, 36, 0.9)"
+            : "rgba(231, 229, 228, 0.9)",
+          titleColor: isDark ? "#fafaf9" : "#1c1917",
+          bodyColor: isDark ? "#fafaf9" : "#1c1917",
+          footerColor: isDark ? "#fafaf9" : "#1c1917",
+          mode: "index",
+          intersect: false,
+          callbacks: {
+            title: (ctx) =>
+              `Week ${weeklyPlayerCounts[ctx[0].dataIndex]?.weekNumber}`,
+            label: () => null,
+            footer: (ctx) => {
+              const players = ctx.find((c) => c.dataset.type === "bar")?.raw;
+              const avg = ctx.find((c) => c.dataset.type === "line")?.raw;
+              let indicator = "—";
+              if (players > avg) indicator = "▲";
+              else if (players < avg) indicator = "▼";
+              return [
+                `${players} Players ${indicator}`,
+                `${avg ? avg.toFixed(1) : "N/A"} 13-Wk Avg`,
+              ];
+            },
           },
         },
       },
-    },
-    scales: {
-      x: {
-        ticks: {
-          color: "#78716c",
-          font: { size: 10 },
-          maxTicksLimit: 20,
-          maxRotation: 0,
+      scales: {
+        x: {
+          ticks: {
+            color: textColor,
+            font: { size: 10 },
+            maxTicksLimit: 20,
+            maxRotation: 0,
+          },
+          grid: { display: false },
         },
-        grid: { display: false },
+        y: {
+          ticks: { color: textColor, font: { size: 10 } },
+          grid: { color: gridColor },
+          min: 0,
+        },
       },
-      y: {
-        ticks: { color: "#78716c", font: { size: 10 } },
-        grid: { color: "rgba(120,113,108,0.15)" },
-        min: 0,
-      },
-    },
-  };
+    }),
+    [theme, weeklyPlayerCounts, router],
+  );
 
   const data = {
     labels,
@@ -122,9 +131,9 @@ export default function PlayersPerWeekChart({
 
   return (
     <div
-      className={`flex flex-col gap-2 bg-stone-900 border border-orange-950 rounded-xl px-3 py-2.5 ${className}`}
+      className={`flex flex-col gap-2 bg-stone-200 dark:bg-stone-900 border border-orange-500 dark:border-orange-950 rounded-xl px-3 py-2.5 ${className}`}
     >
-      <div className="flex items-center gap-1.5 text-stone-400 text-xs uppercase tracking-wider">
+      <div className="flex items-center gap-1.5 text-stone-600 dark:text-stone-400 text-xs uppercase tracking-wider">
         <GiMinions className="text-orange-600 shrink-0 text-lg" />
         Players per Week
       </div>
