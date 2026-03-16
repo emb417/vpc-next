@@ -22,7 +22,7 @@ export default function SeasonDropdown({ currentSeasonId, seasonOptions }) {
       onChange={handleChange}
       options={seasonOptions}
       variant="filled"
-      className="bg-white text-stone-700 hover:text-stone-700 duration-300"
+      className="bg-stone-200 dark:bg-stone-900 text-stone-700 dark:text-stone-200 hover:text-orange-700 dark:hover:text-orange-300 duration-300"
     />
   );
 }

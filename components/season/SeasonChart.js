@@ -11,8 +11,9 @@ import {
   LinearScale,
   Tooltip,
 } from "chart.js";
+import { useTheme } from "@/lib/ThemeContext";
 import colors from "@/lib/Colors";
-import seasonOptions from "@/lib/SeasonChartOptions";
+import getSeasonOptions from "@/lib/SeasonChartOptions";
 
 ChartJS.register(
   Title,
@@ -21,7 +22,7 @@ ChartJS.register(
   LineElement,
   PointElement,
   LinearScale,
-  Tooltip
+  Tooltip,
 );
 
 function getScores(item, selectedUsernames) {
@@ -38,11 +39,12 @@ function getScores(item, selectedUsernames) {
 
 export default function PinballChart({ weeksData }) {
   const [data, setData] = useState({ datasets: [] });
+  const { theme } = useTheme();
 
   const usernames = useMemo(() => {
     if (!weeksData || weeksData.length === 0 || !weeksData[0].scores) return [];
     const sortedScores = [...weeksData[0].scores].sort(
-      (a, b) => b.cumulativePoints - a.cumulativePoints
+      (a, b) => b.cumulativePoints - a.cumulativePoints,
     );
     const usernamesSet = new Set(sortedScores.map((score) => score.username));
     return Array.from(usernamesSet);
@@ -75,10 +77,10 @@ export default function PinballChart({ weeksData }) {
           periodEnd: item.periodEnd,
         })),
         backgroundColor: usernameOptions.find(
-          (option) => option.value === score.username
+          (option) => option.value === score.username,
         )?.color,
         borderColor: usernameOptions.find(
-          (option) => option.value === score.username
+          (option) => option.value === score.username,
         )?.color,
         borderWidth: 1,
         radius: 5,
@@ -90,13 +92,15 @@ export default function PinballChart({ weeksData }) {
     setData({ label, datasets });
   }, [weeksData, usernameOptions]);
 
+  const chartOptions = useMemo(() => getSeasonOptions(theme), [theme]);
+
   return (
-      <div className="w-full">
-        <Chart
-          options={seasonOptions}
-          data={data}
-          className="bg-stone-900 rounded-2xl"
-        />
-      </div>
+    <div className="w-full">
+      <Chart
+        options={chartOptions}
+        data={data}
+        className="bg-stone-100 dark:bg-stone-900 rounded-2xl"
+      />
+    </div>
   );
 }

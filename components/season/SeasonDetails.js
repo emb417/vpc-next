@@ -16,12 +16,12 @@ export default async function SeasonDetails({
 
   return (
     <div className="grid grid-cols-12 mb-14 py-2 gap-4 w-full">
-      <div className="col-span-12 flex flex-wrap items-center gap-2 mx-2 text-xl text-stone-200">
+      <div className="col-span-12 flex flex-wrap items-center gap-2 mx-2 text-xl text-stone-800 dark:text-stone-200">
         <SeasonDropdown
           currentSeasonId={currentSeasonId.toString()}
           seasonOptions={seasonOptions}
         />
-        <span className="font-bold pl-4">
+        <span className="font-bold pl-4 text-stone-700 dark:text-stone-200">
           {seasonStart} to {seasonEnd}
         </span>
       </div>
