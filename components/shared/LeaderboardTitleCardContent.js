@@ -5,21 +5,6 @@ import { Tooltip } from "antd";
 import { MdOpenInNew } from "react-icons/md";
 import CopyButton from "@/components/shared/CopyButton";
 
-/**
- * LeaderboardTitleCardContent
- *
- * Shared children content for LeaderboardTitleCard across all leaderboard types.
- *
- * Props:
- *   title        - string              – table display name
- *   vpsId        - string              – VPS ID
- *   downloadUrl  - string              – download link
- *   weekNumber   - number | undefined  – shows "Week #N" if provided
- *   periodStart  - string | undefined  – ISO date string
- *   periodEnd    - string | undefined  – ISO date string
- *   version      - string | undefined  – shows "vX.X.X" if provided
- *   author       - string | undefined  – shows author name if provided
- */
 export default function LeaderboardTitleCardContent({
   title,
   vpsId,
@@ -37,11 +22,13 @@ export default function LeaderboardTitleCardContent({
   return (
     <div className="flex flex-col items-center gap-0 w-full">
       {weekNumber && (
-        <div className="text-sm leading-none py-0.5">Week #{weekNumber}</div>
+        <div className="text-sm text-stone-100 leading-none py-0.5">
+          Week #{weekNumber}
+        </div>
       )}
 
       {showDateRange && (
-        <div className="text-sm leading-none py-0.5">
+        <div className="text-sm text-stone-100 leading-none py-0.5">
           {new Date(periodStart).toLocaleDateString(
             undefined,
             dateFormatOptions,
@@ -55,36 +42,27 @@ export default function LeaderboardTitleCardContent({
       <Link
         href={downloadUrl}
         target="_blank"
-        className="text-xl leading-none py-0.5 hover:text-orange-300 transition-colors duration-150"
+        className="text-lg text-stone-100 leading-none py-0.5 hover:text-orange-300 transition-colors duration-150"
       >
         {title}
         {version && (
-          <span className="text-sm text-stone-400 ml-1">v{version}</span>
+          <span className="text-sm text-orange-300 ml-1">v{version}</span>
         )}
       </Link>
 
       {/* Author (HighScores only) */}
       {author && (
-        <div className="text-md leading-none py-0.5 text-stone-300">
+        <div className="text-md leading-none py-0.5 text-stone-200">
           {author}
         </div>
       )}
 
       {/* VPS ID + Download URL */}
-      <div className="flex flex-row items-center justify-center gap-2 text-xs leading-none py-0.5 w-full">
-        <span className="text-stone-400">VPS ID</span>
-        <span className="font-mono text-stone-300">{vpsId}</span>
+      <div className="flex flex-row items-center justify-center gap-1 text-xs leading-none py-0.5 w-full">
+        <span className="text-stone-200">VPS ID</span>
+        <span className="font-mono text-stone-200">{vpsId}</span>
         <CopyButton text={vpsId} label="VPS ID" />
-        <Tooltip title={downloadUrl} color="rgba(41, 37, 36, 0.9)">
-          <Link
-            href={downloadUrl}
-            target="_blank"
-            className="flex items-center gap-0.5 text-orange-400 hover:text-orange-300 transition-colors duration-150"
-          >
-            <MdOpenInNew className="shrink-0" />
-            <span>Download</span>
-          </Link>
-        </Tooltip>
+        <span className="text-stone-200 pl-2">Table URL</span>
         <CopyButton text={downloadUrl} label="URL" />
       </div>
     </div>

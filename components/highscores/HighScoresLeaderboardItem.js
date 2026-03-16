@@ -5,14 +5,14 @@ export default function HighScoresLeaderboardItem({ score, scoreIndex }) {
   if (!score || typeof score.score === "undefined") {
     return (
       <div
-        className={`flex items-center gap-2 justify-left rounded-full pr-1 w-full ${scoreIndex % 2 === 0 ? "bg-stone-900" : "bg-stone-800"}`}
+        className={`flex items-center gap-2 justify-left rounded-full pr-1 w-full ${scoreIndex % 2 === 0 ? "bg-stone-200 dark:bg-stone-900" : "bg-stone-300 dark:bg-stone-800"}`}
       >
-        <div className="flex items-center pl-2 text-orange-300">
+        <div className="flex items-center pl-2 text-orange-700 dark:text-orange-300">
           {scoreIndex + 1}.
         </div>
         <div className="flex items-center truncate">No Score.</div>
         <div className="ml-auto mr-1 flex gap-2 flex-row items-center">
-          <div className="text-orange-300 text-sm">0</div>
+          <div className="text-orange-700 dark:text-orange-300 text-sm">0</div>
         </div>
       </div>
     );
@@ -21,14 +21,16 @@ export default function HighScoresLeaderboardItem({ score, scoreIndex }) {
   return (
     <div
       className={`flex items-center gap-2 justify-left rounded-full pr-1 w-full ${
-        scoreIndex % 2 === 0 ? "bg-stone-900" : "bg-stone-800"
-      } hover:bg-stone-700 duration-300`}
+        scoreIndex % 2 === 0
+          ? "bg-stone-200 dark:bg-stone-900"
+          : "bg-stone-300 dark:bg-stone-800"
+      } hover:bg-stone-400 dark:hover:bg-stone-700 duration-300`}
     >
-      <div className="flex items-center pl-2 text-orange-300">
+      <div className="flex items-center pl-2 text-orange-700 dark:text-orange-300">
         {scoreIndex + 1}.
       </div>
       <Link
-        className="flex justify-left"
+        className="flex justify-left text-stone-700 dark:text-stone-200"
         href={`/player/${score.user.username}`}
       >
         <div className="flex items-center truncate">{score.user.username}</div>
@@ -44,7 +46,7 @@ export default function HighScoresLeaderboardItem({ score, scoreIndex }) {
           }).format(new Date(score.posted))}`}
           color="rgba(41, 37, 36, 0.8)"
         >
-          <div className="text-orange-300 text-sm">
+          <div className="text-orange-700 dark:text-orange-300 text-sm">
             {score.postUrl ? (
               <Link
                 className="flex justify-left"

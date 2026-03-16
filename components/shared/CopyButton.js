@@ -35,14 +35,14 @@ export default function CopyButton({ text, label }) {
       <button
         onClick={handleCopy}
         className={`
-          inline-flex items-center justify-center shrink-0
-          p-0.5 rounded border transition-all duration-150
-          ${
-            copied
-              ? "border-green-600 text-green-400 bg-green-950/40"
-              : "border-stone-600 text-stone-400 hover:border-orange-700 hover:text-orange-400"
-          }
-        `}
+            inline-flex items-center justify-center shrink-0
+            p-0.5 rounded border transition-all duration-150
+            ${
+              copied
+                ? "border-green-600 text-green-400 bg-green-950/40"
+                : "border-stone-600 text-stone-300 hover:border-orange-700 hover:text-orange-400"
+            }
+          `}
       >
         {copied ? (
           <MdCheck className="text-xs" />

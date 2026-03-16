@@ -16,7 +16,7 @@ export default function WeeklyLeaderboard({ weekData, vpsData }) {
   const downloadUrl = weekData.tableUrl ?? "#";
 
   return (
-    <div className="flex flex-col w-full items-center text-stone-200">
+    <div className="flex flex-col w-full items-center">
       <LeaderboardTitleCard
         imageUrl={vpsData?.imgUrl ?? null}
         table={weekData.table}
@@ -48,11 +48,13 @@ export default function WeeklyLeaderboard({ weekData, vpsData }) {
             }
             key={score.username}
             className={`flex flex-col w-full items-center justify-left rounded-xl px-2 ${
-              index % 2 === 0 ? "bg-stone-900" : "bg-stone-800"
-            } hover:bg-stone-700 duration-300`}
+              index % 2 === 0
+                ? "bg-stone-200 dark:bg-stone-900"
+                : "bg-stone-300 dark:bg-stone-800"
+            } hover:bg-stone-400 dark:hover:bg-stone-700 duration-300`}
           >
             <div className="flex flex-row w-full justify-left items-center gap-1">
-              <div className="flex items-center justify-center text-orange-300">
+              <div className="flex items-center justify-center text-orange-700 dark:text-orange-300">
                 {score.position}.
               </div>
               <div className="flex rounded-full items-center">
@@ -63,14 +65,14 @@ export default function WeeklyLeaderboard({ weekData, vpsData }) {
                   unoptimized
                 />
               </div>
-              <span className="text-md text-stone-300 truncate">
+              <span className="text-md text-stone-700 dark:text-stone-300 truncate">
                 {score.username}
               </span>
               <div className="flex flex-row gap-3 items-center ml-auto">
-                <div className="text-orange-300 text-sm">
+                <div className="text-orange-700 dark:text-orange-300 text-sm">
                   {score.score.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                 </div>
-                <div className="text-xl text-stone-100 pr-1">
+                <div className="text-xl text-stone-900 dark:text-stone-100 pr-1">
                   {score.points}
                 </div>
               </div>
@@ -91,7 +93,7 @@ export default function WeeklyLeaderboard({ weekData, vpsData }) {
                       : `${(score.score / weekData.scores[0].score) * 100}%`,
                 }}
                 className={`mr-auto pb-1 ${
-                  !score.score ? "border-t-0" : "border-t-4 border-stone-400"
+                  !score.score ? "border-t-0" : "border-t-4 border-stone-500"
                 }`}
               />
             </Tooltip>

@@ -14,7 +14,7 @@ export default function RankLeaderboard({ recentPlayerStats }) {
           alt="VPC"
           className="mb-2"
         />
-        <div className="flex text-xl text-stone-200">
+        <div className="flex text-xl text-stone-800 dark:text-stone-200">
           Power Rankings
           <Tooltip
             title="To be ranked you need to play at least 7 weeks out of the past 13 weeks,
@@ -22,7 +22,7 @@ export default function RankLeaderboard({ recentPlayerStats }) {
             the P value is your average final weekly position from the last 13 weeks."
             color="rgba(41, 37, 36, 0.8)"
           >
-            <CgInfo className="text-sm text-orange-300" />
+            <CgInfo className="text-sm text-orange-700 dark:text-orange-300" />
           </Tooltip>
         </div>
       </div>
@@ -35,11 +35,15 @@ export default function RankLeaderboard({ recentPlayerStats }) {
               href={`/player/${user.username}`}
               key={user.username}
               className={`flex flex-col items-center px-2 justify-left rounded-full w-full text-md ${
-                index % 2 === 0 ? "bg-stone-900" : "bg-stone-800"
-              } hover:bg-stone-700 duration-300`}
+                index % 2 === 0
+                  ? "bg-stone-200 dark:bg-stone-900"
+                  : "bg-stone-300 dark:bg-stone-800"
+              } hover:bg-stone-400 dark:hover:bg-stone-700 duration-300`}
             >
               <div className="flex flex-row gap-2 justify-left w-full items-center">
-                <div className="text-lg text-orange-300">{user.rank}.</div>
+                <div className="text-lg text-orange-700 dark:text-orange-300">
+                  {user.rank}.
+                </div>
                 <div className="flex rounded-full items-center">
                   <Image
                     src={user.userAvatarUrl}
@@ -49,14 +53,14 @@ export default function RankLeaderboard({ recentPlayerStats }) {
                     className="rounded-full"
                   />
                 </div>
-                <div className="text-lg text-stone-200 truncate">
+                <div className="text-lg text-stone-800 dark:text-stone-200 truncate">
                   {user.username}
                 </div>
                 <div className="flex flex-row gap-3 items-center ml-auto">
-                  <div className="flex text-md text-orange-300">
+                  <div className="flex text-md text-orange-700 dark:text-orange-300">
                     P{user.averagePosition}
                   </div>
-                  <div className="text-lg text-stone-100">
+                  <div className="text-lg text-stone-900 dark:text-stone-100">
                     {user.winPercentage}%
                   </div>
                 </div>

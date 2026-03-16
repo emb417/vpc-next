@@ -21,9 +21,7 @@ const truncate = (str, num) => {
     return str;
   }
 };
-// ---------------------------------------------------------------------------
-// Main component
-// ---------------------------------------------------------------------------
+
 export default function CompetitionLeaderboards({
   scoresData = [],
   totalCount = 0,
@@ -109,20 +107,9 @@ export default function CompetitionLeaderboards({
     <div className="flex flex-col flex-grow w-full max-h-dvh">
       {/* ── Header ── */}
       <div className="flex flex-row w-full items-center justify-start py-2">
-        <h1 className="flex flex-row items-center gap-1 text-lg text-stone-200">
+        <h1 className="flex flex-row items-center gap-1 text-lg text-stone-800 dark:text-stone-200">
           <GiPinballFlipper />
           Competition Corner
-          <Tooltip
-            title="Click to see instructions on how to post a score."
-            color="rgba(41, 37, 36, 0.8)"
-          >
-            <Link
-              href="https://discord.com/channels/652274650524418078/919336296281960468/919338053208776794"
-              target="_blank"
-            >
-              <CgSoftwareUpload className="text-red-500 animate-pulse" />
-            </Link>
-          </Tooltip>
         </h1>
 
         <div className="flex flex-row items-center ml-auto gap-4">
@@ -135,9 +122,9 @@ export default function CompetitionLeaderboards({
               size="small"
             />
           </div>
-          <div className="flex flex-row items-center gap-2 text-stone-200">
+          <div className="flex flex-row items-center gap-2 text-stone-800 dark:text-stone-200">
             <button
-              className="p-1 rounded-lg bg-orange-950 text-xs hover:bg-orange-800 duration-300"
+              className="p-1 rounded-lg bg-orange-100 dark:bg-orange-900 text-xs hover:bg-orange-300 dark:hover:bg-orange-700 duration-300"
               onClick={() => setPage((p) => Math.max(1, p - 1))}
               disabled={page === 1 || loading}
             >
@@ -147,7 +134,7 @@ export default function CompetitionLeaderboards({
               Page {page} of {Number.isFinite(totalPages) ? totalPages : 1}
             </span>
             <button
-              className="p-1 rounded-lg bg-orange-950 text-xs hover:bg-orange-800 duration-300"
+              className="p-1 rounded-lg bg-orange-100 dark:bg-orange-900 text-xs hover:bg-orange-300 dark:hover:bg-orange-700 duration-300"
               onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
               disabled={page >= totalPages || loading}
             >
@@ -158,7 +145,7 @@ export default function CompetitionLeaderboards({
       </div>
 
       {/* ── Mobile search ── */}
-      <div className="lg:hidden flex w-full justify-center items-center pl-2 pb-3 text-stone-200">
+      <div className="lg:hidden flex w-full justify-center items-center pl-2 pb-3 text-stone-800 dark:text-stone-200">
         <div className="flex flex-row items-center w-[190px]">
           <Input
             value={searchTerm}
@@ -173,7 +160,7 @@ export default function CompetitionLeaderboards({
       {/* ── Leaderboard columns ── */}
       <div
         ref={scrollableDivRef}
-        className="flex flex-row w-full gap-2 text-stone-200 pb-2 mb-2 border-b-2 border-orange-950 overflow-auto"
+        className="flex flex-row w-full gap-2 text-stone-800 dark:text-stone-200 pb-2 mb-2 border-b-2 border-orange-500 dark:border-orange-950 overflow-auto"
       >
         <div className="flex flex-row gap-2 mx-auto">
           {loading ? (
@@ -182,7 +169,6 @@ export default function CompetitionLeaderboards({
             (weeks ?? []).map((week) => {
               const id = week.vpsId;
               const key = `${id}-${week.table}`;
-              const downloadUrl = week.tableUrl ?? "#";
 
               return (
                 <div

@@ -5,14 +5,14 @@ export default function CompetitionLeaderboardItem({ score, scoreIndex }) {
   if (!score || typeof score.score === "undefined") {
     return (
       <div
-        className={`flex items-center gap-2 justify-left rounded-full pr-1 w-full ${scoreIndex % 2 === 0 ? "bg-stone-900" : "bg-stone-800"}`}
+        className={`flex items-center gap-2 justify-left rounded-full pr-1 w-full ${scoreIndex % 2 === 0 ? "bg-stone-200 dark:bg-stone-900" : "bg-stone-300 dark:bg-stone-800"}`}
       >
-        <div className="flex items-center pl-2 text-orange-300">
+        <div className="flex items-center pl-2 text-orange-700 dark:text-orange-300">
           {scoreIndex + 1}.
         </div>
         <div className="flex items-center truncate">No Score.</div>
         <div className="ml-auto mr-1 flex gap-2 flex-row items-center">
-          <div className="text-orange-300 text-sm">0</div>
+          <div className="text-orange-700 dark:text-orange-300 text-sm">0</div>
         </div>
       </div>
     );
@@ -21,10 +21,14 @@ export default function CompetitionLeaderboardItem({ score, scoreIndex }) {
     <Link
       href={`/player/${score.username}`}
       className={`flex items-center gap-2 justify-left rounded-full pr-1 w-full ${
-        scoreIndex % 2 === 0 ? "bg-stone-900" : "bg-stone-800"
-      } hover:bg-stone-700 duration-300`}
+        scoreIndex % 2 === 0
+          ? "bg-stone-200 dark:bg-stone-900"
+          : "bg-stone-300 dark:bg-stone-800"
+      } hover:bg-stone-400 dark:hover:bg-stone-700 duration-300`}
     >
-      <span className="text-orange-300 pl-2">{scoreIndex + 1}.</span>
+      <span className="text-orange-700 dark:text-orange-300 pl-2">
+        {scoreIndex + 1}.
+      </span>
       <div className="flex items-center">
         <PlayerImage
           src={score.userAvatarUrl}
@@ -32,12 +36,16 @@ export default function CompetitionLeaderboardItem({ score, scoreIndex }) {
           fallbackClassName="w-6 h-6"
         />
       </div>
-      <span className="text-stone-200 truncate">{score.username}</span>
+      <span className="text-stone-700 dark:text-stone-200 truncate">
+        {score.username}
+      </span>
       <div className="ml-auto mr-1 flex gap-4 flex-row items-center">
-        <div className="text-orange-300 text-sm">
+        <div className="text-orange-700 dark:text-orange-300 text-sm">
           {score.score.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
         </div>
-        <div className="text-xl text-stone-100">{score.points}</div>
+        <div className="text-xl text-stone-900 dark:text-stone-100">
+          {score.points}
+        </div>
       </div>
     </Link>
   );

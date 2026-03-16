@@ -3,8 +3,7 @@
 import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { GiPreviousButton, GiNextButton, GiHighFive } from "react-icons/gi";
-import { CgSoftwareUpload } from "react-icons/cg";
-import { Tooltip, Input } from "antd";
+import { Input } from "antd";
 import Loading from "@/app/loading";
 import LeaderboardTitleCard from "@/components/shared/LeaderboardTitleCard";
 import LeaderboardTitleCardContent from "@/components/shared/LeaderboardTitleCardContent";
@@ -18,9 +17,6 @@ const truncate = (str, num) => {
   }
 };
 
-// ---------------------------------------------------------------------------
-// Main component
-// ---------------------------------------------------------------------------
 export default function HighScoresLeaderboards({
   scoresData = [],
   totalCount = 0,
@@ -124,20 +120,9 @@ export default function HighScoresLeaderboards({
     <div className="flex flex-col flex-grow w-full max-h-dvh">
       {/* ── Header ── */}
       <div className="flex flex-row w-full items-center justify-start py-2">
-        <h1 className="flex flex-row items-center gap-1 text-lg text-stone-200">
+        <h1 className="flex flex-row items-center gap-1 text-lg text-stone-800 dark:text-stone-200">
           <GiHighFive />
           High Score Corner
-          <Tooltip
-            title="Click to see instructions on how to post a high score."
-            color="rgba(41, 37, 36, 0.8)"
-          >
-            <Link
-              href="https://discord.com/channels/652274650524418078/919336296281960468/919338053208776794"
-              target="_blank"
-            >
-              <CgSoftwareUpload className="text-red-500 animate-pulse" />
-            </Link>
-          </Tooltip>
         </h1>
 
         <div className="flex flex-row items-center ml-auto gap-4">
@@ -150,9 +135,9 @@ export default function HighScoresLeaderboards({
               size="small"
             />
           </div>
-          <div className="flex flex-row items-center gap-2 text-stone-200">
+          <div className="flex flex-row items-center gap-2 text-stone-800 dark:text-stone-200">
             <button
-              className="p-1 rounded-lg bg-orange-950 text-xs hover:bg-orange-800 duration-300"
+              className="p-1 rounded-lg bg-orange-100 dark:bg-orange-900 text-xs hover:bg-orange-300 dark:hover:bg-orange-700 duration-300"
               onClick={() => setPage((p) => Math.max(1, p - 1))}
               disabled={page === 1 || loading}
             >
@@ -162,7 +147,7 @@ export default function HighScoresLeaderboards({
               Page {page} of {Number.isFinite(totalPages) ? totalPages : 1}
             </span>
             <button
-              className="p-1 rounded-lg bg-orange-950 text-xs hover:bg-orange-800 duration-300"
+              className="p-1 rounded-lg bg-orange-100 dark:bg-orange-900 text-xs hover:bg-orange-300 dark:hover:bg-orange-700 duration-300"
               onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
               disabled={page >= totalPages || loading}
             >
@@ -173,7 +158,7 @@ export default function HighScoresLeaderboards({
       </div>
 
       {/* ── Mobile search ── */}
-      <div className="lg:hidden flex w-full justify-center items-center pl-2 pb-3 text-stone-200">
+      <div className="lg:hidden flex w-full justify-center items-center pl-2 pb-3 text-stone-800 dark:text-stone-200">
         <div className="flex flex-row items-center w-[190px]">
           <Input
             value={searchTerm}
@@ -188,7 +173,7 @@ export default function HighScoresLeaderboards({
       {/* ── Leaderboard columns ── */}
       <div
         ref={scrollableDivRef}
-        className="flex flex-row w-full gap-2 text-stone-200 pb-2 mb-2 border-b-2 border-orange-950 overflow-auto"
+        className="flex flex-row w-full gap-2 text-stone-800 dark:text-stone-200 pb-2 mb-2 border-b-2 border-orange-500 dark:border-orange-950 overflow-auto"
       >
         <div className="flex flex-row gap-2 mx-auto">
           {loading ? (
@@ -197,7 +182,6 @@ export default function HighScoresLeaderboards({
             (tables ?? []).map((table) => {
               const id = table.vpsId;
               const key = `${id}-${table.tableName}-${table.versionNumber}`;
-              const downloadUrl = table.tableUrl || "#";
 
               return (
                 <div

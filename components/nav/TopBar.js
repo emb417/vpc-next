@@ -1,5 +1,6 @@
 "use client";
 
+import ThemeToggle from "@/components/nav/ThemeToggle";
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -65,12 +66,12 @@ export default function Navbar() {
   ];
 
   return (
-    <div className="bg-stone-950 border-b-2 border-b-orange-950 flex justify-start items-start max-w-full mx-auto text-stone-200 sans">
+    <div className="bg-stone-100 dark:bg-stone-950 border-b-2 border-b-orange-500 dark:border-b-orange-950 flex justify-start items-start max-w-full mx-auto text-stone-800 dark:text-stone-200 sans">
       {/* Logo */}
       <h1 className="text-3xl pl-4 p-1">
         <Link href="/" className="flex items-center gap-1">
           <Image src="/icon.png" alt="VPC Logo" width={30} height={30} />
-          <span className="text-xl hover:text-orange-300">
+          <span className="text-xl hover:text-orange-600 dark:hover:text-orange-300">
             Virtual Pinball Chat
           </span>
         </Link>
@@ -81,13 +82,16 @@ export default function Navbar() {
         {navItems.map((item) => (
           <li key={item.id}>
             <Link href={item.href}>
-              <div className="flex flex-row items-center cursor-pointer duration-300 hover:text-orange-300 p-2 gap-1 text-xs xl:text-base">
+              <div className="flex flex-row items-center cursor-pointer duration-300 hover:text-orange-600 dark:hover:text-orange-300 p-2 gap-1 text-xs xl:text-base">
                 {item.icon}
                 {item.text}
               </div>
             </Link>
           </li>
         ))}
+        <li>
+          <ThemeToggle />
+        </li>
       </ul>
 
       {/* Mobile Navigation Icon */}
@@ -100,13 +104,13 @@ export default function Navbar() {
         ref={menuRef}
         className={
           nav
-            ? "fixed lg:hidden left-0 top-0 w-[80%] h-full border-r-2 border-r-orange-950 bg-stone-950 ease-in-out duration-500 z-50"
-            : "fixed top-0 left-[-100%] w-[80%] h-full border-r-2 border-r-orange-950 bg-stone-950 ease-in-out duration-500 z-50"
+            ? "fixed lg:hidden left-0 top-0 w-[80%] h-full border-r-2 border-r-orange-500 dark:border-r-orange-950 bg-stone-100 dark:bg-stone-950 ease-in-out duration-500 z-50"
+            : "fixed top-0 left-[-100%] w-[80%] h-full border-r-2 border-r-orange-500 dark:border-r-orange-950 bg-stone-100 dark:bg-stone-950 ease-in-out duration-500 z-50"
         }
       >
         {/* Mobile Logo */}
         <li key="Home">
-          <h1 className="w-full text-3xl text-stone-200 pl-4 pt-1 pb-2">
+          <h1 className="w-full text-3xl text-stone-800 dark:text-stone-200 pl-4 pt-1 pb-2">
             <Link
               href="/"
               onClick={handleNav}
@@ -129,7 +133,7 @@ export default function Navbar() {
             <Link
               href={item.href}
               onClick={handleNav}
-              className="flex w-full justify-center text-xl cursor-pointer duration-300 hover:text-orange-300"
+              className="flex w-full justify-center text-xl cursor-pointer duration-300 hover:text-orange-600 dark:hover:text-orange-300"
             >
               <div className="flex px-5 py-2 items-center gap-x-1">
                 {item.icon}
@@ -138,6 +142,9 @@ export default function Navbar() {
             </Link>
           </li>
         ))}
+        <li key="ThemeToggle" className="flex w-full justify-center mt-2">
+          <ThemeToggle />
+        </li>
       </ul>
     </div>
   );

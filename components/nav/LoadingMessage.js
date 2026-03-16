@@ -10,10 +10,10 @@ export default function LoadingMessage({ message = "Loading..." }) {
         alt={`${message}`}
         className="animate-pulse"
       />
-      <div className="text-center text-4xl text-stone-200 animate-pulse">
+      <div className="text-center text-4xl text-stone-800 dark:text-stone-200 animate-pulse">
         {message}
       </div>
-      <div className="text-center text-xs text-stone-400">
+      <div className="text-center text-xs text-stone-500 dark:text-stone-400">
         vpc-next v{process.env.APP_VERSION}
       </div>
     </div>
