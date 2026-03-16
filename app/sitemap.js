@@ -3,7 +3,7 @@ export default function sitemap() {
     {
       url: "https://virtualpinballchat.com",
       lastModified: new Date(),
-      changeFrequency: "yearly",
+      changeFrequency: "weekly",
       priority: 1,
     },
     {
