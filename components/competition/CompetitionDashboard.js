@@ -12,10 +12,10 @@ async function getData(searchTerm, week) {
   });
 
   try {
-    let url = `${process.env.SSR_BASE_URL}${process.env.VPC_API_COMPETITION_WEEKS}`;
-    if (week) url += `?week=${week}`;
+    let url = `${process.env.SSR_BASE_URL}${process.env.VPC_API_COMPETITION_WEEKS}?limit=10`;
+    if (week) url += `&week=${week}`;
     else if (searchTerm) {
-      url += `?searchTerm=${searchTerm}`;
+      url += `&searchTerm=${searchTerm}`;
     }
 
     const response = await fetchWithLogging(

@@ -20,7 +20,7 @@ export default function HighScoresLeaderboards({
   initialSearchTerm = "",
   initialVpsId = "",
 }) {
-  const tablesPerPage = 4;
+  const tablesPerPage = 10;
 
   const [tables, setTables] = useState(scoresData);
   const [count, setCount] = useState(totalCount);
@@ -36,6 +36,7 @@ export default function HighScoresLeaderboards({
 
   const sentinelRef = useRef(null);
   const observerRef = useRef(null);
+  const scrollableRef = useRef(null);
 
   // Debounce search term
   useEffect(() => {
@@ -56,6 +57,8 @@ export default function HighScoresLeaderboards({
       setCount(totalCount);
       setOffset(tablesPerPage);
       setHasMore(totalCount > tablesPerPage);
+      scrollableRef.current?.scrollTo({ left: 0, behavior: "smooth" });
+
       return;
     }
 
@@ -76,6 +79,7 @@ export default function HighScoresLeaderboards({
         setCount(total);
         setOffset(tablesPerPage);
         setHasMore(total > tablesPerPage);
+        scrollableRef.current?.scrollTo({ left: 0, behavior: "smooth" });
       } catch (err) {
         console.error("HighScoresLeaderboards filter error:", err);
         if (!cancelled) {
@@ -170,7 +174,10 @@ export default function HighScoresLeaderboards({
       </div>
 
       {/* ── Scrollable leaderboard row ── */}
-      <div className="flex flex-row w-full gap-2 text-stone-800 dark:text-stone-200 pb-2 mb-2 border-b-2 border-orange-500 dark:border-orange-950 overflow-x-auto overflow-y-hidden">
+      <div
+        ref={scrollableRef}
+        className="flex flex-row w-full gap-2 text-stone-800 dark:text-stone-200 pb-2 mb-2 border-b-2 border-orange-500 dark:border-orange-950 overflow-x-auto overflow-y-hidden"
+      >
         <div className="flex flex-row gap-2 mx-auto">
           {(tables ?? []).map((table) => {
             const id = table.vpsId;

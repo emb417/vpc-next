@@ -8,7 +8,7 @@ async function getData(searchTerm, vpsId) {
   logEvent({ type: "highscores_dashboard_start" });
 
   try {
-    let url = `${process.env.SSR_BASE_URL}${process.env.VPC_API_RECENT_TABLES}?limit=4&offset=0`;
+    let url = `${process.env.SSR_BASE_URL}${process.env.VPC_API_RECENT_TABLES}?limit=10`;
 
     if (searchTerm) {
       url += `&searchTerm=${encodeURIComponent(searchTerm)}`;

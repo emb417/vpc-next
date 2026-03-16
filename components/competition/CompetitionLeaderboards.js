@@ -27,7 +27,7 @@ export default function CompetitionLeaderboards({
   totalCount = 0,
   weeksPageAPI,
 }) {
-  const weeksPerPage = 4;
+  const weeksPerPage = 10;
 
   const [weeks, setWeeks] = useState(scoresData);
   const [count, setCount] = useState(totalCount);
@@ -39,6 +39,7 @@ export default function CompetitionLeaderboards({
 
   const sentinelRef = useRef(null);
   const observerRef = useRef(null);
+  const scrollableRef = useRef(null);
 
   // Debounce search
   useEffect(() => {
@@ -54,6 +55,8 @@ export default function CompetitionLeaderboards({
       setCount(totalCount);
       setOffset(weeksPerPage);
       setHasMore(totalCount > weeksPerPage);
+      scrollableRef.current?.scrollTo({ left: 0, behavior: "smooth" });
+
       return;
     }
 
@@ -71,6 +74,7 @@ export default function CompetitionLeaderboards({
         setCount(total);
         setOffset(weeksPerPage);
         setHasMore(total > weeksPerPage);
+        scrollableRef.current?.scrollTo({ left: 0, behavior: "smooth" });
       } catch (err) {
         console.error("CompetitionLeaderboards search error:", err);
         if (!cancelled) {
@@ -157,7 +161,10 @@ export default function CompetitionLeaderboards({
       </div>
 
       {/* ── Scrollable leaderboard row ── */}
-      <div className="flex flex-row w-full gap-2 text-stone-800 dark:text-stone-200 pb-2 mb-2 border-b-2 border-orange-500 dark:border-orange-950 overflow-x-auto overflow-y-hidden">
+      <div
+        ref={scrollableRef}
+        className="flex flex-row w-full gap-2 text-stone-800 dark:text-stone-200 pb-2 mb-2 border-b-2 border-orange-500 dark:border-orange-950 overflow-x-auto overflow-y-hidden"
+      >
         <div className="flex flex-row gap-2 mx-auto">
           {(weeks ?? []).map((week) => {
             const id = week.vpsId;
