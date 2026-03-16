@@ -19,7 +19,7 @@ const SortableColHeader = ({
   return (
     <th
       onClick={() => handleSort(col)}
-      className={`px-2 py-1.5 cursor-pointer select-none whitespace-nowrap transition-colors ${className}
+      className={`px-2 py-1.5 cursor-pointer select-none whitespace-nowrap transition-colors sticky top-0 z-10 bg-stone-950 ${className}
         ${active ? "text-orange-400" : "text-stone-500 hover:text-stone-300"}`}
     >
       <span

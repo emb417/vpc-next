@@ -75,7 +75,7 @@ export default function PlayerHighScores({ highScores }) {
     return (
       <th
         onClick={() => handleSort(col)}
-        className={`px-2 py-1.5 ${alignmentClass} cursor-pointer select-none whitespace-nowrap transition-colors
+        className={`px-2 py-1.5 ${alignmentClass} cursor-pointer select-none whitespace-nowrap transition-colors sticky top-0 z-10 bg-stone-950
           ${active ? "text-orange-400" : "text-stone-500 hover:text-stone-300"}`}
         style={{ width }}
       >
@@ -101,7 +101,7 @@ export default function PlayerHighScores({ highScores }) {
     const alignmentClass = align === "left" ? "text-left" : "text-right";
     return (
       <th
-        className={`px-2 py-1.5 ${alignmentClass} text-stone-500 font-normal whitespace-nowrap`}
+        className={`px-2 py-1.5 ${alignmentClass} text-stone-500 font-normal whitespace-nowrap sticky top-0 z-10 bg-stone-950`}
         style={{ width }}
       >
         {children}
