@@ -40,7 +40,7 @@ export default function CopyButton({ text, label }) {
             ${
               copied
                 ? "border-green-600 text-green-400 bg-green-950/40"
-                : "border-stone-600 text-stone-300 hover:border-orange-700 hover:text-orange-400"
+                : "border-stone-600 text-stone-400 hover:border-orange-700 hover:text-orange-400"
             }
           `}
       >

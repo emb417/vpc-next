@@ -5,13 +5,13 @@ import { Tooltip } from "antd";
 
 export default function PlayerCompetitions({ weeksData }) {
   return (
-    <div className="flex flex-col w-full items-start gap-1 border-2 border-orange-950 rounded-xl px-2 py-1">
+    <div className="flex flex-col w-full items-start gap-1 border-2 border-orange-500 dark:border-orange-950 rounded-xl px-2 py-1">
       <div className="flex w-full items-center">
-        <div className="flex items-center text-lg lg:text-xl text-stone-200 pl-1 h-[38px]">
+        <div className="flex items-center text-lg lg:text-xl text-stone-800 dark:text-stone-200 pl-1 h-[38px]">
           <Link href="/competitions">Competition Corner</Link>
         </div>
         {!weeksData[0].score && (
-          <div className="flex items-center ml-auto text-lg text-stone-200">
+          <div className="flex items-center ml-auto text-lg text-stone-800 dark:text-stone-200">
             <Link
               href="https://discord.com/channels/652274650524418078/720381436842213397"
               target="_blank"
@@ -26,10 +26,10 @@ export default function PlayerCompetitions({ weeksData }) {
               href={`/player/${weeksData[0].nextPlayer}`}
               className="flex flex-col items-center"
             >
-              <div className="flex items-center text-stone-200">
+              <div className="flex items-center text-stone-800 dark:text-stone-200">
                 P{weeksData[0].nextPosition}. {weeksData[0].nextPlayer}
               </div>
-              <div className="text-orange-300">
+              <div className="text-orange-600 dark:text-orange-300">
                 {weeksData[0].nextScore.toLocaleString()}
               </div>
             </Link>
@@ -37,7 +37,7 @@ export default function PlayerCompetitions({ weeksData }) {
         )}
         {weeksData[0].score && !weeksData[0].nextScore && (
           <div className="flex flex-row items-center ml-auto text-xs">
-            <div className="flex items-center text-stone-200">
+            <div className="flex items-center text-stone-800 dark:text-stone-200">
               {weeksData[0].nextPlayer}
             </div>
             <div className="flex items-center pl-1 text-xl">
@@ -68,7 +68,7 @@ export default function PlayerCompetitions({ weeksData }) {
           </div>
         )}
       </div>
-      <hr className="w-full pb-1 border-1 border-orange-950" />
+      <hr className="w-full pb-1 border-1 border-orange-500 dark:border-orange-950" />
       <div
         id="scrollableDiv"
         className="flex flex-col w-full h-[240px] md:h-[360px] xl:h-[480px] overflow-auto gap-1"
@@ -77,23 +77,27 @@ export default function PlayerCompetitions({ weeksData }) {
           <div
             key={index}
             className={`flex flex-col w-full rounded-xl px-2 pt-1 ${
-              index % 2 === 0 ? "bg-stone-900" : "bg-stone-800"
+              index % 2 === 0
+                ? "bg-stone-200 dark:bg-stone-900"
+                : "bg-stone-300 dark:bg-stone-800"
             }`}
           >
             <Link href={`/competitions?week=${weekData.weekNumber}`}>
               <div className="flex gap-2">
-                <div className="truncate text-sm text-stone-200">
+                <div className="truncate text-sm text-stone-800 dark:text-stone-200">
                   {weekData.weekNumber}. {weekData.table}
                 </div>
                 <div className="ml-auto min-w-[max-content] text-sm">
                   {weekData.score ? (
-                    <span className="text-orange-300">
+                    <span className="text-orange-600 dark:text-orange-300">
                       {weekData.score
                         .toString()
                         .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                     </span>
                   ) : (
-                    <span className="text-stone-400">No Score</span>
+                    <span className="text-stone-500 dark:text-stone-400">
+                      No Score
+                    </span>
                   )}
                 </div>
               </div>
@@ -121,21 +125,23 @@ export default function PlayerCompetitions({ weeksData }) {
                   className={`mr-auto max-w-full ${
                     !weekData.score
                       ? "border-t-0"
-                      : "border-t-4 border-stone-400"
+                      : "border-t-4 border-stone-400 dark:border-stone-500"
                   }`}
                 />
               </Tooltip>
               <div className="flex gap-2 items-start">
                 <div className="">
                   {weekData.position ? (
-                    <span className="text-orange-300">
+                    <span className="text-orange-600 dark:text-orange-300">
                       P{weekData.position} of {weekData.numberOfParticipants}
                     </span>
                   ) : (
-                    <span className="text-stone-400">No Position</span>
+                    <span className="text-stone-500 dark:text-stone-400">
+                      No Position
+                    </span>
                   )}
                 </div>
-                <div className="flex ml-auto text-stone-200">
+                <div className="flex ml-auto text-stone-800 dark:text-stone-200">
                   {weekData.points
                     ? `${weekData.points} ${
                         weekData.points > 1 ? "Points" : "Point"

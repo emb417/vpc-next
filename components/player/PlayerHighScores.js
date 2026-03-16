@@ -75,8 +75,8 @@ export default function PlayerHighScores({ highScores }) {
     return (
       <th
         onClick={() => handleSort(col)}
-        className={`px-2 py-1.5 ${alignmentClass} cursor-pointer select-none whitespace-nowrap transition-colors sticky top-0 z-10 bg-stone-950
-          ${active ? "text-orange-400" : "text-stone-500 hover:text-stone-300"}`}
+        className={`px-2 py-1.5 ${alignmentClass} cursor-pointer select-none whitespace-nowrap transition-colors sticky top-0 z-10 bg-stone-100 dark:bg-stone-950
+          ${active ? "text-orange-600 dark:text-orange-400" : "text-stone-500 hover:text-stone-700 dark:hover:text-stone-300"}`}
         style={{ width }}
       >
         <span
@@ -85,12 +85,12 @@ export default function PlayerHighScores({ highScores }) {
           {children}
           {active ? (
             sortDir === "desc" ? (
-              <FaCaretDown className="text-orange-500 text-xs" />
+              <FaCaretDown className="text-orange-600 dark:text-orange-500 text-xs" />
             ) : (
-              <FaCaretUp className="text-orange-500 text-xs" />
+              <FaCaretUp className="text-orange-600 dark:text-orange-500 text-xs" />
             )
           ) : (
-            <FaCaretDown className="text-stone-600 text-xs" />
+            <FaCaretDown className="text-stone-400 dark:text-stone-600 text-xs" />
           )}
         </span>
       </th>
@@ -101,7 +101,7 @@ export default function PlayerHighScores({ highScores }) {
     const alignmentClass = align === "left" ? "text-left" : "text-right";
     return (
       <th
-        className={`px-2 py-1.5 ${alignmentClass} text-stone-500 font-normal whitespace-nowrap sticky top-0 z-10 bg-stone-950`}
+        className={`px-2 py-1.5 ${alignmentClass} text-stone-500 font-normal whitespace-nowrap sticky top-0 z-10 bg-stone-100 dark:bg-stone-950`}
         style={{ width }}
       >
         {children}
@@ -114,9 +114,9 @@ export default function PlayerHighScores({ highScores }) {
   }
 
   return (
-    <div className="flex flex-col w-full items-start gap-1 border-2 border-orange-950 rounded-xl px-2 py-1">
+    <div className="flex flex-col w-full items-start gap-1 border-2 border-orange-500 dark:border-orange-950 rounded-xl px-2 py-1">
       <div className="flex w-full items-center h-[38px]">
-        <div className="flex items-center text-lg lg:text-xl  text-stone-200 pl-1">
+        <div className="flex items-center text-lg lg:text-xl text-stone-800 dark:text-stone-200 pl-1">
           <Link href="/highscores">High Score Corner</Link>
         </div>
         <Input
@@ -135,7 +135,7 @@ export default function PlayerHighScores({ highScores }) {
           }
         />
       </div>
-      <hr className="w-full pb-1 border-1 border-orange-950" />
+      <hr className="w-full pb-1 border-1 border-orange-500 dark:border-orange-950" />
       <div
         id="highScoresTableContainer"
         className="flex flex-col w-full overflow-x-auto"
@@ -143,7 +143,7 @@ export default function PlayerHighScores({ highScores }) {
         <div className="w-full h-[240px] md:h-[360px] xl:h-[480px] overflow-y-auto">
           <table className="w-full text-xs border-collapse">
             <thead>
-              <tr className="border-b border-stone-800">
+              <tr className="border-b border-stone-300 dark:border-stone-800">
                 <SortableColHeader col="posted" width="104px">
                   Date
                 </SortableColHeader>
@@ -167,22 +167,22 @@ export default function PlayerHighScores({ highScores }) {
               {sortedHighScores.map((score, i) => (
                 <tr
                   key={`${score.tableName}-${score.versionNumber}-${score.authorName}`}
-                  className="border-b border-stone-800/50 hover:bg-stone-800/40 transition-colors"
+                  className="border-b border-stone-300/50 dark:border-stone-800/50 hover:bg-stone-200/40 dark:hover:bg-stone-800/40 transition-colors"
                 >
                   <td
-                    className={`px-2 py-1.5 text-center tabular-nums ${sortCol === "posted" ? "text-orange-400 font-semibold" : "text-stone-400"}`}
+                    className={`px-2 py-1.5 text-center tabular-nums ${sortCol === "posted" ? "text-orange-600 dark:text-orange-400 font-semibold" : "text-stone-500 dark:text-stone-400"}`}
                   >
                     {formatDate(new Date(score.posted))}
                   </td>
                   <td
-                    className={`px-2 py-1.5 text-center tabular-nums ${sortCol === "rank" ? "text-orange-400 font-semibold" : "text-stone-400"}`}
+                    className={`px-2 py-1.5 text-center tabular-nums ${sortCol === "rank" ? "text-orange-600 dark:text-orange-400 font-semibold" : "text-stone-500 dark:text-stone-400"}`}
                   >
                     <span className="text-lg lg:text-xl">{score.rank}</span>
                   </td>
                   <td className="px-2 py-1.5 max-w-0 text-left">
                     <Link
                       href={`/highscores?vpsId=${encodeURIComponent(score.vpsId)}`}
-                      className="text-stone-200 lg:text-lg block hover:text-orange-400"
+                      className="text-stone-800 dark:text-stone-200 lg:text-lg block hover:text-orange-600 dark:hover:text-orange-400"
                       title={score.tableName}
                     >
                       <span className="block truncate" title={score.authorName}>
@@ -190,15 +190,15 @@ export default function PlayerHighScores({ highScores }) {
                       </span>
                     </Link>
                   </td>
-                  <td className="px-2 py-1.5 text-right tabular-nums text-stone-400">
+                  <td className="px-2 py-1.5 text-right tabular-nums text-stone-500 dark:text-stone-400">
                     {score.versionNumber}
                   </td>
-                  <td className="px-2 py-1.5 text-left text-stone-400 max-w-0">
+                  <td className="px-2 py-1.5 text-left text-stone-500 dark:text-stone-400 max-w-0">
                     <span className="block truncate" title={score.authorName}>
                       {score.authorName}
                     </span>
                   </td>
-                  <td className="px-2 py-1.5 text-right text-stone-400">
+                  <td className="px-2 py-1.5 text-right text-stone-500 dark:text-stone-400">
                     <div className="flex flex-row justify-end items-center gap-1">
                       <span className="text-xs" title={score.vpsId}>
                         {score.vpsId}
@@ -207,7 +207,7 @@ export default function PlayerHighScores({ highScores }) {
                     </div>
                   </td>
                   <td
-                    className={`px-2 py-1.5 text-right lg:text-lg tabular-nums ${sortCol === "score" ? "text-orange-400 font-semibold" : "text-stone-400"}`}
+                    className={`px-2 py-1.5 text-right lg:text-lg tabular-nums ${sortCol === "score" ? "text-orange-600 dark:text-orange-400 font-semibold" : "text-stone-500 dark:text-stone-400"}`}
                   >
                     {score.score.toLocaleString()}
                   </td>

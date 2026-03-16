@@ -12,9 +12,10 @@ import {
   LinearScale,
   Tooltip,
 } from "chart.js";
+import { useTheme } from "@/lib/ThemeContext";
 import colors from "@/lib/Colors";
 import { Select, Tag } from "antd";
-import playerChartsOptions from "@/lib/PlayerChartsOptions";
+import getPlayerChartsOptions from "@/lib/PlayerChartsOptions";
 
 ChartJS.register(
   Title,
@@ -69,6 +70,7 @@ function getScores(item, selectedUsernames) {
 }
 
 export default function PlayerCharts({ weeksData, username }) {
+  const { theme } = useTheme();
   const [selectedDatasets, setSelectedDatasets] = useState([
     "rollingWinPercentageDatasets",
     "rollingAverageDatasets",
@@ -78,18 +80,9 @@ export default function PlayerCharts({ weeksData, username }) {
 
   const selectedDatasetsOptions = useMemo(() => {
     return [
-      {
-        value: "rollingWinPercentageDatasets",
-        label: "Win %",
-      },
-      {
-        value: "rollingAverageDatasets",
-        label: "Average Position",
-      },
-      {
-        value: "positionDatasets",
-        label: "Weekly Position",
-      },
+      { value: "rollingWinPercentageDatasets", label: "Win %" },
+      { value: "rollingAverageDatasets", label: "Average Position" },
+      { value: "positionDatasets", label: "Weekly Position" },
     ];
   }, []);
 
@@ -129,18 +122,16 @@ export default function PlayerCharts({ weeksData, username }) {
       type: "line",
       yAxisID: "y",
       label: username,
-      data: userWeeksData.map((item) => {
-        return {
-          x: item.weekNumber,
-          y: getScores(item, [username])[0]?.rollingAveragePosition || null,
-          position: getScores(item, [username])[0]?.position || null,
-          table: item.table,
-          week: item.weekNumber,
-          periodStart: item.periodStart,
-          periodEnd: item.periodEnd,
-          minWeekNumber: userWeeksData[0].weekNumber,
-        };
-      }),
+      data: userWeeksData.map((item) => ({
+        x: item.weekNumber,
+        y: getScores(item, [username])[0]?.rollingAveragePosition || null,
+        position: getScores(item, [username])[0]?.position || null,
+        table: item.table,
+        week: item.weekNumber,
+        periodStart: item.periodStart,
+        periodEnd: item.periodEnd,
+        minWeekNumber: userWeeksData[0].weekNumber,
+      })),
       backgroundColor: selectOptions.find((option) => option.value === username)
         ?.color,
       borderColor: selectOptions.find((option) => option.value === username)
@@ -178,19 +169,17 @@ export default function PlayerCharts({ weeksData, username }) {
       type: "line",
       yAxisID: "y2",
       label: username,
-      data: userWeeksData.map((item) => {
-        return {
-          x: item.weekNumber,
-          y: getScores(item, [username])[0]?.rollingWinPercentage || null,
-          rollingWinPercentage:
-            getScores(item, [username])[0]?.rollingWinPercentage || null,
-          table: item.table,
-          week: item.weekNumber,
-          periodStart: item.periodStart,
-          periodEnd: item.periodEnd,
-          minWeekNumber: userWeeksData[0].weekNumber,
-        };
-      }),
+      data: userWeeksData.map((item) => ({
+        x: item.weekNumber,
+        y: getScores(item, [username])[0]?.rollingWinPercentage || null,
+        rollingWinPercentage:
+          getScores(item, [username])[0]?.rollingWinPercentage || null,
+        table: item.table,
+        week: item.weekNumber,
+        periodStart: item.periodStart,
+        periodEnd: item.periodEnd,
+        minWeekNumber: userWeeksData[0].weekNumber,
+      })),
       backgroundColor: selectOptions.find((option) => option.value === username)
         ?.color,
       borderColor: selectOptions.find((option) => option.value === username)
@@ -216,8 +205,10 @@ export default function PlayerCharts({ weeksData, username }) {
     setData({ label, datasets });
   }, [selectedUsernames, userWeeksData, selectOptions, selectedDatasets]);
 
+  const chartOptions = useMemo(() => getPlayerChartsOptions(theme), [theme]);
+
   return (
-    <div className="flex flex-col w-full bg-stone-900 text-stone-200 items-start gap-1 border-2 border-orange-950 rounded-xl px-2 pt-1 pb-2">
+    <div className="flex flex-col w-full bg-stone-100 dark:bg-stone-900 text-stone-800 dark:text-stone-200 items-start gap-1 border-2 border-orange-500 dark:border-orange-950 rounded-xl px-2 pt-1 pb-2">
       <div className="flex flex-col sm:flex-row w-full gap-2 py-1">
         <Select
           {...selectSharedProps}
@@ -254,8 +245,8 @@ export default function PlayerCharts({ weeksData, username }) {
           value={selectedDatasets}
         />
       </div>
-      <hr className="w-full pb-1 border-1 border-orange-950" />
-      <Chart options={playerChartsOptions} data={data} />
+      <hr className="w-full pb-1 border-1 border-orange-500 dark:border-orange-950" />
+      <Chart options={chartOptions} data={data} />
     </div>
   );
 }

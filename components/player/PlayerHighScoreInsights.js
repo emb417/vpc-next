@@ -19,8 +19,8 @@ const SortableColHeader = ({
   return (
     <th
       onClick={() => handleSort(col)}
-      className={`px-2 py-1.5 cursor-pointer select-none whitespace-nowrap transition-colors sticky top-0 z-10 bg-stone-950 ${className}
-        ${active ? "text-orange-400" : "text-stone-500 hover:text-stone-300"}`}
+      className={`px-2 py-1.5 cursor-pointer select-none whitespace-nowrap transition-colors sticky top-0 z-10 bg-stone-100 dark:bg-stone-950 ${className}
+        ${active ? "text-orange-600 dark:text-orange-400" : "text-stone-500 hover:text-stone-700 dark:hover:text-stone-300"}`}
     >
       <span
         className={`inline-flex items-center gap-0.5 ${justifyClass} w-full`}
@@ -28,12 +28,12 @@ const SortableColHeader = ({
         {children}
         {active ? (
           sortDir === "desc" ? (
-            <FaCaretDown className="text-orange-500 text-xs" />
+            <FaCaretDown className="text-orange-600 dark:text-orange-500 text-xs" />
           ) : (
-            <FaCaretUp className="text-orange-500 text-xs" />
+            <FaCaretUp className="text-orange-600 dark:text-orange-500 text-xs" />
           )
         ) : (
-          <FaCaretDown className="text-stone-600 text-xs" />
+          <FaCaretDown className="text-stone-400 dark:text-stone-600 text-xs" />
         )}
       </span>
     </th>
@@ -89,12 +89,12 @@ const InsightTable = ({ icon, data, nameKey }) => {
         <div className="w-full h-[150px] overflow-y-auto">
           <table className="w-full text-xs border-collapse table-fixed">
             <colgroup>
-              <col /> {/* first col grows to fill */}
+              <col />
               <col style={{ width: "6rem" }} />
               <col style={{ width: "7rem" }} />
             </colgroup>
             <thead>
-              <tr className="border-b border-stone-800">
+              <tr className="border-b border-stone-300 dark:border-stone-800">
                 <SortableColHeader
                   col={nameKey}
                   sortCol={sortCol}
@@ -128,18 +128,18 @@ const InsightTable = ({ icon, data, nameKey }) => {
               {displayedData.map((item) => (
                 <tr
                   key={item[nameKey]}
-                  className="border-b border-stone-800/50 hover:bg-stone-800/40 transition-colors"
+                  className="border-b border-stone-300/50 dark:border-stone-800/50 hover:bg-stone-200/40 dark:hover:bg-stone-800/40 transition-colors"
                 >
-                  <td className="px-2 py-1.5 text-left text-stone-200 xl:text-lg truncate">
+                  <td className="px-2 py-1.5 text-left text-stone-800 dark:text-stone-200 xl:text-lg truncate">
                     {item[nameKey]}
                   </td>
                   <td
-                    className={`px-2 py-1.5 text-right tabular-nums ${sortCol === "avgRank" ? "text-orange-400 font-semibold" : "text-stone-400"}`}
+                    className={`px-2 py-1.5 text-right tabular-nums ${sortCol === "avgRank" ? "text-orange-600 dark:text-orange-400 font-semibold" : "text-stone-500 dark:text-stone-400"}`}
                   >
                     P{item.avgRank.toFixed(1)}
                   </td>
                   <td
-                    className={`px-2 py-1.5 text-right tabular-nums ${sortCol === "totalTables" ? "text-orange-400 font-semibold" : "text-stone-400"}`}
+                    className={`px-2 py-1.5 text-right tabular-nums ${sortCol === "totalTables" ? "text-orange-600 dark:text-orange-400 font-semibold" : "text-stone-500 dark:text-stone-400"}`}
                   >
                     {item.totalTables}
                   </td>
@@ -156,14 +156,12 @@ const InsightTable = ({ icon, data, nameKey }) => {
 export default function PlayerHighScoreInsights({ highScores, vpsLookup }) {
   if (!highScores || highScores.length === 0) return null;
 
-  // Aggregate data for Designers, Manufacturers, and Eras
   const aggregatedStats = highScores.reduce(
     (acc, score) => {
       const designer = vpsLookup[score.vpsId]?.designer;
       const maker = vpsLookup[score.vpsId]?.maker;
       const year = vpsLookup[score.vpsId]?.year;
 
-      // Designer Stats
       if (designer) {
         if (!acc.designers[designer]) {
           acc.designers[designer] = {
@@ -178,7 +176,6 @@ export default function PlayerHighScoreInsights({ highScores, vpsLookup }) {
         acc.designers[designer].uniqueTables.add(score.vpsId);
       }
 
-      // Manufacturer Stats
       if (maker) {
         if (!acc.manufacturers[maker]) {
           acc.manufacturers[maker] = {
@@ -193,7 +190,6 @@ export default function PlayerHighScoreInsights({ highScores, vpsLookup }) {
         acc.manufacturers[maker].uniqueTables.add(score.vpsId);
       }
 
-      // Era Stats
       if (year) {
         const era =
           year < 1980
@@ -250,7 +246,7 @@ export default function PlayerHighScoreInsights({ highScores, vpsLookup }) {
     .sort((a, b) => b.totalTables - a.totalTables);
 
   return (
-    <div className="flex flex-col w-full text-stone-200 gap-4">
+    <div className="flex flex-col w-full text-stone-800 dark:text-stone-200 gap-4">
       <PlayerPane title="Designers by High Scores">
         <InsightTable
           icon={<GiOctoman className="text-orange-600 shrink-0 text-lg" />}

@@ -16,14 +16,16 @@ export default function PlayerRivals({ playerRivals }) {
             <Link
               key={index}
               href={`/player/${rival.username}`}
-              className="flex flex-row gap-1 text-sm rounded-full bg-stone-900 hover:bg-stone-700 duration-300"
+              className="flex flex-row gap-1 text-sm rounded-full bg-stone-200 dark:bg-stone-900 hover:bg-stone-300 dark:hover:bg-stone-700 duration-300"
             >
               <div className="flex items-center gap-2 pl-2 col-span-2">
                 <Tooltip
                   title="Power ranking based on win percentage over the past 13 weeks."
                   color="rgba(41, 37, 36, 0.8)"
                 >
-                  <span className="text-lg text-orange-300">R{rival.rank}.</span>
+                  <span className="text-lg text-orange-600 dark:text-orange-300">
+                    R{rival.rank}.
+                  </span>
                 </Tooltip>
                 <Image
                   src={rival.userAvatarUrl}
@@ -32,7 +34,9 @@ export default function PlayerRivals({ playerRivals }) {
                   alt={rival.username}
                   className="rounded-full"
                 />
-                <span className="text-stone-200 truncate">{rival.username}</span>
+                <span className="text-stone-800 dark:text-stone-200 truncate">
+                  {rival.username}
+                </span>
               </div>
               <div className="flex gap-3 justify-end items-center ml-auto">
                 <Tooltip
@@ -40,7 +44,7 @@ export default function PlayerRivals({ playerRivals }) {
                   className="flex"
                   color="rgba(41, 37, 36, 0.8)"
                 >
-                  <span className="text-lg text-orange-300">
+                  <span className="text-lg text-orange-600 dark:text-orange-300">
                     P{rival.averagePosition}
                   </span>
                 </Tooltip>
@@ -48,7 +52,9 @@ export default function PlayerRivals({ playerRivals }) {
                   title="Win percentage over the past 13 weeks based on recent record."
                   color="rgba(41, 37, 36, 0.8)"
                 >
-                  <span className="text-lg text-stone-200">{rival.winPercentage}%</span>
+                  <span className="text-lg text-stone-800 dark:text-stone-200">
+                    {rival.winPercentage}%
+                  </span>
                 </Tooltip>
                 <span className="w-8 h-8">
                   {index === 0 && (
@@ -78,7 +84,7 @@ export default function PlayerRivals({ playerRivals }) {
                 </span>
               </div>
             </Link>
-          )
+          ),
       )}
     </div>
   );

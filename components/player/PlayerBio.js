@@ -18,7 +18,7 @@ export default function PlayerBio({ user }) {
 
   return (
     <div className="flex flex-col gap-1">
-      <div className="flex flex-row w-full gap-1 rounded-full bg-stone-900">
+      <div className="flex flex-row w-full gap-1 rounded-full bg-stone-200 dark:bg-stone-900">
         <div className="flex flex-row w-1/2 items-center gap-2">
           <PlayerImage
             src={user.userAvatarUrl}
@@ -27,9 +27,9 @@ export default function PlayerBio({ user }) {
             alt={user.username}
             fallbackClassName="w-10 h-10"
           />
-          <div className="flex flex-col truncate text-stone-200">
+          <div className="flex flex-col truncate text-stone-800 dark:text-stone-200">
             <div className="text-sm truncate">{user.username}</div>
-            <div className="text-xl text-orange-300">
+            <div className="text-xl text-orange-600 dark:text-orange-300">
               <Tooltip
                 title="Average position over the past 13 weeks."
                 className="flex"
@@ -48,13 +48,13 @@ export default function PlayerBio({ user }) {
             color="rgba(41, 37, 36, 0.8)"
           >
             <div className="flex flex-col items-center justify-center text-xs">
-              <div className="flex flex-row items-center text-orange-300 truncate">
+              <div className="flex flex-row items-center text-orange-600 dark:text-orange-300 truncate">
                 Recent Record
               </div>
-              <div className="flex flex-row items-center text-stone-200">
+              <div className="flex flex-row items-center text-stone-800 dark:text-stone-200">
                 {renderStat(user.wins, "", " Wins", "Wins")}
               </div>
-              <div className="flex flex-row items-center text-stone-200">
+              <div className="flex flex-row items-center text-stone-800 dark:text-stone-200">
                 {renderStat(user.losses, "", " Losses", "Losses")}
               </div>
             </div>
@@ -62,7 +62,7 @@ export default function PlayerBio({ user }) {
         </div>
         <div className="flex w-1/4 flex-col items-center justify-center">
           {weeksPlayed <= 6 ? (
-            <div className="flex flex-row items-center text-orange-300 text-xs">
+            <div className="flex flex-row items-center text-orange-600 dark:text-orange-300 text-xs">
               No Rank
               <Tooltip
                 title={`Play ${Math.floor(
@@ -72,7 +72,7 @@ export default function PlayerBio({ user }) {
                 i.e., more than 50% of the weeks.`}
                 color="rgba(41, 37, 36, 0.8)"
               >
-                <CgInfo className="text-stone-100 text-sm" />
+                <CgInfo className="text-stone-700 dark:text-stone-100 text-sm" />
               </Tooltip>
             </div>
           ) : (
@@ -80,12 +80,12 @@ export default function PlayerBio({ user }) {
               title="Power ranking based on win percentage over the past 13 weeks."
               color="rgba(41, 37, 36, 0.8)"
             >
-              <div className="text-xl text-orange-300">
+              <div className="text-xl text-orange-600 dark:text-orange-300">
                 {renderStat(user.rank, "R", "", "R")}
               </div>
             </Tooltip>
           )}
-          <div className="text-stone-200 text-sm">
+          <div className="text-stone-800 dark:text-stone-200 text-sm">
             <Tooltip
               title="Win percentage over the past 13 weeks based on recent record."
               color="rgba(41, 37, 36, 0.8)"

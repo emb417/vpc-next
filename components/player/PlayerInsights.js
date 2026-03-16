@@ -4,7 +4,7 @@ import PlayerInsightItem from "@/components/player/PlayerInsightItem";
 
 export default function PlayerSummary({ user }) {
   return (
-    <div className="flex flex-col w-full text-stone-200 gap-4">
+    <div className="flex flex-col w-full text-stone-800 dark:text-stone-200 gap-4">
       <PlayerPane
         title="The Best of Times and The Worst of Times"
         className="flex flex-col md:flex-row items-center md:items-start"
@@ -15,7 +15,7 @@ export default function PlayerSummary({ user }) {
               <span className="text-sm">
                 P{user.bestPerformance.position} of{" "}
                 {user.bestPerformance.players}
-                <span className="text-stone-200"> | </span>
+                <span className="text-stone-800 dark:text-stone-200"> | </span>
                 {user.bestPerformance.table}
               </span>
             </Link>
@@ -23,7 +23,7 @@ export default function PlayerSummary({ user }) {
           {user.bestPerformance.week === 0 && (
             <span className="text-sm">
               P{user.bestPerformance.position} of {user.bestPerformance.players}
-              <span className="text-stone-200"> | </span>
+              <span className="text-stone-800 dark:text-stone-200"> | </span>
               {user.bestPerformance.table}
             </span>
           )}
@@ -34,7 +34,7 @@ export default function PlayerSummary({ user }) {
               <span className="text-sm">
                 P{user.worstPerformance.position} of{" "}
                 {user.worstPerformance.players}
-                <span className="text-stone-200"> | </span>
+                <span className="text-stone-800 dark:text-stone-200"> | </span>
                 {user.worstPerformance.table}
               </span>
             </Link>
@@ -43,7 +43,7 @@ export default function PlayerSummary({ user }) {
             <span className="text-sm">
               P{user.worstPerformance.position} of{" "}
               {user.worstPerformance.players}
-              <span className="text-stone-200"> | </span>
+              <span className="text-stone-800 dark:text-stone-200"> | </span>
               {user.worstPerformance.table}
             </span>
           )}
