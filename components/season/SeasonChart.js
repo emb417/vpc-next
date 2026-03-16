@@ -70,6 +70,9 @@ export default function PinballChart({ weeksData }) {
         data: weeksData.map((item) => ({
           x: item.currentSeasonWeekNumber,
           y: getScores(item, [score.username])[0]?.cumulativePoints || null,
+          tableName: item.table,
+          periodStart: item.periodStart,
+          periodEnd: item.periodEnd,
         })),
         backgroundColor: usernameOptions.find(
           (option) => option.value === score.username
