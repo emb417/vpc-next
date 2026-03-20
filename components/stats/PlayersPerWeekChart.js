@@ -66,8 +66,14 @@ export default function PlayersPerWeekChart({
           mode: "index",
           intersect: false,
           callbacks: {
-            title: (ctx) =>
-              `Week ${weeklyPlayerCounts[ctx[0].dataIndex]?.weekNumber}`,
+            title: (ctx) => {
+              const week = weeklyPlayerCounts[ctx[0].dataIndex];
+              return `Week ${week?.weekNumber} (${week?.periodStart} - ${week?.periodEnd})`;
+            },
+            afterTitle: (ctx) => {
+              const week = weeklyPlayerCounts[ctx[0].dataIndex];
+              return week?.table || "";
+            },
             label: () => null,
             footer: (ctx) => {
               const players = ctx.find((c) => c.dataset.type === "bar")?.raw;
