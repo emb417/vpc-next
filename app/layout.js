@@ -1,4 +1,5 @@
 import TopBar from "@/components/nav/TopBar";
+import Footer from "@/components/nav/Footer";
 import { ThemeProvider } from "@/lib/ThemeContext";
 import "./globals.css";
 
@@ -27,6 +28,7 @@ export default function RootLayout({ children }) {
         <ThemeProvider>
           <TopBar />
           <div className="flex flex-wrap w-full px-2">{children}</div>
+          <Footer />
         </ThemeProvider>
       </body>
     </html>
