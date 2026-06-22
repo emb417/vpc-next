@@ -199,19 +199,19 @@ export default function LeagueSummaryStats({ leagueStats }) {
           icon={GiStarsStack}
           label="Best Win Rate"
           players={leagueStats.topBestWinPct}
-          sub={(p) => `${p.winPercentage}%`}
+          sub={(p) => `${p.winPercentage104}%`}
         />
         <AwardCard
           icon={GiCheckeredFlag}
           label="Best Avg. Finish"
           players={leagueStats.topBestAvgPosition}
-          sub={(p) => `P${p.averagePosition}`}
+          sub={(p) => `P${p.averagePosition104}`}
         />
         <AwardCard
           icon={GiTrophiesShelf}
           label="Best Avg. Points"
           players={leagueStats.topBestAvgPoints}
-          sub={(p) => `${p.averagePoints} pts`}
+          sub={(p) => `${p.averagePoints104} pts`}
         />
       </div>
 
