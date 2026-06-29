@@ -24,10 +24,10 @@ export default function RootLayout({ children }) {
           }}
         />
       </head>
-      <body className="bg-stone-100 dark:bg-stone-950">
+      <body className="bg-stone-100 dark:bg-stone-950 min-h-screen flex flex-col">
         <ThemeProvider>
           <TopBar />
-          <div className="flex flex-wrap w-full px-2">{children}</div>
+          <div className="flex flex-wrap w-full px-2 flex-grow">{children}</div>
           <Footer />
         </ThemeProvider>
       </body>
