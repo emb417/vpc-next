@@ -57,6 +57,21 @@ export default function WeeklyRaffle() {
             Check /show-raffle-board for the Pending (⏳) icon.
           </p>
         </div>
+
+        <div className="bg-stone-200 dark:bg-stone-950 p-3 rounded-lg border border-stone-300 dark:border-stone-800">
+          <p className="text-xs text-stone-500 uppercase font-bold mb-1">
+            Raffle Commands
+          </p>
+          <p>
+            <code>/enter-raffle</code> - Enter a table
+          </p>
+          <p>
+            <code>/show-raffle-board</code> - Monitor entries
+          </p>
+          <p>
+            <code>/show-raffle-rules</code> - Full raffle rules
+          </p>
+        </div>
       </div>
     </div>
   );

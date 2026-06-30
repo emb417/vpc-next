@@ -1,8 +1,9 @@
 import FaqsHeader from "@/components/faqs/FaqsHeader";
 import CompetitionRules from "@/components/faqs/CompetitionRules";
-import ScoreBotUsage from "@/components/faqs/ScoreBotUsage";
+import TournamentRules from "@/components/faqs/TournamentRules";
 import WeeklyRaffle from "@/components/faqs/WeeklyRaffle";
-import LeagueInfo from "@/components/faqs/LeagueInfo";
+import CompetitionCornerPoints from "@/components/faqs/CompetitionCornerPoints";
+import TournamentPoints from "@/components/faqs/TournamentPoints";
 import HighScoreCorner from "@/components/faqs/HighScoreCorner";
 import FaqsFooter from "@/components/faqs/FaqsFooter";
 
@@ -20,9 +21,10 @@ export default function FaqsPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <CompetitionRules />
-          <ScoreBotUsage />
+          <TournamentRules />
+          <CompetitionCornerPoints />
+          <TournamentPoints />
           <WeeklyRaffle />
-          <LeagueInfo />
           <HighScoreCorner />
         </div>
 

@@ -127,7 +127,7 @@ export default function CompetitionLeaderboards({
   }, [loadMore]);
 
   return (
-    <div className="flex flex-col flex-grow w-full max-h-dvh">
+    <div className="flex flex-col w-full h-full min-h-0">
       {/* ── Header ── */}
       <div className="flex flex-row w-full items-center justify-start py-2">
         <h1 className="flex flex-row items-center gap-1 text-lg text-stone-800 dark:text-stone-200">
@@ -135,7 +135,7 @@ export default function CompetitionLeaderboards({
           Competition Corner
         </h1>
         <div className="flex flex-row items-center ml-auto gap-4">
-          <div className="hidden lg:flex w-[230px] items-center mx-auto">
+          <div className="hidden sm:flex w-[230px] items-center mx-auto">
             <Input
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -148,7 +148,7 @@ export default function CompetitionLeaderboards({
       </div>
 
       {/* ── Mobile search ── */}
-      <div className="lg:hidden flex w-full justify-center items-center pl-2 pb-3 text-stone-800 dark:text-stone-200">
+      <div className="sm:hidden flex w-full justify-center items-center pl-2 pb-3 text-stone-800 dark:text-stone-200">
         <div className="flex flex-row items-center w-[190px]">
           <Input
             value={searchTerm}
@@ -163,38 +163,40 @@ export default function CompetitionLeaderboards({
       {/* ── Scrollable leaderboard row ── */}
       <div
         ref={scrollableRef}
-        className="flex flex-row w-full gap-2 text-stone-800 dark:text-stone-200 pb-2 mb-2 border-b-2 border-orange-500 dark:border-orange-950 overflow-x-auto overflow-y-hidden"
+        className="flex flex-row flex-1 min-h-0 w-full gap-2 text-stone-800 dark:text-stone-200 pb-2 mb-2 overflow-x-auto overflow-y-hidden"
       >
-        <div className="flex flex-row gap-2 mx-auto">
+        <div className="flex flex-row gap-2 mx-auto h-full">
           {(weeks ?? []).map((week) => {
             const id = week.vpsId;
             const key = `${id}-${week.table}`;
             return (
               <div
-                className="flex flex-col gap-1 items-center"
+                className="flex flex-col gap-1 items-center h-full min-h-0"
                 key={key}
                 id={key}
               >
-                <LeaderboardTitleCard
-                  table={week.table}
-                  imageUrl={week.vpsData?.imgUrl}
-                >
-                  <LeaderboardTitleCardContent
-                    title={week.table}
-                    vpsId={id}
-                    downloadUrl={week.tableUrl}
-                    weekNumber={week.weekNumber}
-                    periodStart={week.periodStart}
-                    periodEnd={week.periodEnd}
-                    version={week.versionNumber}
-                    author={
-                      week.authorName
-                        ? truncate(week.authorName, 30)
-                        : undefined
-                    }
-                  />
-                </LeaderboardTitleCard>
-                <div className="flex flex-col gap-1 overflow-auto rounded-xl min-w-[320px] max-w-[320px]">
+                <div className="shrink-0">
+                  <LeaderboardTitleCard
+                    table={week.table}
+                    imageUrl={week.vpsData?.imgUrl}
+                  >
+                    <LeaderboardTitleCardContent
+                      title={week.table}
+                      vpsId={id}
+                      downloadUrl={week.tableUrl}
+                      weekNumber={week.weekNumber}
+                      periodStart={week.periodStart}
+                      periodEnd={week.periodEnd}
+                      version={week.versionNumber}
+                      author={
+                        week.authorName
+                          ? truncate(week.authorName, 30)
+                          : undefined
+                      }
+                    />
+                  </LeaderboardTitleCard>
+                </div>
+                <div className="flex flex-col flex-1 min-h-0 gap-1 overflow-auto rounded-xl min-w-[320px] max-w-[320px]">
                   {(week.scores ?? []).map((score, scoreIndex) => (
                     <CompetitionLeaderboardItem
                       key={`${week.weekId}-${score.username}-${score.score}`}
@@ -216,12 +218,6 @@ export default function CompetitionLeaderboards({
           </div>
         </div>
       </div>
-
-      {!hasMore && weeks.length > 0 && (
-        <p className="text-center text-xs text-stone-400 dark:text-stone-600 py-1">
-          All {count} weeks loaded
-        </p>
-      )}
     </div>
   );
 }

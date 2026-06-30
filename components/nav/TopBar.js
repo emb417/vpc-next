@@ -11,9 +11,9 @@ import {
 } from "react-icons/ai";
 import {
   GiPinballFlipper,
-  GiChart,
   GiHighFive,
   GiProgression,
+  GiTrophy,
 } from "react-icons/gi";
 
 export default function Navbar() {
@@ -52,13 +52,13 @@ export default function Navbar() {
       text: "League Statistics",
     },
     {
-      id: 4,
-      icon: <GiChart className="text-xl" />,
-      href: "/season",
-      text: "Season Leaderboard",
+      id: 5,
+      icon: <GiTrophy className="text-xl" />,
+      href: "/tournaments",
+      text: "Tournaments",
     },
     {
-      id: 5,
+      id: 6,
       icon: <AiOutlineQuestionCircle className="text-xl" />,
       href: "/faqs",
       text: "How to Join",
@@ -66,7 +66,7 @@ export default function Navbar() {
   ];
 
   return (
-    <div className="bg-stone-100 dark:bg-stone-950 border-b-2 border-b-orange-500 dark:border-b-orange-950 flex justify-start items-start max-w-full mx-auto text-stone-800 dark:text-stone-200 sans">
+    <div className="bg-stone-100 dark:bg-stone-950 border-b-2 border-b-orange-500 dark:border-b-orange-950 flex justify-start items-start w-full max-w-full mx-auto text-stone-800 dark:text-stone-200 sans">
       {/* Logo */}
       <h1 className="text-3xl pl-4 p-1">
         <Link href="/" className="flex items-center gap-1">

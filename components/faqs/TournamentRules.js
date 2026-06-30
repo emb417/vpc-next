@@ -1,25 +1,37 @@
-import Link from "next/link";
 import { FaListOl } from "react-icons/fa";
 import SectionLabel from "@/components/stats/SectionLabel";
 
-export default function CompetitionRules() {
+export default function TournamentRules() {
   return (
     <div className="space-y-4">
       <SectionLabel>
         <div className="flex items-center gap-2">
           <FaListOl className="text-orange-500" />
-          Competition Corner Rules
+          Tournaments Rules
         </div>
       </SectionLabel>
       <div className="bg-stone-100 dark:bg-stone-900 border border-orange-500 dark:border-orange-950 rounded-xl p-6 text-stone-700 dark:text-stone-300 space-y-4 text-sm leading-relaxed">
         <p className="text-orange-700 dark:text-orange-200 font-semibold italic">
-          &quot;Welcome to COMPETITION CORNER where we all play the Table of the
-          Week!&quot;
+          &quot;Tournaments are multi-table events — battle across every table to
+          climb the overall standings!&quot;
         </p>
         <ul className="list-disc pl-5 space-y-2">
           <li>
-            Check the Leaderboard pin in Discord for the current table link. You{" "}
-            <strong>MUST</strong> use the specified table and version.
+            Each tournament runs <strong>multiple tables</strong> over a set
+            start and end window. Scores only count while the tournament is{" "}
+            <strong>open</strong>.
+          </li>
+          <li>
+            Post your scores in the tournament&apos;s own Discord channel (the
+            <strong> #channel</strong> shown on its dashboard card).
+          </li>
+          <li>
+            When posting, <strong>select the correct table</strong> — the table
+            is required and chosen from the tournament&apos;s table list.
+          </li>
+          <li>
+            You <strong>MUST</strong> use the specified table and version for
+            each table in the tournament.
           </li>
           <li>
             No table or script modifications allowed that affect gameplay
@@ -39,7 +51,7 @@ export default function CompetitionRules() {
           </li>
           <li>
             Post a pic/screenshot of your score (including backglass and full
-            table) in the Discord channel for entry.
+            table) for entry.
           </li>
           <li>
             Scores must be posted during the Match Sequence or Credit Award.
@@ -51,8 +63,8 @@ export default function CompetitionRules() {
             Rollovers require proof (photo or video) prior to the rollover.
           </li>
           <li>
-            Scores must be posted by{" "}
-            <strong>Sunday, midnight Pacific time</strong>.
+            Points are earned <strong>per table</strong> and summed across all
+            tables for the overall standings (see Tournaments Points).
           </li>
         </ul>
 
@@ -60,48 +72,15 @@ export default function CompetitionRules() {
           <p className="text-xs text-stone-500 uppercase font-bold mb-1">
             Post a Score{" "}
             <span className="text-xs text-stone-600 dark:text-stone-400 lowercase">
-              (Photo Required)
+              (Photo + Table Required)
             </span>
           </p>
           <p>
-            <code>/post-score</code>
+            <code>/post-tournament-score</code> - Post a score (select the table)
           </p>
           <p>
-            Or:{" "}
-            <code className="text-orange-700 dark:text-orange-300">
-              !score &lt;value&gt;
-            </code>{" "}
-            <span className="text-xs text-stone-500 dark:text-stone-400">
-              (attach photo)
-            </span>
-          </p>
-          <p className="text-xs text-stone-500 italic">
-            Example: !score 12000000
-          </p>
-          <div className="mt-2 pt-2 border-t border-stone-300/50 dark:border-stone-800">
-            <p>
-              <code>/show-score</code> - View your current score info
-            </p>
-            <p>
-              <code>/show-leaderboard</code> - View the current leaderboard
-            </p>
-          </div>
-        </div>
-        <div>
-          <h4 className="text-orange-700 dark:text-orange-300 font-bold">
-            Propose Table for Approved List
-          </h4>
-          <p>
-            To request a new table to be added to the approved list, start a new
-            thread in the{" "}
-            <Link
-              href="https://discord.com/channels/652274650524418078/1477084728535552042"
-              target="_blank"
-              className="text-orange-700 dark:text-orange-400 hover:text-orange-300 dark:hover:text-orange-300"
-            >
-              Curated List
-            </Link>{" "}
-            forum. Check the Post Guidelines for more info.
+            <code>/show-tournament</code> - View the current tournament and its
+            tables
           </p>
         </div>
       </div>

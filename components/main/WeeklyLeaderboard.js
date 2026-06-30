@@ -16,31 +16,35 @@ export default function WeeklyLeaderboard({ weekData, vpsData }) {
   const downloadUrl = weekData.tableUrl ?? "#";
 
   return (
-    <div className="flex flex-col w-full items-center">
-      <LeaderboardTitleCard
-        imageUrl={vpsData?.imgUrl ?? null}
-        table={weekData.table}
-        weekNumber={weekData.weekNumber}
-        periodStart={weekData.periodStart}
-        periodEnd={weekData.periodEnd}
-        priority
-      >
-        <LeaderboardTitleCardContent
-          title={weekData.table}
-          vpsId={weekData.vpsId}
-          downloadUrl={weekData.tableUrl}
+    <div className="flex flex-col w-full items-center h-full min-h-0">
+      <div className="h-60 sm:h-80 shrink-0 flex items-end mb-4">
+        <div className="origin-bottom scale-75 sm:scale-100">
+          <LeaderboardTitleCard
+          imageUrl={vpsData?.imgUrl ?? null}
+          table={weekData.table}
           weekNumber={weekData.weekNumber}
           periodStart={weekData.periodStart}
           periodEnd={weekData.periodEnd}
-          version={weekData.versionNumber}
-          author={
-            weekData.authorName ? truncate(weekData.authorName, 30) : undefined
-          }
-        />
-      </LeaderboardTitleCard>
+          priority
+        >
+          <LeaderboardTitleCardContent
+            title={weekData.table}
+            vpsId={weekData.vpsId}
+            downloadUrl={weekData.tableUrl}
+            weekNumber={weekData.weekNumber}
+            periodStart={weekData.periodStart}
+            periodEnd={weekData.periodEnd}
+            version={weekData.versionNumber}
+            author={
+              weekData.authorName ? truncate(weekData.authorName, 30) : undefined
+            }
+          />
+          </LeaderboardTitleCard>
+        </div>
+      </div>
 
       {/* ── Scores list ── */}
-      <div className="flex flex-col overflow-auto w-full items-center gap-1">
+      <div className="flex flex-col flex-1 min-h-0 overflow-auto w-full items-center gap-1">
         {weekData.scores.map((score, index) => (
           <Link
             href={

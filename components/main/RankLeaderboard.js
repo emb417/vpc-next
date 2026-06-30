@@ -5,12 +5,12 @@ import { Tooltip } from "antd";
 
 export default function RankLeaderboard({ recentPlayerStats }) {
   return (
-    <div className="flex flex-col w-full items-center justify-center">
-      <div className="flex flex-col mb-2 items-center">
+    <div className="flex flex-col w-full items-center h-full min-h-0">
+      <div className="flex flex-col shrink-0 items-center pt-2 mb-4">
         <Image
           src="/icon.png"
-          width={168}
-          height={168}
+          width={128}
+          height={128}
           alt="VPC"
           className="mb-2"
         />
@@ -26,7 +26,7 @@ export default function RankLeaderboard({ recentPlayerStats }) {
           </Tooltip>
         </div>
       </div>
-      <div className="flex flex-col overflow-auto w-full gap-1">
+      <div className="flex flex-col flex-1 min-h-0 overflow-auto w-full gap-1">
         {recentPlayerStats
           .filter((user) => user.rank !== undefined && user.rank !== null)
           .sort((a, b) => a.rank - b.rank)
