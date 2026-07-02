@@ -5,6 +5,17 @@ import "./globals.css";
 
 export const metadata = {
   metadataBase: new URL(process.env.METADATA_URL),
+  openGraph: {
+    siteName: "Virtual Pinball Chat",
+    type: "website",
+  },
+  twitter: {
+    card: "summary",
+  },
+};
+
+export const viewport = {
+  themeColor: "#ea580c",
 };
 
 export default function RootLayout({ children }) {

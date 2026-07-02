@@ -6,7 +6,7 @@ export const dynamic = "force-dynamic";
 export const metadata = {
   title: "Tournaments",
   description:
-    "Tournament Archive. Browse every Virtual Pinball Chat tournament — current and past — with full standings and per-tournament points charts.",
+    "Browse every Virtual Pinball Chat tournament, current and past. Search by name and open any tournament for its tables, standings, and points charts.",
   alternates: {
     canonical: "/tournaments",
   },

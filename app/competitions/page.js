@@ -6,7 +6,7 @@ export const dynamic = "force-dynamic";
 export const metadata = {
   title: "Competition Corner",
   description:
-    "Weekly Competition Archive. Relive every past event with a searchable database of weekly tables. Simply search by Table Name to access dedicated historical leaderboards.",
+    "Browse the complete Competition Corner archive. Search past weekly tables by name to see each week's table details, download link, and final leaderboard.",
   alternates: {
     canonical: "/competitions",
   },

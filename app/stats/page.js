@@ -6,7 +6,7 @@ export const dynamic = "force-dynamic";
 export const metadata = {
   title: "League Statistics",
   description:
-    "Comprehensive performance analytics. Analyze league trends and player momentum with detailed statistical breakdowns covering the past 13 and 52 weeks.",
+    "League-wide analytics: weekly participation trends, all-time honors, top manufacturers, eras, and designers, plus sortable player rankings across 13-week, 52-week, and all-time windows.",
   alternates: {
     canonical: "/stats",
   },

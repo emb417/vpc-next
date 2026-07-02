@@ -10,7 +10,7 @@ import FaqsFooter from "@/components/faqs/FaqsFooter";
 export const metadata = {
   title: "How to Join | Virtual Pinball Chat",
   description:
-    "Learn how to join the Virtual Pinball Chat community, participate in weekly competitions, and use our Discord bot for score tracking.",
+    "How to join Virtual Pinball Chat and start competing: Competition Corner and tournament rules, points scoring, the weekly table raffle, and posting scores with the Discord bot.",
 };
 
 export default function FaqsPage() {
