@@ -134,8 +134,8 @@ export default function CompetitionLeaderboards({
           <GiPinballFlipper />
           Competition Corner
         </h1>
-        <div className="flex flex-row items-center ml-auto gap-4">
-          <div className="hidden sm:flex w-[230px] items-center mx-auto">
+        <div className="flex flex-1 min-w-0 flex-row items-center justify-end pl-2 gap-4">
+          <div className="flex w-full max-w-[230px] items-center">
             <Input
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -144,19 +144,6 @@ export default function CompetitionLeaderboards({
               size="small"
             />
           </div>
-        </div>
-      </div>
-
-      {/* ── Mobile search ── */}
-      <div className="sm:hidden flex w-full justify-center items-center pl-2 pb-3 text-stone-800 dark:text-stone-200">
-        <div className="flex flex-row items-center w-[190px]">
-          <Input
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Search for table name"
-            allowClear
-            size="small"
-          />
         </div>
       </div>
 
@@ -209,13 +196,15 @@ export default function CompetitionLeaderboards({
             );
           })}
 
-          {/* Sentinel — observed to trigger loadMore */}
-          <div
-            ref={sentinelRef}
-            className="flex items-center px-4 min-w-[40px]"
-          >
-            {loading && <Loading />}
-          </div>
+          {/* Sentinel — observed to trigger loadMore; omitted when done so short lists center */}
+          {(hasMore || loading) && (
+            <div
+              ref={sentinelRef}
+              className="flex items-center px-4 min-w-[40px]"
+            >
+              {loading && <Loading />}
+            </div>
+          )}
         </div>
       </div>
     </div>
