@@ -66,9 +66,6 @@ export default function CompetitionRules() {
           <p>
             <code>/post-score</code>
           </p>
-          <p className="text-xs text-stone-500 italic">
-            Use table VPS ID or URL or table name search terms.
-          </p>
           <div className="mt-2 pt-2 border-t border-stone-300/50 dark:border-stone-800">
             <p>
               <code>/show-score</code> - View your current score info
