@@ -25,14 +25,10 @@ export default function HighScoreCorner() {
               </span>
             </h5>
             <p className="text-xs">
-              <code>/post-high-score</code> and select the VPS ID or Table URL
-              option
-            </p>
-            <p className="text-xs">
-              Or: <code>!high &lt;score&gt; &lt;tablesearchterm&gt;</code>
+              <code>/post-high-score</code>
             </p>
             <p className="text-xs text-stone-500 italic">
-              Example: !high 12000000 cactus
+              Use table VPS ID or URL or table name search terms.
             </p>
           </div>
           <div className="bg-stone-200 dark:bg-stone-950 p-4 rounded-lg border border-stone-300 dark:border-stone-800 space-y-2">
@@ -47,7 +43,9 @@ export default function HighScoreCorner() {
             </p>
           </div>
           <div className="bg-stone-200 dark:bg-stone-950 p-4 rounded-lg border border-stone-300 dark:border-stone-800 space-y-2">
-            <h5 className="text-orange-700 dark:text-orange-300 font-bold text-sm">New Tables</h5>
+            <h5 className="text-orange-700 dark:text-orange-300 font-bold text-sm">
+              New Tables
+            </h5>
             <p className="text-xs">
               Posting a score for a new table will automatically create the new
               table.

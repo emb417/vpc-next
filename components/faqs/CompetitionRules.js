@@ -66,17 +66,8 @@ export default function CompetitionRules() {
           <p>
             <code>/post-score</code>
           </p>
-          <p>
-            Or:{" "}
-            <code className="text-orange-700 dark:text-orange-300">
-              !score &lt;value&gt;
-            </code>{" "}
-            <span className="text-xs text-stone-500 dark:text-stone-400">
-              (attach photo)
-            </span>
-          </p>
           <p className="text-xs text-stone-500 italic">
-            Example: !score 12000000
+            Use table VPS ID or URL or table name search terms.
           </p>
           <div className="mt-2 pt-2 border-t border-stone-300/50 dark:border-stone-800">
             <p>
@@ -84,6 +75,10 @@ export default function CompetitionRules() {
             </p>
             <p>
               <code>/show-leaderboard</code> - View the current leaderboard
+            </p>
+            <p>
+              <code>/show-table-of-the-week</code> - View the current table and
+              download links
             </p>
           </div>
         </div>
