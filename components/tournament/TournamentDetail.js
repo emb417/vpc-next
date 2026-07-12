@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { GiTrophy } from "react-icons/gi";
+import { formatDateRange } from "@/lib/formatDateRange";
 import { fetchWithLogging } from "@/lib/fetchWithLogging";
 import { logEvent } from "@/lib/logger";
 import TournamentTableCard from "@/components/tournament/TournamentTableCard";
@@ -48,21 +49,15 @@ export default async function TournamentDetail({ id }) {
 
   return (
     <div className="flex flex-col flex-grow w-full max-h-dvh">
-      <div className="flex flex-row w-full items-center justify-start py-2 gap-2">
+      <div className="flex flex-row flex-wrap w-full items-center justify-start py-2 gap-2">
         <h1 className="flex flex-row items-center gap-1 text-lg text-stone-800 dark:text-stone-200">
           <GiTrophy />
           {tournament.name}
         </h1>
-        <span className="text-xs text-stone-500 dark:text-stone-400">
-          {tournament.startDate} – {tournament.endDate} · {tables.length} tables
+        <span className="text-xs text-stone-500 dark:text-stone-400 sm:ml-auto whitespace-nowrap">
+          {tables.length} tables · {formatDateRange(tournament.startDate, tournament.endDate)}
           {tournament.status === "active" ? "" : " · ended"}
         </span>
-        <Link
-          href="/tournaments"
-          className="ml-auto text-sm text-orange-600 dark:text-orange-300 hover:underline"
-        >
-          ← All tournaments
-        </Link>
       </div>
 
       <div className="flex flex-row w-full gap-2 text-stone-800 dark:text-stone-200 pb-2 mb-2 overflow-x-auto overflow-y-hidden">
