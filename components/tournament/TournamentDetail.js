@@ -54,8 +54,9 @@ export default async function TournamentDetail({ id }) {
           <GiTrophy />
           {tournament.name}
         </h1>
-        <span className="text-xs text-stone-500 dark:text-stone-400 sm:ml-auto whitespace-nowrap">
-          {tables.length} tables · {formatDateRange(tournament.startDate, tournament.endDate)}
+        <span className="text-md text-stone-500 dark:text-stone-400 sm:ml-auto whitespace-nowrap">
+          {tables.length} tables ·{" "}
+          {formatDateRange(tournament.startDate, tournament.endDate)}
           {tournament.status === "active" ? "" : " · ended"}
         </span>
       </div>

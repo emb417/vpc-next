@@ -60,14 +60,14 @@ async function getActiveTournaments() {
     const raw = await response.json();
     if (Array.isArray(raw) && raw.length > 0) {
       const results = raw[0].results ?? [];
-      // The stored `status` lags reality (the bot only flips it on a daily
-      // cron, and future tournaments are stored "active" immediately), so
-      // narrow to tournaments whose window actually includes today.
       return results.filter((t) => isTournamentActive(t.startDate, t.endDate));
     }
     return [];
   } catch (error) {
-    logEvent({ type: "main_dashboard_tournaments_error", error: error.message });
+    logEvent({
+      type: "main_dashboard_tournaments_error",
+      error: error.message,
+    });
     return [];
   }
 }
@@ -83,9 +83,6 @@ export default async function Leaderboards() {
 
   return (
     <div className="w-full min-h-full lg:h-full lg:min-h-0 lg:overflow-y-auto">
-      {/* Navigation cards — a centered 3-wide grid (capped at 1280px) linking
-          out to the dedicated full pages. When there are no tournaments, the
-          lone weekly card is centered instead of pinned to the first column. */}
       <div
         className={
           hasTournaments
@@ -113,7 +110,8 @@ export default async function Leaderboards() {
             (a, b) => a.tableIndex - b.tableIndex,
           );
           const imageSrc =
-            sortedTables.find((t) => t.vpsData?.imgUrl)?.vpsData?.imgUrl ?? null;
+            sortedTables.find((t) => t.vpsData?.imgUrl)?.vpsData?.imgUrl ??
+            null;
           const tableNames = sortedTables.map((t) => t.table);
 
           return (
@@ -122,7 +120,10 @@ export default async function Leaderboards() {
               href={`/tournaments/${tournament._id}`}
               icon={<GiTrophy />}
               title={tournament.name}
-              subtitle={formatDateRange(tournament.startDate, tournament.endDate)}
+              subtitle={formatDateRange(
+                tournament.startDate,
+                tournament.endDate,
+              )}
               imageSrc={imageSrc}
               imageAlt={tournament.name}
               tables={tableNames}
