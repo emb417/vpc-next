@@ -1,6 +1,6 @@
 {
   "name": "vpc-next",
-  "version": "3.0.5",
+  "version": "3.0.6",
   "type": "module",
   "private": true,
   "description": "virtual pinball chat nextjs app",
