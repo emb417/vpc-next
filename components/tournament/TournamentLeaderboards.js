@@ -118,13 +118,13 @@ export default function TournamentLeaderboards({
 
   return (
     <div className="flex flex-col w-full h-full min-h-0">
-      <div className="flex flex-row w-full items-center justify-start py-2">
-        <h1 className="flex flex-row items-center gap-1 text-lg text-stone-800 dark:text-stone-200">
-          <GiTrophy />
-          Tournaments
-        </h1>
-        <div className="flex flex-1 min-w-0 flex-row items-center justify-end pl-2 gap-4">
-          <div className="flex w-full max-w-[230px] items-center">
+      <div className="flex flex-col w-full py-2 gap-2">
+        <div className="flex flex-row w-full items-center justify-between">
+          <h1 className="flex flex-row items-center gap-1 text-lg text-stone-800 dark:text-stone-200">
+            <GiTrophy />
+            Tournaments
+          </h1>
+          <div className="flex items-center w-full max-w-[230px]">
             <Input
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -133,6 +133,11 @@ export default function TournamentLeaderboards({
               size="small"
             />
           </div>
+        </div>
+        <div className="flex items-center gap-3 text-xs text-stone-600 dark:text-stone-400">
+          <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-green-500"></span>Active</span>
+          <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-blue-500"></span>Upcoming</span>
+          <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-stone-400"></span>Concluded</span>
         </div>
       </div>
 

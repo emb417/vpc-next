@@ -3,9 +3,17 @@ import TournamentStandings from "@/lib/TournamentStandings";
 import TournamentLeaderboard from "@/components/tournament/TournamentLeaderboard";
 import DashboardCard from "@/components/main/DashboardCard";
 import { formatDateRange } from "@/lib/formatDateRange";
+import { getTournamentStatus } from "@/lib/tournamentWindowStatus";
 
 export default function TournamentCard({ tournament }) {
   const standings = TournamentStandings(tournament);
+  const status = getTournamentStatus(tournament.startDate, tournament.endDate);
+
+  const topBorderClass = {
+    current: "border-t-4 border-green-500",
+    future: "border-t-4 border-blue-500",
+    past: "border-t-4 border-stone-400",
+  }[status];
 
   const sortedTables = [...(tournament.tables ?? [])].sort(
     (a, b) => a.tableIndex - b.tableIndex,
@@ -15,7 +23,9 @@ export default function TournamentCard({ tournament }) {
   const tableNames = sortedTables.map((t) => t.table);
 
   return (
-    <div className="flex flex-col gap-3 shrink-0 w-[292px] h-full min-h-0">
+    <div
+      className={`flex flex-col gap-3 shrink-0 w-[292px] h-full min-h-0 rounded-lg ${topBorderClass}`}
+    >
       <DashboardCard
         href={`/tournaments/${tournament._id}`}
         icon={<GiTrophy />}
