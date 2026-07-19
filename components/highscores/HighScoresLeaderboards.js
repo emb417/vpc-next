@@ -190,6 +190,10 @@ export default function HighScoresLeaderboards({
                           ? truncate(table.authorName, 30)
                           : undefined
                       }
+                      romUrl={table.romUrl}
+                      romName={table.romName}
+                      b2sUrl={table.b2sUrl}
+                      b2sName={table.b2sName}
                     />
                   </LeaderboardTitleCard>
                 </div>

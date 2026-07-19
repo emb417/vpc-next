@@ -180,6 +180,10 @@ export default function CompetitionLeaderboards({
                           ? truncate(week.authorName, 30)
                           : undefined
                       }
+                      romUrl={week.romUrl}
+                      romName={week.romName}
+                      b2sUrl={week.b2sUrl}
+                      b2sName={week.b2sName}
                     />
                   </LeaderboardTitleCard>
                 </div>
