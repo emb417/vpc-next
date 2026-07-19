@@ -52,13 +52,12 @@ export default function TournamentTableCard({ data }) {
           </span>
         )}
 
-        <div className="flex flex-row items-center justify-center gap-1 text-xs">
-          <span className="text-stone-500 dark:text-stone-400">VPS ID</span>
-          <span className="font-mono">{data.vpsId}</span>
-          <CopyButton text={data.vpsId} label="VPS ID" />
-        </div>
-
-        <div className="flex flex-row flex-wrap items-center justify-center gap-x-4 gap-y-0.5 text-xs">
+        <div className="flex flex-row flex-wrap items-center justify-center gap-x-4 gap-y-1 text-xs">
+          <span className="flex items-center gap-1">
+            <span className="text-stone-500 dark:text-stone-400">VPS ID</span>
+            <span className="font-mono">{data.vpsId}</span>
+            <CopyButton text={data.vpsId} label="VPS ID" />
+          </span>
           <span className="flex items-center gap-1">
             <span className="text-stone-500 dark:text-stone-400">ROM</span>
             {hasRom ? (
