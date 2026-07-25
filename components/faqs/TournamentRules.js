@@ -12,8 +12,8 @@ export default function TournamentRules() {
       </SectionLabel>
       <div className="bg-stone-100 dark:bg-stone-900 border border-orange-500 dark:border-orange-950 rounded-xl p-6 text-stone-700 dark:text-stone-300 space-y-4 text-sm leading-relaxed">
         <p className="text-orange-700 dark:text-orange-200 font-semibold italic">
-          &quot;Tournaments are multi-table events — battle across every table to
-          climb the overall standings!&quot;
+          &quot;Tournaments are multi-table events — battle across every table
+          to climb the overall standings!&quot;
         </p>
         <ul className="list-disc pl-5 space-y-2">
           <li>
@@ -76,11 +76,16 @@ export default function TournamentRules() {
             </span>
           </p>
           <p>
-            <code>/post-tournament-score</code> - Post a score (select the table)
+            <code>/post-tournament-score</code> - Post a score (select the
+            table)
           </p>
           <p>
-            <code>/show-tournament</code> - View the current tournament and its
-            tables
+            <code>/show-active-tournaments</code> - View the current tournaments
+            and tables
+          </p>
+          <p>
+            <code>/show-upcoming-tournaments</code> - View the upcomings
+            tournaments and tables
           </p>
         </div>
       </div>
