@@ -55,15 +55,17 @@ export default function DashboardCard({
             </span>
           </div>
           <span className="truncate text-sm text-stone-500 dark:text-stone-400">
+            {tables?.length} {tables?.length === 1 ? "Table" : "Tables"} •{" "}
             {subtitle}
-          </span>
-          <span className="truncate text-sm uppercase text-stone-700 dark:text-stone-200">
-            {tables?.length} {tables?.length === 1 ? "table" : "tables"}
           </span>
         </div>
 
         {tables?.length ? (
-          <div className="h-16 overflow-y-auto">
+          <div
+            className={`overflow-y-auto ${
+              tables.length < 3 ? "h-auto" : "h-16"
+            }`}
+          >
             <ul className="flex flex-col gap-0.5">
               {tables.map((table, i) => (
                 <li
