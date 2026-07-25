@@ -6,6 +6,7 @@ import DashboardCard from "@/components/main/DashboardCard";
 import { fetchWithLogging } from "@/lib/fetchWithLogging";
 import { logEvent } from "@/lib/logger";
 import { formatDateRange } from "@/lib/formatDateRange";
+import TournamentStandings from "@/lib/TournamentStandings";
 
 async function getData() {
   const overallStart = Date.now();
@@ -79,17 +80,10 @@ export default async function Leaderboards() {
   ]);
   const { positionWeeksData, vpsData } = props;
   const weekData = positionWeeksData?.[0] ?? null;
-  const hasTournaments = tournaments.length > 0;
 
   return (
     <div className="w-full min-h-full lg:h-full lg:min-h-0 lg:overflow-y-auto">
-      <div
-        className={
-          hasTournaments
-            ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 p-4 w-full max-w-screen-xl mx-auto"
-            : "flex flex-wrap justify-center gap-8 p-4 w-full max-w-screen-xl mx-auto [&>*]:w-full [&>*]:sm:w-[360px]"
-        }
-      >
+      <div className="flex flex-wrap justify-center gap-8 p-4 w-full max-w-screen-xl mx-auto [&>*]:w-full [&>*]:sm:w-[360px]">
         {/* Current weekly competition */}
         {weekData && (
           <DashboardCard
@@ -101,6 +95,8 @@ export default async function Leaderboards() {
             imageAlt={weekData.table}
             tables={weekData.table ? [weekData.table] : undefined}
             channel={weekData.channelName}
+            players={weekData.scores}
+            metricType="score"
           />
         )}
 
@@ -113,6 +109,7 @@ export default async function Leaderboards() {
             sortedTables.find((t) => t.vpsData?.imgUrl)?.vpsData?.imgUrl ??
             null;
           const tableNames = sortedTables.map((t) => t.table);
+          const standings = TournamentStandings(tournament);
 
           return (
             <DashboardCard
@@ -128,6 +125,8 @@ export default async function Leaderboards() {
               imageAlt={tournament.name}
               tables={tableNames}
               channel={tournament.channelName}
+              players={standings}
+              metricType="points"
             />
           );
         })}

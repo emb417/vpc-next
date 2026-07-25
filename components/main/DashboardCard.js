@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { FaDiscord } from "react-icons/fa";
+import PlayerImage from "@/components/player/PlayerImage";
 
 /**
  * Spacious navigation card for the dashboard. A large hero
@@ -16,6 +17,8 @@ export default function DashboardCard({
   imageAlt,
   tables,
   channel,
+  players = [],
+  metricType = "score",
 }) {
   return (
     <Link
@@ -60,7 +63,7 @@ export default function DashboardCard({
         </div>
 
         {tables?.length ? (
-          <div className="mt-auto h-16 overflow-y-auto">
+          <div className="h-16 overflow-y-auto">
             <ul className="flex flex-col gap-0.5">
               {tables.map((table, i) => (
                 <li
@@ -73,6 +76,39 @@ export default function DashboardCard({
             </ul>
           </div>
         ) : null}
+
+        {/* Top 3 players */}
+        {players?.length > 0 && (
+          <div className="mt-auto pt-3 border-t border-stone-200 dark:border-stone-800">
+            <div className="flex flex-col gap-1">
+              {players.slice(0, 3).map((player, index) => (
+                <div
+                  key={player.username}
+                  className="flex items-center gap-2 text-sm"
+                >
+                  <span className="w-4 text-orange-700 dark:text-orange-300 font-medium">
+                    {index + 1}.
+                  </span>
+                  <PlayerImage
+                    src={player.userAvatarUrl}
+                    alt={player.username}
+                    width={20}
+                    height={20}
+                    className="rounded-full"
+                  />
+                  <span className="truncate text-stone-700 dark:text-stone-200">
+                    {player.username}
+                  </span>
+                  <span className="ml-auto font-mono text-stone-600 dark:text-stone-400">
+                    {metricType === "points"
+                      ? player.points
+                      : player.score?.toLocaleString()}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </Link>
   );
