@@ -181,7 +181,7 @@ export default function CompetitionLeaderboards({
                           : undefined
                       }
                       romUrl={week.romUrl}
-                      romName={week.romName}
+                      romName={week.romName || week.vpsData?.rom}
                       b2sUrl={week.b2sUrl}
                       b2sName={week.b2sName}
                     />

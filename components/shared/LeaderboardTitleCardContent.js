@@ -89,16 +89,22 @@ export default function LeaderboardTitleCardContent({
               <CopyButton text={vpsId} label="VPS ID" />
             </span>
           )}
-          {hasRom && (
+          {(hasRom || romName) && (
             <span className="flex items-center gap-1">
               <span className="text-stone-500 dark:text-stone-400">ROM</span>
-              <Link
-                href={romUrl}
-                target="_blank"
-                className="text-orange-600 dark:text-orange-300 hover:underline"
-              >
-                {romLabel}
-              </Link>
+              {hasRom ? (
+                <Link
+                  href={romUrl}
+                  target="_blank"
+                  className="text-orange-600 dark:text-orange-300 hover:underline"
+                >
+                  {romLabel}
+                </Link>
+              ) : (
+                <span className="text-stone-500 dark:text-stone-400">
+                  {romName}
+                </span>
+              )}
             </span>
           )}
           {hasB2s && (
