@@ -48,8 +48,8 @@ export default async function TournamentDetail({ id }) {
   );
 
   return (
-    <div className="flex flex-col flex-grow w-full max-h-dvh">
-      <div className="flex flex-row flex-wrap w-full items-center justify-start py-2 gap-2">
+    <div className="flex flex-col w-full h-full min-h-0">
+      <div className="flex flex-row flex-wrap w-full items-center justify-start py-2 gap-2 shrink-0">
         <h1 className="flex flex-row items-center gap-1 text-lg text-stone-800 dark:text-stone-200">
           <GiTrophy />
           {tournament.name}
@@ -61,20 +61,22 @@ export default async function TournamentDetail({ id }) {
         </span>
       </div>
 
-      <div className="flex flex-row w-full gap-2 text-stone-800 dark:text-stone-200 pb-2 mb-2 overflow-x-auto overflow-y-hidden">
-        <div className="flex flex-row gap-2 mx-auto">
+      <div className="flex flex-row w-full flex-1 min-h-0 gap-2 text-stone-800 dark:text-stone-200 pb-2 mb-2 overflow-x-auto overflow-y-hidden">
+        <div className="flex flex-row gap-2 mx-auto h-full">
           {tables.map((t) => {
             const scores = [...(t.scores ?? [])].sort(
               (a, b) => b.score - a.score,
             );
             return (
               <div
-                className="flex flex-col gap-2 items-center"
+                className="flex flex-col gap-2 items-center h-full min-h-0"
                 key={t.vpsId}
                 id={t.vpsId}
               >
-                <TournamentTableCard data={t} />
-                <div className="flex flex-col gap-1 overflow-auto rounded-xl min-w-[320px] max-w-[320px]">
+                <div className="shrink-0">
+                  <TournamentTableCard data={t} />
+                </div>
+                <div className="flex flex-col flex-1 min-h-0 gap-1 overflow-auto rounded-xl min-w-[320px] max-w-[320px]">
                   {scores.length === 0 ? (
                     <p className="px-2 py-6 text-center text-sm text-stone-400 dark:text-stone-600">
                       No scores yet.
