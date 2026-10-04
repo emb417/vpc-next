@@ -19,6 +19,7 @@ export default function DashboardCard({
   channel,
   players = [],
   metricType = "score",
+  showPlayers = true,
 }) {
   return (
     <Link
@@ -54,7 +55,7 @@ export default function DashboardCard({
               {title}
             </span>
           </div>
-          <span className="truncate text-sm text-stone-500 dark:text-stone-400">
+          <span className="truncate text-xs text-stone-500 dark:text-stone-400">
             {tables?.length} {tables?.length === 1 ? "Table" : "Tables"} •{" "}
             {subtitle}
           </span>
@@ -80,7 +81,7 @@ export default function DashboardCard({
         ) : null}
 
         {/* Top 3 players */}
-        {players?.length > 0 && (
+        {showPlayers && players?.length > 0 && (
           <div className="mt-auto pt-3 border-t border-stone-200 dark:border-stone-800">
             <div className="flex flex-col gap-1">
               {players.slice(0, 3).map((player, index) => (

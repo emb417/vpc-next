@@ -3,8 +3,10 @@ import PlayerImage from "@/components/player/PlayerImage";
 
 const DEFAULT_AVATAR = "https://cdn.discordapp.com/embed/avatars/0.png";
 
-export default function TournamentLeaderboard({ standings }) {
+export default function TournamentLeaderboard({ standings, metricType = "points" }) {
   if (!standings || standings.length === 0) return null;
+
+  const isSingleTable = metricType === "score";
 
   return (
     <div className="flex flex-col gap-1 w-full">
@@ -31,11 +33,17 @@ export default function TournamentLeaderboard({ standings }) {
             {row.username}
           </span>
           <div className="ml-auto mr-1 flex flex-row items-center gap-4">
-            <span className="text-xs text-stone-500 dark:text-stone-400">
-              {row.tablesPlayed} {row.tablesPlayed === 1 ? "table" : "tables"}
-            </span>
-            <span className="min-w-[24px] text-xl text-center text-stone-900 dark:text-stone-100">
-              {row.points}
+            {!isSingleTable && (
+              <span className="text-xs text-stone-500 dark:text-stone-400">
+                {row.tablesPlayed} {row.tablesPlayed === 1 ? "table" : "tables"}
+              </span>
+            )}
+            <span
+              className={`min-w-[24px] text-center text-stone-900 dark:text-stone-100 font-mono ${
+                isSingleTable ? "text-sm" : "text-xl"
+              }`}
+            >
+              {isSingleTable ? row.score?.toLocaleString() : row.points}
             </span>
           </div>
         </Link>
