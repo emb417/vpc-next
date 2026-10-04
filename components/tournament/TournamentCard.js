@@ -21,6 +21,7 @@ export default function TournamentCard({ tournament }) {
   const imageSrc =
     sortedTables.find((t) => t.vpsData?.imgUrl)?.vpsData?.imgUrl ?? null;
   const tableNames = sortedTables.map((t) => t.table);
+  const isSingleTable = sortedTables.length === 1;
 
   return (
     <div
@@ -35,6 +36,9 @@ export default function TournamentCard({ tournament }) {
         imageAlt={tournament.name}
         tables={tableNames}
         channel={tournament.channelName}
+        players={standings}
+        metricType={isSingleTable ? "score" : "points"}
+        showPlayers={false}
       />
 
       <div className="flex flex-col flex-1 min-h-0 overflow-auto">
@@ -43,7 +47,10 @@ export default function TournamentCard({ tournament }) {
             No scores posted yet.
           </p>
         ) : (
-          <TournamentLeaderboard standings={standings} />
+          <TournamentLeaderboard
+            standings={standings}
+            metricType={isSingleTable ? "score" : "points"}
+          />
         )}
       </div>
     </div>

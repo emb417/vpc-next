@@ -110,6 +110,7 @@ export default async function Leaderboards() {
             null;
           const tableNames = sortedTables.map((t) => t.table);
           const standings = TournamentStandings(tournament);
+          const isSingleTable = sortedTables.length === 1;
 
           return (
             <DashboardCard
@@ -126,7 +127,7 @@ export default async function Leaderboards() {
               tables={tableNames}
               channel={tournament.channelName}
               players={standings}
-              metricType="points"
+              metricType={isSingleTable ? "score" : "points"}
             />
           );
         })}
